@@ -9,6 +9,8 @@
   "skip": "Aller aux projets",
   "nav_label": "Principal",
   "sites_label": "Les projets Boréale",
+  "sites_homebrew": "Homebrew Switch",
+  "sites_libraries": "Bibliothèques",
   "sites_boreale": "Du homebrew pour les longues nuits",
   "sites_playguard": "Le contrôle parental, sur la console",
   "sites_playshelf": "Votre bibliothèque de jeux, sur la console",

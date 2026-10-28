@@ -55,12 +55,13 @@ PROJECTS = {
                "try": {"en": "https://aurore.boreale.dev/demo/", "fr": "https://aurore.boreale.dev/demo/?lang=fr"}},
 }
 
-# Boréale's sites, in the header's menu (switcher()): the same four in each
-# site, each in its catalog's language where it has it.
-SITES = [("boreale", "Boréale", "https://boreale.dev/"),
-         ("playguard", "PlayGuard", "https://guard.boreale.dev/"),
-         ("playshelf", "PlayShelf", "https://shelf.boreale.dev/"),
-         ("aurore", "Aurore", "https://aurore.boreale.dev/")]
+# Boréale's sites, in the header's menu (switcher()): the same in each site,
+# each in its catalog's language where it has it. boreale.dev first, then
+# the homebrew, then the libraries, each group under its catalog's title.
+SITES = [(None, [("boreale", "Boréale", "https://boreale.dev/")]),
+         ("sites_homebrew", [("playguard", "PlayGuard", "https://guard.boreale.dev/"),
+                             ("playshelf", "PlayShelf", "https://shelf.boreale.dev/")]),
+         ("sites_libraries", [("aurore", "Aurore", "https://aurore.boreale.dev/")])]
 
 
 def switcher(language: str, catalog: dict, root: str) -> str:
@@ -68,22 +69,25 @@ def switcher(language: str, catalog: dict, root: str) -> str:
     in the four sites: site.css's and site.js's "site switcher"), this one
     marked. A popover: the browser closes it on Esc or a click elsewhere."""
     label = catalog["sites_label"]
-    items = []
-    for key, name, url in SITES:
-        here = key == "boreale"
-        href = f"{root}{catalog['home']}" if here else url + ("fr/" if language == "fr" else "")
-        soon = f'<em class="soon">{catalog["sites_soon"]}</em>' if key == "playshelf" else ""
-        current = ' aria-current="true"' if here else ""
-        items.append(f'<li><a href="{href}"{current}>'
-                     f'<img src="{root}assets/marks/{key}.svg" alt="" width="36" height="36">'
-                     f'<span><strong>{name}</strong><small>{catalog[f"sites_{key}"]}</small></span>{soon}</a></li>')
+    groups = []
+    for title, sites in SITES:
+        items = []
+        for key, name, url in sites:
+            here = key == "boreale"
+            href = f"{root}{catalog['home']}" if here else url + ("fr/" if language == "fr" else "")
+            soon = f'<em class="soon">{catalog["sites_soon"]}</em>' if key == "playshelf" else ""
+            current = ' aria-current="true"' if here else ""
+            items.append(f'<li><a href="{href}"{current}>'
+                         f'<img src="{root}assets/marks/{key}.svg" alt="" width="36" height="36">'
+                         f'<span><strong>{name}</strong><small>{catalog[f"sites_{key}"]}</small></span>{soon}</a></li>')
+        heading = f'<p class="sites-title">{catalog[title]}</p>' if title else ""
+        groups.append(f'        {heading}<ul>\n          ' + "\n          ".join(items) + '\n        </ul>')
     return (f'<div class="switcher">\n'
             f'      <a class="brand" href="{root}{catalog["home"]}"><img src="{root}assets/marks/boreale.svg" alt="" width="34" height="34">Boréale</a>\n'
             f'      <button class="switch" type="button" popovertarget="sites" aria-label="{label}">'
             f'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
             f'      <div id="sites" class="sites" popover aria-label="{label}">\n'
-            f'        <p class="sites-title">{label}</p>\n'
-            f'        <ul>\n          ' + "\n          ".join(items) + '\n        </ul>\n      </div>\n    </div>')
+            + "\n".join(groups) + '\n      </div>\n    </div>')
 
 
 # The pages other than 404.html, by their path under each language's folder.
