@@ -11,7 +11,7 @@ A first visit to the root goes to the browser's language when the site has it; t
 - `template.html`: the page around the content (head, header, footer). Its aurora (`hero.html` under it) is `canvas#sky`, drawn by `assets/site.js`; without script, or with less motion asked, `assets/site.css`'s gradient or a still frame stands in.
 - `home.html` and `hero.html`: the home page; `lost.html`: `404.html`, served at any address.
 - `i18n/<language>.json`: each `{{key}}`'s text, one catalog per language (`en.json` the reference). A new language is a catalog and its entry in `LANGUAGES`.
-- The projects' links are in `build_site.py` (`PROJECTS`): they move to `guard.`, `shelf.` and `aurore.boreale.dev` once those are served.
+- The projects' links are in `build_site.py` (`PROJECTS`): PlayGuard at `guard.boreale.dev`, PlayShelf at `shelf.boreale.dev`, Aurore at its repository until `aurore.boreale.dev` has a site.
 - **The projects' releases**, read from GitHub's API at each build: the latest version on each card, the five latest releases on the home page, the last twenty in `feed.atom`. `GITHUB_TOKEN` lifts the API's anonymous limit; `SITE_OFFLINE=1` builds without them (no version, no releases section).
 - **For search engines**: schema.org data on each page (Boréale, its site, each project and its latest version), `sitemap.xml`, `robots.txt`, the social preview; `manifest.webmanifest` and `favicon.ico` (written by `tools/export-branding.mjs`) for browsers.
 - `assets/`: the CSS, the script, the marks, the icons, the social preview and the fonts (SIL Open Font License), served with the site so that no visitor's browser asks anyone else for anything.

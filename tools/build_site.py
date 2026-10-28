@@ -32,13 +32,13 @@ LANGUAGES = ["en", "fr"]  # the first one at the root
 OWNER = "JigSawFr"
 RELEASES_SHOWN = 5
 
-# Each project: its repository, and where its card leads per language. Their
-# sites move to guard., shelf. and aurore.boreale.dev once those are served.
+# Each project: its repository, and where its card leads per language: its
+# site at its sub-domain of boreale.dev, or its repository while it has none.
 PROJECTS = {
     "playguard": {"name": "PlayGuard", "repo": "PlayGuard",
-                  "url": {"en": "https://playguard.link/", "fr": "https://playguard.link/fr/"}},
+                  "url": {"en": "https://guard.boreale.dev/", "fr": "https://guard.boreale.dev/fr/"}},
     "playshelf": {"name": "PlayShelf", "repo": "PlayShelf",
-                  "url": {"en": "https://jigsawfr.github.io/PlayShelf/", "fr": "https://jigsawfr.github.io/PlayShelf/fr/"}},
+                  "url": {"en": "https://shelf.boreale.dev/", "fr": "https://shelf.boreale.dev/fr/"}},
     "aurore": {"name": "Aurore", "repo": "Aurore",
                "url": {"en": "https://github.com/JigSawFr/Aurore", "fr": "https://github.com/JigSawFr/Aurore"}},
 }
