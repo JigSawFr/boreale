@@ -6,11 +6,14 @@
 - every catalog of site/i18n/ has the same keys as en.json, none empty;
 - no {{key}} left in a page;
 - every link and image to the site leads to a file, and every #anchor to an id;
-- nothing the Content-Security-Policy blocks: no inline script, no <style>,
-  no style="" attribute, nothing loaded from another site.
+- nothing the Content-Security-Policy blocks: no inline script (but the
+  schema.org data, which runs nothing), no <style>, no style="" attribute,
+  nothing loaded from another site;
+- the schema.org data, feed.atom and manifest.webmanifest read as JSON or XML.
 """
 import json
 import sys
+import xml.etree.ElementTree as ElementTree
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
@@ -21,8 +24,8 @@ ROOT = Path(__file__).resolve().parent.parent
 class Page(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.ids, self.links, self.problems = set(), [], []
-        self.in_script = False
+        self.ids, self.links, self.problems, self.data = set(), [], [], []
+        self.in_data = False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -33,12 +36,23 @@ class Page(HTMLParser):
         if tag == "style":
             self.problems.append("<style> element")
         if tag == "script":
+            if a.get("type") == "application/ld+json":
+                self.in_data = True
+                return
             if not a.get("src"):
                 self.problems.append("inline <script>")
             self.links.append(("src", a.get("src") or ""))
         for name in ("href", "src"):
             if name in a and not (tag == "script" and name == "src"):
                 self.links.append((name, a[name]))
+
+    def handle_data(self, data):
+        if self.in_data:
+            self.data.append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "script":
+            self.in_data = False
 
 
 def main() -> None:
@@ -69,6 +83,10 @@ def main() -> None:
         parsed = Page()
         parsed.feed(html)
         errors += [f"{name}: {p}" for p in parsed.problems]
+        try:
+            json.loads("".join(parsed.data) or "{}")
+        except ValueError as error:
+            errors.append(f"{name}: its schema.org data is not JSON ({error})")
         for attr, link in parsed.links:
             url = urlparse(link)
             if url.scheme in ("http", "https", "mailto"):
@@ -86,6 +104,17 @@ def main() -> None:
                 continue
             if url.fragment and target == path and url.fragment not in parsed.ids:
                 errors.append(f"{name}: #{url.fragment} is not on the page")
+
+    for name in ("feed.atom", "sitemap.xml"):
+        try:
+            ElementTree.parse(site / name)
+        except (OSError, ElementTree.ParseError) as error:
+            errors.append(f"{name}: {error}")
+    try:
+        icons = json.loads((site / "manifest.webmanifest").read_text(encoding="utf-8"))["icons"]
+        errors += [f"manifest.webmanifest: {i['src']} leads nowhere" for i in icons if not (site / i["src"]).exists()]
+    except (OSError, ValueError, KeyError) as error:
+        errors.append(f"manifest.webmanifest: {error}")
 
     for e in errors:
         print(f"check_site: {e}")

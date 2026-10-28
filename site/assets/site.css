@@ -116,6 +116,15 @@ main section.closing { padding-top: 0; }
 }
 .project .state.live { background: var(--aurora); border-color: transparent; color: var(--abyss); font-weight: 500; }
 
+.project .version { color: var(--aurora); }
+
+.releases { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--night-line); }
+.releases li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-block: 14px; border-bottom: 1px solid var(--night-line); }
+.releases a { font-family: var(--display); font-weight: 600; font-size: 1.125rem; color: var(--snow); text-decoration: none; }
+.releases a:hover { color: var(--aurora); }
+.releases time { font-family: var(--mono); font-size: 0.875rem; color: var(--mist); font-variant-numeric: tabular-nums; }
+.feed { margin-top: 16px; font-size: 0.9375rem; }
+
 .ground { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 28px 36px; }
 .ground div { display: grid; gap: 6px; align-content: start; }
 .ground h3 { font-size: 1.125rem; font-weight: 600; }

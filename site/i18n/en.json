@@ -43,5 +43,9 @@
   "lost_title": "Lost in the night",
   "lost_text": "This page does not exist, or not any more. The projects are on the home page.",
   "lost_back": "Back to the home page",
-  "lost_page_title": "Page not found · Boréale"
+  "lost_page_title": "Page not found · Boréale",
+  "news_eyebrow": "Releases",
+  "news_title": "Latest releases",
+  "news_feed": "Follow the releases (Atom feed)",
+  "feed_subtitle": "The releases of PlayGuard, PlayShelf and Aurore."
 }

@@ -2,11 +2,17 @@ name: site
 
 # Builds and checks boreale.dev (site/README.md) for each pull request and
 # for main, and publishes main's on GitHub Pages (Settings › Pages ›
-# Source: GitHub Actions).
+# Source: GitHub Actions). Once a day too, and when a project says it
+# released (a repository_dispatch of type "release"), so the versions on the
+# cards and the latest releases follow the projects' releases.
 on:
   push:
     branches: [ main ]
   pull_request:
+  schedule:
+    - cron: "41 4 * * *"
+  repository_dispatch:
+    types: [ release ]
   workflow_dispatch:
 
 permissions:
@@ -23,6 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: The pages
+        env:
+          GITHUB_TOKEN: ${{ github.token }}   # the projects' releases, without the API's anonymous limit
         run: python3 tools/build_site.py build
       - name: Their links, catalogs and Content-Security-Policy
         run: python3 tools/check_site.py build

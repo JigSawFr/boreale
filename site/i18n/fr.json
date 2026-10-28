@@ -43,5 +43,9 @@
   "lost_title": "Perdu dans la nuit",
   "lost_text": "Cette page n'existe pas, ou plus. Les projets sont sur la page d'accueil.",
   "lost_back": "Retour à l'accueil",
-  "lost_page_title": "Page introuvable · Boréale"
+  "lost_page_title": "Page introuvable · Boréale",
+  "news_eyebrow": "Versions",
+  "news_title": "Dernières versions",
+  "news_feed": "Suivre les versions (flux Atom)",
+  "feed_subtitle": "Les versions de PlayGuard, PlayShelf et Aurore."
 }

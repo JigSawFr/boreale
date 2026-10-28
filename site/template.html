@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <title>{{title}}</title>
 <meta name="description" content="{{description}}">
 <meta name="theme-color" content="#0b1424">
@@ -14,6 +14,8 @@
 <link rel="icon" href="{{root}}assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="{{root}}assets/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="{{root}}assets/apple-touch-icon.png">
+<link rel="manifest" href="{{root}}manifest.webmanifest">
+<link rel="alternate" type="application/atom+xml" href="{{site}}feed.atom" title="Boréale">
 <link rel="preload" href="{{root}}assets/fonts/sora.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{root}}assets/site.css">
 <meta property="og:type" content="website">
@@ -26,6 +28,7 @@
 <meta property="og:image:height" content="640">
 <meta property="og:locale" content="{{og_locale}}">
 <meta name="twitter:card" content="summary_large_image">
+{{jsonld}}
 <script src="{{root}}assets/lang.js"></script>
 <script src="{{root}}assets/site.js" defer></script>
 </head>
