@@ -65,9 +65,10 @@ SITES = [(None, [("boreale", "Boréale", "https://boreale.dev/")]),
 
 
 def switcher(language: str, catalog: dict, root: str) -> str:
-    """The header's name, and beside it the menu of Boréale's sites (the same
-    in the four sites: site.css's and site.js's "site switcher"), this one
-    marked. A popover: the browser closes it on Esc or a click elsewhere."""
+    """The header's name, a button that opens the menu of Boréale's sites
+    (the same in the four sites: site.css's and site.js's "site switcher"),
+    this one marked and leading home. A popover: the browser closes it on
+    Esc or a click elsewhere."""
     label = catalog["sites_label"]
     groups = []
     for title, sites in SITES:
@@ -83,9 +84,9 @@ def switcher(language: str, catalog: dict, root: str) -> str:
         heading = f'<p class="sites-title">{catalog[title]}</p>' if title else ""
         groups.append(f'        {heading}<ul>\n          ' + "\n          ".join(items) + '\n        </ul>')
     return (f'<div class="switcher">\n'
-            f'      <a class="brand" href="{root}{catalog["home"]}"><img src="{root}assets/marks/boreale.svg" alt="" width="34" height="34">Boréale</a>\n'
-            f'      <button class="switch" type="button" popovertarget="sites" aria-label="{label}">'
-            f'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
+            f'      <button class="brand switch" type="button" popovertarget="sites" aria-label="Boréale · {label}">'
+            f'<img src="{root}assets/marks/boreale.svg" alt="" width="34" height="34">Boréale'
+            f'<svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
             f'      <div id="sites" class="sites" popover aria-label="{label}">\n'
             + "\n".join(groups) + '\n      </div>\n    </div>')
 
