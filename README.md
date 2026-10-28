@@ -15,7 +15,7 @@ Boréale is the home of a few open-source projects for the Nintendo Switch: **Pl
 This repository holds:
 
 - **[`branding/`](branding/README.md)**: the marks, the wordmarks, the colours, the type and the tone shared by every project, as SVG and PNG.
-- **[`site/`](site/README.md)**: the website at <https://boreale.dev/>, in English and French, with the projects at `guard.`, `shelf.` and `aurore.boreale.dev` as their sites move there.
+- **[`site/`](site/README.md)**: the website at <https://boreale.dev/>, in English and French. The projects' sites are its sub-domains: <https://guard.boreale.dev/> (PlayGuard), <https://shelf.boreale.dev/> (PlayShelf) and <https://aurore.boreale.dev/> (Aurore).
 
 ## Build the site
 
