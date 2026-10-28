@@ -69,7 +69,7 @@ def main() -> None:
         for key in sorted(set(catalog) - reference):
             errors.append(f"i18n/{lang}.json: {key} is not in en.json")
         for key, text in catalog.items():
-            if key not in ("home", "other_href") and not str(text).strip():
+            if key != "home" and not str(text).strip():
                 errors.append(f"i18n/{lang}.json: {key} is empty")
 
     pages = sorted(site.rglob("*.html"))
