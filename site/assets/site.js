@@ -67,17 +67,34 @@
     }
   }
 
-  let frame = 0;
-  function loop(t) { draw(t); frame = requestAnimationFrame(loop); }
+  // The curtains drift slowly: 30 frames a second is plenty, and half the
+  // work on a 60 or 120Hz screen. Nothing is drawn while the sky is scrolled
+  // out of view, the page hidden, or less motion asked.
+  const FRAME = 1000 / 30;
+  let frame = 0, last = 0, seen = true;
+  function loop(t) {
+    if (t - last >= FRAME - 1) { last = t; draw(t); }
+    frame = requestAnimationFrame(loop);
+  }
   function start() {
     cancelAnimationFrame(frame);
-    if (still.matches || document.hidden) draw(0);
+    if (still.matches || document.hidden || !seen) draw(last);
     else frame = requestAnimationFrame(loop);
   }
 
   size();
   start();
-  window.addEventListener("resize", () => { size(); draw(performance.now()); });
+  let resizing = 0; // once per frame, however many resize events come
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizing);
+    resizing = requestAnimationFrame(() => { size(); draw(last); });
+  });
   document.addEventListener("visibilitychange", start);
   still.addEventListener("change", start);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      seen = entries[entries.length - 1].isIntersecting;
+      start();
+    }).observe(canvas);
+  }
 })();

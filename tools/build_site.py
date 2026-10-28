@@ -12,8 +12,13 @@ The projects' releases come from GitHub's API at each build: the latest
 version on each card, the latest releases on the home page and in feed.atom.
 GITHUB_TOKEN, when set, lifts the API's rate limit; SITE_OFFLINE=1 builds
 without them (the cards then show no version, the home page no releases).
+SITE_STRICT=1 fails the build when they cannot be read, rather than publish
+a site without them (main's workflow: the site already served stays).
 SITE_URL is the site's address (https://boreale.dev/ by default).
+build.sha256 is a hash of everything built, for the workflow to tell whether
+a scheduled build has anything new to publish.
 """
+import hashlib
 import html
 import json
 import os
@@ -31,22 +36,25 @@ SITE_URL = os.environ.get("SITE_URL", "https://boreale.dev/").rstrip("/") + "/"
 LANGUAGES = ["en", "fr"]  # the first one at the root
 OWNER = "JigSawFr"
 RELEASES_SHOWN = 5
+SUMMARY_LENGTH = 280  # the start of a release's notes, in feed.atom
 
 # Each project: its repository, and where its card leads per language: its
-# site at its sub-domain of boreale.dev, or its repository while it has none.
+# site at its sub-domain of boreale.dev.
 PROJECTS = {
     "playguard": {"name": "PlayGuard", "repo": "PlayGuard",
                   "url": {"en": "https://guard.boreale.dev/", "fr": "https://guard.boreale.dev/fr/"}},
     "playshelf": {"name": "PlayShelf", "repo": "PlayShelf",
                   "url": {"en": "https://shelf.boreale.dev/", "fr": "https://shelf.boreale.dev/fr/"}},
     "aurore": {"name": "Aurore", "repo": "Aurore",
-               "url": {"en": "https://github.com/JigSawFr/Aurore", "fr": "https://github.com/JigSawFr/Aurore"}},
+               "url": {"en": "https://aurore.boreale.dev/", "fr": "https://aurore.boreale.dev/fr/"}},
 }
 
 MONTHS = {
     "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     "fr": ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."],
 }
+
+LOCALES = {}  # each language's og:locale (its catalog's og_locale), at main()
 
 KEY = re.compile(r"\{\{([a-z0-9_]+)\}\}")
 
@@ -74,7 +82,9 @@ def releases() -> list:
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=20) as answer:
                 listed = json.load(answer)
-        except Exception as error:  # the site still builds, without them
+        except Exception as error:  # the site still builds, without them, unless strict
+            if os.environ.get("SITE_STRICT") == "1":
+                sys.exit(f"build_site: {project['name']}'s releases not read ({error}), nothing built")
             print(f"build_site: {project['name']}'s releases not read ({error})", file=sys.stderr)
             continue
         for r in listed:
@@ -83,8 +93,21 @@ def releases() -> list:
             found.append({
                 "project": key, "name": project["name"], "version": r["tag_name"].lstrip("v"),
                 "url": r["html_url"], "date": datetime.fromisoformat(r["published_at"].replace("Z", "+00:00")),
+                "summary": summary(r.get("body") or ""),
             })
     return sorted(found, key=lambda r: r["date"], reverse=True)
+
+
+def summary(notes: str) -> str:
+    """The start of a release's notes (Markdown) as plain text, for feed.atom."""
+    text = re.sub(r"<!--.*?-->", " ", notes, flags=re.S)
+    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", text)  # images: nothing
+    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)  # [text](link): its text
+    text = re.sub(r"^\s*(#+|[-*+]|>)\s*", "", text, flags=re.M)  # headings, list items, quotes
+    text = " ".join(re.sub(r"[`*_]", "", text).split())
+    if len(text) > SUMMARY_LENGTH:
+        text = text[:SUMMARY_LENGTH].rsplit(" ", 1)[0] + " …"
+    return text
 
 
 def day(date: datetime, language: str) -> str:
@@ -137,9 +160,34 @@ def structured(language: str, catalog: dict, found: list) -> str:
     return f'<script type="application/ld+json">{text}</script>'
 
 
+def attribute(text: str) -> str:
+    """A text for a double-quoted attribute (the apostrophes left as they are)."""
+    return html.escape(text, quote=False).replace('"', "&quot;")
+
+
+def indexing(url: str, lost: bool) -> str:
+    """The canonical address and the other languages' for search engines; a
+    page that is not there (404.html) is kept out of their index instead."""
+    if lost:
+        return '<meta name="robots" content="noindex">'
+    lines = [f'<link rel="canonical" href="{url}">']
+    lines += [f'<link rel="alternate" hreflang="{lang}" href="{address(lang)}">' for lang in LANGUAGES]
+    lines.append(f'<link rel="alternate" hreflang="x-default" href="{address(LANGUAGES[0])}">')
+    return "\n".join(lines)
+
+
+def address(language: str) -> str:
+    """A language's home page."""
+    return SITE_URL + ("" if language == LANGUAGES[0] else f"{language}/")
+
+
 def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str, title: str,
-         found: list, first_visit: bool = False) -> str:
+         found: list, first_visit: bool = False, lost: bool = False) -> str:
     values = dict(catalog)
+    # The catalogs' texts may hold HTML (hero_title's <em>), but these two are
+    # also in attributes (content="..."): plain text, escaped.
+    values["description"] = attribute(catalog["description"])
+    title = attribute(title)
     latest = {}
     for r in found:
         latest.setdefault(r["project"], r["version"])
@@ -148,6 +196,12 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
         values[f"{key}_version"] = f' · <span class="version">{html.escape(latest[key])}</span>' if key in latest else ""
     # The root's home page sends a first visit to the browser's language (assets/lang.js).
     values["first_visit"] = " data-first-visit" if first_visit else ""
+    # 404.html at the root sends a visitor reading another language to that
+    # language's (assets/lang.js); the site's address path tells it where.
+    values["lost"] = f' data-lost="{root}"' if lost and language == LANGUAGES[0] else ""
+    values["indexing"] = indexing(url, lost)
+    values["og_alternates"] = "\n".join(
+        f'<meta property="og:locale:alternate" content="{LOCALES[lang]}">' for lang in LANGUAGES if lang != language)
     values.update(root=root, site=SITE_URL, url=url, title=title)
     values["news"] = news(found, language, catalog, root)
     values["jsonld"] = structured(language, catalog, found)
@@ -162,7 +216,9 @@ def feed(found: list, catalog: dict) -> str:
     entries = "".join(
         f"  <entry>\n    <title>{r['name']} {html.escape(r['version'])}</title>\n"
         f'    <link href="{html.escape(r["url"])}"/>\n    <id>{html.escape(r["url"])}</id>\n'
-        f"    <updated>{r['date'].isoformat()}</updated>\n  </entry>\n"
+        f"    <updated>{r['date'].isoformat()}</updated>\n"
+        + (f"    <summary>{html.escape(r['summary'])}</summary>\n" if r["summary"] else "")
+        + "  </entry>\n"
         for r in found[:20])
     return ('<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n'
             f"  <title>Boréale</title>\n  <subtitle>{html.escape(catalog['feed_subtitle'])}</subtitle>\n"
@@ -186,16 +242,17 @@ def main() -> None:
     if len(sys.argv) != 2:
         sys.exit(__doc__)
     out = Path(sys.argv[1])
+    found = releases()  # first: a strict build that fails leaves <out-dir> as it was
     if out.exists():
         shutil.rmtree(out)
     shutil.copytree(SITE / "assets", out / "assets")
-    found = releases()
 
     hero = (SITE / "hero.html").read_text(encoding="utf-8")
     home = (SITE / "home.html").read_text(encoding="utf-8")
     lost = (SITE / "lost.html").read_text(encoding="utf-8")
     base = urlparse(SITE_URL).path  # 404.html is served at any depth
     catalogs = {lang: json.loads((SITE / "i18n" / f"{lang}.json").read_text(encoding="utf-8")) for lang in LANGUAGES}
+    LOCALES.update({lang: catalog["og_locale"] for lang, catalog in catalogs.items()})
     for lang, catalog in catalogs.items():
         folder = "" if lang == LANGUAGES[0] else f"{lang}/"
         root = "../" * folder.count("/")
@@ -203,20 +260,31 @@ def main() -> None:
         (out / folder / "index.html").write_text(
             page(lang, catalog, hero, home, root, SITE_URL + folder, catalog["title"], found, first_visit=not folder),
             encoding="utf-8")
+        # 404.html for each language: GitHub Pages serves the root's at any
+        # address, which sends a visitor reading another language to theirs.
+        (out / folder / "404.html").write_text(
+            page(lang, catalog, "", lost, base, SITE_URL, catalog["lost_page_title"], found, lost=True),
+            encoding="utf-8")
     first = catalogs[LANGUAGES[0]]
-    (out / "404.html").write_text(
-        page(LANGUAGES[0], first, "", lost, base, SITE_URL, first["lost_page_title"], found), encoding="utf-8")
 
     (out / "feed.atom").write_text(feed(found, first), encoding="utf-8")
     (out / "manifest.webmanifest").write_text(manifest(first), encoding="utf-8")
     shutil.copy(SITE / "assets" / "favicon.ico", out / "favicon.ico")  # asked for at the root by old browsers
     (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
-    urls = "".join(
-        f"  <url><loc>{SITE_URL}{'' if lang == LANGUAGES[0] else lang + '/'}</loc></url>\n" for lang in LANGUAGES)
+    # Each home page, with every language's (search engines read hreflang there too).
+    alternates = "".join(
+        f'    <xhtml:link rel="alternate" hreflang="{lang}" href="{address(lang)}"/>\n' for lang in LANGUAGES)
+    urls = "".join(f"  <url>\n    <loc>{address(lang)}</loc>\n{alternates}  </url>\n" for lang in LANGUAGES)
     (out / "sitemap.xml").write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n', encoding="utf-8")
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+        f' xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{urls}</urlset>\n', encoding="utf-8")
     (out / ".nojekyll").touch()
+    # What was built, as one hash: the scheduled builds publish only when it
+    # differs from the one served (.github/workflows/site.yml).
+    digest = hashlib.sha256()
+    for path in sorted(p for p in out.rglob("*") if p.is_file()):
+        digest.update(path.relative_to(out).as_posix().encode() + b"\0" + path.read_bytes())
+    (out / "build.sha256").write_text(digest.hexdigest() + "\n", encoding="utf-8")
     print(f"build_site: {', '.join(LANGUAGES)} in {out} for {SITE_URL}, {len(found)} release(s)")
 
 
