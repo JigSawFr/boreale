@@ -1,0 +1,17 @@
+# The workflow actions are pinned to commit SHAs (a moved tag cannot swap the code that
+# runs with write access to the site), but a pinned action never updates on its own,
+# security fixes included. Dependabot moves the SHA and its version comment together.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      # upload-pages-artifact and deploy-pages go together.
+      pages:
+        patterns:
+          - actions/*-pages*

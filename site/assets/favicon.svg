@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Boréale's mark under 24 px (favicons): the circle and the pole star, without the aurora. -->
+  <defs><linearGradient id="colour" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00FFCC"/><stop offset="0.65" stop-color="#33BBFF"/><stop offset="1" stop-color="#8A5CFF"/></linearGradient></defs>
+  <circle cx="128" cy="128" r="96" fill="#0E1A33" stroke="url(#colour)" stroke-width="24"/>
+  <path d="M128 44 C 133 80, 142 88, 176 94 C 142 100, 133 108, 128 144 C 123 108, 114 100, 80 94 C 114 88, 123 80, 128 44 Z" fill="#E8EEF7" transform="translate(0 34)"/>
+</svg>
