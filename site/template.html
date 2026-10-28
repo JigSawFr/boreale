@@ -49,9 +49,21 @@
 </div>
 {{body}}
 <footer class="site">
-  <div class="wrap row">
-    <p>{{footer_made}}</p>
-    <p>{{footer_nintendo}}</p>
+  <div class="wrap">
+    <nav class="links" aria-label="{{footer_label}}">
+      <ul>
+        <li><a href="{{playguard_url}}">PlayGuard</a></li>
+        <li><a href="{{playshelf_url}}">PlayShelf</a></li>
+        <li><a href="{{aurore_url}}">Aurore</a></li>
+        <li><a href="{{root}}feed.atom" type="application/atom+xml">{{footer_feed}}</a></li>
+        <li><a href="mailto:contact@boreale.dev">contact@boreale.dev</a></li>
+        <li><a href="{{root}}{{home}}legal/">{{footer_legal}}</a></li>
+      </ul>
+    </nav>
+    <div class="row">
+      <p>{{footer_made}}</p>
+      <p>{{footer_nintendo}}</p>
+    </div>
   </div>
 </footer>
 </body>
