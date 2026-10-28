@@ -21,7 +21,7 @@
   "playguard_state": "Disponible",
   "playshelf_kind": "Homebrew Switch",
   "playshelf_text": "Votre bibliothèque de jeux, sur la console. Parcourez un serveur que vous hébergez vous-même et installez vos propres sauvegardes et homebrews.",
-  "playshelf_state": "En développement",
+  "playshelf_state": "Bientôt disponible",
   "aurore_kind": "Bibliothèque C++",
   "aurore_text": "Une interface façon Switch pour votre app, sur tous les écrans. Le fork de borealis sur lequel sont construits PlayGuard et PlayShelf.",
   "aurore_state": "Bibliothèque",

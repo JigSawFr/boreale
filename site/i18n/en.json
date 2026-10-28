@@ -21,7 +21,7 @@
   "playguard_state": "Released",
   "playshelf_kind": "Switch homebrew",
   "playshelf_text": "Your game library, on the console. Browse a library server you run yourself and install your own backups and homebrew.",
-  "playshelf_state": "Early development",
+  "playshelf_state": "Coming soon",
   "aurore_kind": "C++ library",
   "aurore_text": "A Switch-like interface for your app, on every screen. The borealis fork that PlayGuard and PlayShelf are built with.",
   "aurore_state": "Library",
