@@ -93,6 +93,8 @@ jobs:
         if: steps.new.outputs.publish == 'true'
         with:
           path: build
+          # .well-known/security.txt: hidden files are left out by default.
+          include-hidden-files: true
 
   deploy:
     needs: build
