@@ -27,8 +27,8 @@ python3 -m http.server -d build 8000  # then http://localhost:8000/
 
 Python 3 and nothing else. `node tools/export-branding.mjs` renders the PNGs again from the SVGs (Playwright).
 
-## Fonts and marks
+## License
 
-The fonts in `site/assets/fonts/` are under the **SIL Open Font License** (their `OFL-*.txt`). The marks and the names Boréale, PlayGuard, PlayShelf and Aurore identify these projects: use them to point to the projects, not for your own.
+The code and the pages: **GPLv3**, as PlayGuard, PlayShelf and Aurore (see [`LICENSE`](LICENSE)). The fonts in `site/assets/fonts/` are under the **SIL Open Font License** (their `OFL-*.txt`). The marks and the names Boréale, PlayGuard, PlayShelf and Aurore identify these projects: use them to point to the projects, not for your own.
 
 <sub>Not affiliated with or endorsed by Nintendo. Nintendo Switch is a trademark of Nintendo.</sub>
