@@ -18,6 +18,14 @@ on:
 permissions:
   contents: read
 
+env:
+  # Playwright, pinned, for the layout check (tools/site_layout.py).
+  PLAYWRIGHT_VERSION: 1.64.0
+  # axe-core, for the accessibility check: its npm package, checked against
+  # the hash it had when pinned (as PlayShelf's web.yml).
+  AXE_VERSION: 4.13.0
+  AXE_SHA256: 096912f6e77b4b695fc9304b7be65091db42d98de054da674ae222a11cb33f70
+
 concurrency:
   group: site-${{ github.ref }}
   cancel-in-progress: true
@@ -25,7 +33,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-26.04
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: The pages
@@ -34,6 +42,21 @@ jobs:
         run: python3 tools/build_site.py build
       - name: Their links, catalogs and Content-Security-Policy
         run: python3 tools/check_site.py build
+      # No page wider than the screen on phones, a tablet or a desktop, no
+      # target too small to touch, no script that throws, nothing axe finds
+      # against WCAG 2.2 AA (tools/site_layout.py). About a minute.
+      - name: The pages on phones, a tablet and a desktop
+        timeout-minutes: 8
+        run: |
+          python3 -m venv "$RUNNER_TEMP/playwright"
+          "$RUNNER_TEMP/playwright/bin/pip" install -q "playwright==$PLAYWRIGHT_VERSION"
+          sudo "$RUNNER_TEMP/playwright/bin/python" -m playwright install-deps chromium
+          "$RUNNER_TEMP/playwright/bin/python" -m playwright install chromium
+          curl -sfL --retry 3 -o "$RUNNER_TEMP/axe.tgz" "https://registry.npmjs.org/axe-core/-/axe-core-$AXE_VERSION.tgz"
+          echo "$AXE_SHA256  $RUNNER_TEMP/axe.tgz" | sha256sum -c --quiet
+          python3 -c 'import sys, tarfile; open(sys.argv[2], "wb").write(tarfile.open(sys.argv[1]).extractfile("package/axe.min.js").read())' \
+            "$RUNNER_TEMP/axe.tgz" "$RUNNER_TEMP/axe.min.js"
+          SITE_AXE="$RUNNER_TEMP/axe.min.js" "$RUNNER_TEMP/playwright/bin/python" -u tools/site_layout.py build
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         if: github.ref == 'refs/heads/main'
         with:

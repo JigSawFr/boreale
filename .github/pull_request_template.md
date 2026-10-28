@@ -13,5 +13,6 @@ The title is a conventional commit with a scope (feat(site): …, fix(branding):
 ## Checklist
 
 - [ ] `python3 tools/build_site.py build && python3 tools/check_site.py build` pass
+- [ ] `tools/site_layout.py build` passes, or CI runs it (Playwright, axe-core)
 - [ ] A text added to one catalog (`site/i18n/`) is in every one
 - [ ] A mark changed: its PNGs rendered again (`node tools/export-branding.mjs`)

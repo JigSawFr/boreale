@@ -20,7 +20,8 @@ A first visit to the root goes to the browser's language when the site has it; t
 
 ## Checks
 
-`tools/check_site.py <site>`: the catalogs have the same keys, no `{{key}}` is left, every link to the site and every `#anchor` leads somewhere, and nothing the Content-Security-Policy blocks is on a page.
+- `tools/check_site.py <site>`: the catalogs have the same keys, no `{{key}}` is left, every link to the site and every `#anchor` leads somewhere, nothing the Content-Security-Policy blocks is on a page, and the schema.org data, the feed and the manifest read.
+- `tools/site_layout.py <site>` (Playwright for Python): every page on two phones, a phone in landscape, a tablet and a desktop: none wider than the screen, no target under 24px, no script that throws, and nothing axe-core finds against WCAG 2.2 AA (`SITE_AXE=<axe.min.js>`).
 
 ## Publishing
 

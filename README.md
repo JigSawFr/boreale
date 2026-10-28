@@ -22,6 +22,7 @@ This repository holds:
 ```sh
 python3 tools/build_site.py build     # the pages, in build/
 python3 tools/check_site.py build     # links, catalogs, Content-Security-Policy
+python3 tools/site_layout.py build    # phones to desktop, and axe (Playwright for Python)
 python3 -m http.server -d build 8000  # then http://localhost:8000/
 ```
 
