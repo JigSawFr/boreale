@@ -14,8 +14,9 @@ A first visit to the root goes to the browser's language when the site has it; t
 - The projects' links are in `build_site.py` (`PROJECTS`): they move to `guard.`, `shelf.` and `aurore.boreale.dev` once those are served.
 - **The projects' releases**, read from GitHub's API at each build: the latest version on each card, the five latest releases on the home page, the last twenty in `feed.atom` with the start of their notes. `GITHUB_TOKEN` lifts the API's anonymous limit; `SITE_OFFLINE=1` builds without them (no version, no releases section); `SITE_STRICT=1` fails when they cannot be read rather than build without them (main's workflow).
 - **For search engines**: schema.org data on each page (Boréale, its site, each project and its latest version), each page's languages (`hreflang`, in the pages and in `sitemap.xml`), `robots.txt`, the social preview with its locales; `manifest.webmanifest` and `favicon.ico` (written by `tools/export-branding.mjs`) for browsers.
-- `assets/`: the CSS, the script, the marks, the icons, the social preview and the fonts (SIL Open Font License), served with the site so that no visitor's browser asks anyone else for anything.
-- A **Content-Security-Policy** on every page (a `<meta>`: GitHub Pages sends no headers): only the site's own files, no inline script or style.
+- `assets/`: the CSS, the script, the marks, the icons, the social preview and the fonts (SIL Open Font License), served with the site so that no visitor's browser loads anything from anyone else.
+- **The audience**, counted by Umami Cloud (<https://cloud.umami.is>): `assets/umami.js` is its tracker, served with the site, that sends each page seen to `gateway.umami.is`, without cookie, and only from `boreale.dev` (not from a preview or a local copy). It is a copy: take it again from <https://cloud.umami.is/script.js> when Umami changes it.
+- A **Content-Security-Policy** on every page (a `<meta>`: GitHub Pages sends no headers): only the site's own files, no inline script or style; the one address it may send to is Umami's (`connect-src`).
 - `SITE_URL` is the site's address (`https://boreale.dev/` by default).
 - `build.sha256`: a hash of everything built, for the workflow to tell whether a scheduled build has anything new.
 
