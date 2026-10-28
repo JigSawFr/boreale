@@ -43,8 +43,11 @@ def fill(text: str, values: dict) -> str:
     return KEY.sub(one, KEY.sub(one, text))
 
 
-def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str, title: str) -> str:
+def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str, title: str,
+         first_visit: bool = False) -> str:
     values = dict(catalog)
+    # The root's home page sends a first visit to the browser's language (assets/lang.js).
+    values["first_visit"] = " data-first-visit" if first_visit else ""
     values.update({k: v[language] for k, v in PROJECTS.items()})
     values.update(root=root, site=SITE_URL, url=url, title=title)
     values["hero"] = fill(hero, values)
@@ -70,7 +73,8 @@ def main() -> None:
         root = "../" * folder.count("/")
         (out / folder).mkdir(parents=True, exist_ok=True)
         (out / folder / "index.html").write_text(
-            page(lang, catalog, hero, home, root, SITE_URL + folder, catalog["title"]), encoding="utf-8")
+            page(lang, catalog, hero, home, root, SITE_URL + folder, catalog["title"], first_visit=not folder),
+            encoding="utf-8")
     first = catalogs[LANGUAGES[0]]
     (out / "404.html").write_text(page(LANGUAGES[0], first, "", lost, base, SITE_URL, first["lost_page_title"]), encoding="utf-8")
 

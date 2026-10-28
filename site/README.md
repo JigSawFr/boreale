@@ -2,6 +2,8 @@
 
 Boréale's website, <https://boreale.dev/>: the projects, what they share, what they do not do. English at the root, French in `/fr/`; one dark look (the brand stands on the night, `branding/README.md`).
 
+A first visit to the root goes to the browser's language when the site has it; the header's language link changes it, and the choice is kept (`assets/lang.js`, `boreale-lang` in the browser's storage).
+
 ## How it is made
 
 `tools/build_site.py <out-dir>` (Python 3, nothing to install) writes the pages:
