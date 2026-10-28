@@ -178,7 +178,7 @@ footer.site a { color: var(--mist); }
    sites (a popover: the browser closes it on Esc or a click elsewhere). The
    same block in boreale.dev's, PlayGuard's, PlayShelf's and Aurore's
    site.css; boreale's is the reference. Its colours are the brand's. */
-.switcher { display: flex; align-items: center; gap: 2px; }
+.switcher { display: flex; flex-shrink: 0; align-items: center; gap: 2px; }
 .switch {
   display: grid; place-items: center; width: 32px; height: 44px; padding: 0; border: 0; border-radius: 10px;
   background: transparent; color: #a9b6cc; cursor: pointer;
