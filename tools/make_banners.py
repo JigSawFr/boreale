@@ -31,7 +31,7 @@ def inner(svg: str, prefix: str) -> str:
 
 
 TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320">
-  <!-- {name}'s README banner, written by tools/make_banners.py: the night, the aurora, its mark, its name, what it does, and Boréale's mark. Sora, JetBrains Mono. -->
+  <!-- {name}'s README banner, written by tools/make_banners.py: the night, the aurora, its mark, its name, what it does, and Boréale's mark and name in a pill. Sora. -->
   <defs>
     <linearGradient id="word" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00FFCC"/><stop offset="0.55" stop-color="#33BBFF"/><stop offset="1" stop-color="#8A5CFF"/></linearGradient>
     <linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00FFCC" stop-opacity="0"/><stop offset="1" stop-color="#00FFCC" stop-opacity="0.3"/></linearGradient>
@@ -50,8 +50,9 @@ TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" 
   <text x="276" y="172" font-family="Sora" font-weight="700" font-size="76" letter-spacing="-2.5" fill="#E8EEF7">{name}</text>
   <rect x="280" y="192" width="72" height="5" rx="2.5" fill="url(#word)"/>
   <text x="278" y="236" font-family="Sora" font-weight="300" font-size="28" fill="#E8EEF7">{tagline}</text>
-  <svg x="1072" y="262" width="28" height="28" viewBox="0 0 256 256">{boreale}</svg>
-  <text x="1110" y="283" font-family="JetBrains Mono" font-size="17" fill="#A9B6CC">by Boréale</text>
+  <rect x="1060" y="28" width="192" height="52" rx="26" fill="#0E1A33" stroke="#22324F" stroke-width="2"/>
+  <svg x="1072" y="36" width="36" height="36" viewBox="0 0 256 256">{boreale}</svg>
+  <text x="1118" y="62" font-family="Sora" font-weight="400" font-size="20" fill="#A9B6CC">by <tspan font-weight="700" fill="#E8EEF7">Boréale</tspan></text>
 </svg>
 """
 
