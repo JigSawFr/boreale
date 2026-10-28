@@ -17,9 +17,12 @@ Every mark follows one rule, set by PlayGuard's and PlayShelf's: **a frame in th
 | `mark.svg` | The sky's circle, an aurora crossing it, the pole star | Headers, the site, avatars |
 | `mark-small.svg` | The circle and the star, without the aurora | Under 24 px: favicons |
 | `icon.svg` | The mark on the abyss, in a rounded tile | App and touch icons |
+| `mark-mono-white.svg`, `mark-mono-black.svg` | The mark in one colour, the night left empty | What prints or engraves one ink, services that want a one-colour icon |
 | `wordmark.svg`, `wordmark-light.svg` | "Boréale" in Sora 700, underlined by the aurora | On the night, on light grounds |
 | `aurore-mark.svg` | Aurore's mark, drawn after its app icon: the frame, an aurora over the mountains | Aurore's card, its site |
 | `social-preview.svg` | The night, the aurora, the mark, the name, the tagline | Shared links, GitHub's social preview |
+
+`banners/` holds each project's README banner, all from one template (`python3 tools/make_banners.py`): the night, the aurora, the project's mark, its name, what it does, and "by Boréale" with the mark in a corner.
 
 `png/` holds them rendered (`node tools/export-branding.mjs`, which also writes the site's icons and preview).
 

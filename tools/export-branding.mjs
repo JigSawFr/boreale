@@ -27,6 +27,11 @@ const exports = [
   ["branding/wordmark.svg", "branding/png/wordmark.png", 720, 176],
   ["branding/wordmark-light.svg", "branding/png/wordmark-light.png", 720, 176],
   ["branding/aurore-mark.svg", "branding/png/aurore-mark-256.png", 256, 256],
+  ["branding/mark-mono-white.svg", "branding/png/mark-mono-white-512.png", 512, 512],
+  ["branding/mark-mono-black.svg", "branding/png/mark-mono-black-512.png", 512, 512],
+  ["branding/banners/playguard.svg", "branding/png/banner-playguard.png", 1280, 320],
+  ["branding/banners/playshelf.svg", "branding/png/banner-playshelf.png", 1280, 320],
+  ["branding/banners/aurore.svg", "branding/png/banner-aurore.png", 1280, 320],
   ["branding/social-preview.svg", "branding/png/social-preview.png", 1280, 640],
   ["branding/social-preview.svg", "site/assets/social-preview.png", 1280, 640],
 ];
@@ -45,7 +50,7 @@ for (const [src, out, width, height] of exports) {
   await page.setContent(`<!doctype html><style>${css}</style>${svg}`);
   await page.evaluate(() => Promise.all(["300 20px Sora", "700 20px Sora", "20px 'JetBrains Mono'"].map((f) => document.fonts.load(f))));
   mkdirSync(dirname(join(root, out)), { recursive: true });
-  await page.locator("svg").first().screenshot({ path: join(root, out), omitBackground: true });
+  await page.locator("body > svg").first().screenshot({ path: join(root, out), omitBackground: true });
   console.log(`${out} (${width}×${height})`);
 }
 await browser.close();
