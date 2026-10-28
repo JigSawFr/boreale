@@ -1,0 +1,139 @@
+/* boreale.dev (site/README.md): the night, an aurora once at the top, the
+   projects as cards. One dark look: the brand stands on the night
+   (branding/README.md). */
+/* The fonts are served with the site rather than by Google Fonts, which would
+   see every visitor (SIL Open Font License, fonts/OFL-*.txt): Sora for the
+   headings, Figtree for the text, JetBrains Mono for addresses and commands,
+   their Latin letters, every weight. */
+@font-face { font-family: "Sora"; src: url("fonts/sora.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("fonts/figtree.woff2") format("woff2"); font-weight: 300 900; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+
+:root {
+  --abyss: #0b1424;
+  --night: #0e1a33;
+  --night-line: #22324f;
+  --snow: #e8eef7;
+  --mist: #a9b6cc;
+  --dusk: #6f7e9c;
+  --aurora: #00ffcc;
+  --ice: #33bbff;
+  --violet: #8a5cff;
+  --aurora-grad: linear-gradient(100deg, var(--aurora) 0%, var(--ice) 55%, var(--violet) 100%);
+
+  --display: "Sora", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 16px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--abyss); }
+body {
+  margin: 0; background: var(--abyss); color: var(--snow);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; text-size-adjust: 100%;
+}
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--ice); text-underline-offset: 3px; }
+a:hover { color: var(--aurora); }
+:focus-visible { outline: 2px solid var(--aurora); outline-offset: 3px; border-radius: 6px; }
+img { max-width: 100%; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 16px; z-index: 10; background: var(--night); padding: 8px 12px; border-radius: 8px; }
+
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+
+/* The sky: the canvas (site.js) behind the header and the hero; at rest, or
+   without script, the same aurora as a gradient. */
+.sky { position: relative; isolation: isolate; overflow: hidden; }
+.sky::before {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background:
+    radial-gradient(120% 60% at 30% -10%, rgba(0, 255, 204, 0.22), transparent 60%),
+    radial-gradient(90% 50% at 75% -5%, rgba(138, 92, 255, 0.22), transparent 60%),
+    radial-gradient(80% 40% at 55% 10%, rgba(51, 187, 255, 0.16), transparent 70%),
+    var(--abyss);
+}
+.sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+.sky::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 45%; z-index: -1;
+  background: linear-gradient(to top, var(--abyss), transparent);
+}
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--snow); text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; }
+.brand img { width: 34px; height: 34px; }
+.top nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--mist); text-decoration: none; font-size: 0.9375rem; border-radius: 10px; }
+.top nav a:hover { color: var(--snow); background: rgba(232, 238, 247, 0.06); }
+.top nav a[lang] { font-family: var(--mono); font-size: 0.8125rem; border: 1px solid var(--night-line); }
+
+.hero { padding-block: clamp(56px, 11vw, 128px) clamp(64px, 10vw, 112px); display: grid; gap: 22px; }
+.hero h1 { font-weight: 600; font-size: clamp(2.5rem, 7.5vw, 5rem); letter-spacing: -0.035em; max-width: 13ch; }
+.hero h1 em { font-style: normal; background: var(--aurora-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .lede { color: var(--mist); font-size: clamp(1.0625rem, 2.2vw, 1.25rem); max-width: 52ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.button {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px;
+  border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 1rem;
+}
+.button.primary { background: var(--snow); color: var(--abyss); }
+.button.primary:hover { background: var(--aurora); color: var(--abyss); }
+.button.ghost { border: 1px solid var(--night-line); color: var(--snow); }
+.button.ghost:hover { border-color: var(--mist); color: var(--snow); }
+
+main section { padding-block: clamp(40px, 7vw, 80px); }
+main section.closing { padding-top: 0; }
+.section-head { display: grid; gap: 10px; margin-bottom: 32px; max-width: 60ch; }
+.eyebrow { font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aurora); }
+.section-head h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: -0.025em; }
+.section-head p { color: var(--mist); }
+
+.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+.project {
+  position: relative; display: grid; gap: 14px; align-content: start; padding: 24px;
+  background: var(--night); border: 1px solid var(--night-line); border-radius: var(--radius);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.project:hover { border-color: #3a4d72; transform: translateY(-2px); }
+.project .head { display: flex; align-items: center; gap: 14px; }
+.project .head img { width: 52px; height: 52px; flex: none; }
+.project h3 { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; }
+.project h3 a { color: var(--snow); text-decoration: none; }
+.project h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+.project .kind { font-family: var(--mono); font-size: 0.75rem; color: var(--mist); }
+.project p { color: var(--mist); font-size: 1rem; }
+.project .state {
+  justify-self: start; font-family: var(--mono); font-size: 0.75rem; border-radius: 99px; padding: 3px 10px;
+  border: 1px solid var(--night-line); color: var(--mist);
+}
+.project .state.live { background: var(--aurora); border-color: transparent; color: var(--abyss); font-weight: 500; }
+
+.ground { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 28px 36px; }
+.ground div { display: grid; gap: 6px; align-content: start; }
+.ground h3 { font-size: 1.125rem; font-weight: 600; }
+.ground p { color: var(--mist); font-size: 1rem; }
+
+.promise { border: 1px solid var(--night-line); border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); display: grid; gap: 10px; background: linear-gradient(180deg, rgba(14, 26, 51, 0.7), rgba(14, 26, 51, 0.2)); }
+.promise h2 { font-size: clamp(1.375rem, 3vw, 1.75rem); font-weight: 600; letter-spacing: -0.02em; }
+.promise p { color: var(--mist); max-width: 68ch; }
+
+footer.site { border-top: 1px solid var(--night-line); padding-block: 32px 40px; color: var(--dusk); font-size: 0.875rem; }
+footer.site .row { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+footer.site a { color: var(--mist); }
+
+.lost { padding-block: clamp(64px, 12vw, 140px); display: grid; gap: 18px; justify-items: start; }
+.lost h1 { font-size: clamp(2.25rem, 6vw, 3.5rem); font-weight: 600; letter-spacing: -0.03em; }
+.lost p { color: var(--mist); max-width: 50ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .project { transition: none; }
+  .project:hover { transform: none; }
+}

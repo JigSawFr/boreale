@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <!-- The preview shown when boreale.dev is shared (Open Graph, GitHub's social preview): the night, three aurora curtains, the mark, the name and the tagline. Sora. -->
+  <defs>
+    <linearGradient id="colour" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00FFCC"/><stop offset="0.65" stop-color="#33BBFF"/><stop offset="1" stop-color="#8A5CFF"/></linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00FFCC"/><stop offset="0.55" stop-color="#33BBFF"/><stop offset="1" stop-color="#8A5CFF"/></linearGradient>
+    <linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00FFCC" stop-opacity="0"/><stop offset="1" stop-color="#00FFCC" stop-opacity="0.34"/></linearGradient>
+    <linearGradient id="c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33BBFF" stop-opacity="0"/><stop offset="1" stop-color="#33BBFF" stop-opacity="0.26"/></linearGradient>
+    <linearGradient id="c3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A5CFF" stop-opacity="0"/><stop offset="1" stop-color="#8A5CFF" stop-opacity="0.26"/></linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1424" stop-opacity="0"/><stop offset="1" stop-color="#0B1424"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+    <clipPath id="sky"><circle cx="128" cy="128" r="84"/></clipPath>
+  </defs>
+  <rect width="1280" height="640" fill="#0B1424"/>
+  <g fill="#E8EEF7">
+    <circle cx="96" cy="70" r="1.6" opacity="0.7"/><circle cx="240" cy="132" r="1.2" opacity="0.5"/><circle cx="410" cy="54" r="1.8" opacity="0.8"/><circle cx="560" cy="110" r="1.1" opacity="0.5"/><circle cx="702" cy="40" r="1.5" opacity="0.7"/><circle cx="860" cy="96" r="1.2" opacity="0.6"/><circle cx="1010" cy="60" r="1.9" opacity="0.8"/><circle cx="1150" cy="128" r="1.3" opacity="0.6"/><circle cx="1220" cy="44" r="1.1" opacity="0.5"/><circle cx="330" cy="200" r="1" opacity="0.4"/><circle cx="960" cy="200" r="1.2" opacity="0.5"/>
+  </g>
+  <g filter="url(#soft)">
+    <path d="M0 330 C 220 240, 420 360, 640 270 S 1040 190, 1280 260 L 1280 30 C 1040 0, 860 110, 640 60 S 220 -10, 0 100 Z" fill="url(#c1)"/>
+    <path d="M0 270 C 260 200, 480 300, 700 220 S 1080 150, 1280 200 L 1280 0 L 0 0 Z" fill="url(#c2)"/>
+    <path d="M0 210 C 300 150, 520 240, 760 170 S 1100 110, 1280 140 L 1280 0 L 0 0 Z" fill="url(#c3)"/>
+  </g>
+  <rect y="300" width="1280" height="340" fill="url(#floor)"/>
+  <g transform="translate(112 272) scale(0.82)">
+    <circle cx="128" cy="128" r="92" fill="#0E1A33" stroke="url(#colour)" stroke-width="16"/>
+    <path clip-path="url(#sky)" d="M36 156 C 76 116, 108 172, 140 132 S 196 104, 224 126" fill="none" stroke="url(#colour)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M128 52 C 132 78, 138 84, 160 88 C 138 92, 132 98, 128 124 C 124 98, 118 92, 96 88 C 118 84, 124 78, 128 52 Z" fill="#E8EEF7"/>
+  </g>
+  <text x="352" y="400" font-family="Sora" font-weight="700" font-size="120" letter-spacing="-4" fill="#E8EEF7">Boréale</text>
+  <rect x="358" y="424" width="96" height="7" rx="3.5" fill="url(#word)"/>
+  <text x="356" y="494" font-family="Sora" font-weight="300" font-size="40" fill="#E8EEF7">Homebrew for the long nights.</text>
+  <text x="356" y="560" font-family="JetBrains Mono" font-weight="400" font-size="24" fill="#A9B6CC">boreale.dev · PlayGuard · PlayShelf · Aurore</text>
+</svg>

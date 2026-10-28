@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Boréale's icon (app icons, touch icons): the mark on the abyss, in a rounded tile. -->
+  <defs><linearGradient id="colour" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00FFCC"/><stop offset="0.65" stop-color="#33BBFF"/><stop offset="1" stop-color="#8A5CFF"/></linearGradient><clipPath id="sky"><circle cx="128" cy="128" r="84"/></clipPath>
+    <radialGradient id="glow" cx="0.5" cy="0.38" r="0.6"><stop offset="0" stop-color="#1A3A5C" stop-opacity="0.9"/><stop offset="1" stop-color="#0B1424" stop-opacity="0"/></radialGradient></defs>
+  <rect width="512" height="512" rx="112" fill="#0B1424"/>
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <g transform="translate(64 64)">
+    <circle cx="128" cy="128" r="92" fill="#0E1A33" stroke="url(#colour)" stroke-width="16"/>
+    <path clip-path="url(#sky)" d="M36 156 C 76 116, 108 172, 140 132 S 196 104, 224 126" fill="none" stroke="url(#colour)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M128 52 C 132 78, 138 84, 160 88 C 138 92, 132 98, 128 124 C 124 98, 118 92, 96 88 C 118 84, 124 78, 128 52 Z" fill="#E8EEF7"/>
+  </g>
+</svg>
