@@ -50,7 +50,7 @@ The gradient: aurora at 0 %, ice at 55–65 %, violet at 100 %. On a page, about
 - **Figtree** (400–600): running text.
 - **JetBrains Mono** (400–500): addresses, commands, versions, labels.
 
-All three under the SIL Open Font License, served with the site (`site/assets/fonts/`), never from a font service.
+All three under the SIL Open Font License, served with the site (`site/assets/fonts/`), never from a font service. The sites' language menus add a fourth, for their flags only: `twemoji-flags.woff2`, the fifteen cut out of Twemoji's (CC-BY 4.0), served the same way.
 
 ## The tone
 

@@ -6,8 +6,9 @@
 site/template.html is the page around site/hero.html and site/home.html (the
 home page: its hero under the aurora, then the rest), site/legal.html (legal/:
 privacy and legal notice) or site/lost.html (404.html); each {{key}} is the
-key's text in the language's catalog, site/i18n/<language>.json. English is at
-the root, French in fr/.
+key's text in the language's catalog, site/i18n/<language>.json. The
+consoles' fifteen languages (LANGUAGES): English at the root, each other one
+in its folder (fr/, fr-ca/, de/ ... zh-hant/).
 
 The projects' releases come from GitHub's API at each build: the latest
 version on each card, the latest releases on the home page and in feed.atom.
@@ -34,26 +35,90 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 SITE_URL = os.environ.get("SITE_URL", "https://boreale.dev/").rstrip("/") + "/"
-LANGUAGES = ["en", "fr"]  # the first one at the root
+# The consoles' languages, as PlayGuard's, PlayShelf's and Aurore's sites
+# have them: the catalog's code (site/i18n/<code>.json), the site's folder
+# ('' for the root, the first one), the name in its own words, the html lang.
+LANGUAGES = [
+    ("en", "", "English", "en"),
+    ("fr", "fr", "Français", "fr"),
+    ("fr-CA", "fr-ca", "Français (Canada)", "fr-CA"),
+    ("de", "de", "Deutsch", "de"),
+    ("es", "es", "Español", "es"),
+    ("es-419", "es-419", "Español (Latinoamérica)", "es-419"),
+    ("it", "it", "Italiano", "it"),
+    ("nl", "nl", "Nederlands", "nl"),
+    ("pt", "pt", "Português", "pt-PT"),
+    ("pt-BR", "pt-br", "Português (Brasil)", "pt-BR"),
+    ("ru", "ru", "Русский", "ru"),
+    ("ja", "ja", "日本語", "ja"),
+    ("ko", "ko", "한국어", "ko"),
+    ("zh-Hans", "zh-hans", "简体中文", "zh-Hans"),
+    ("zh-Hant", "zh-hant", "繁體中文", "zh-Hant"),
+]
+CODES = [code for code, _, _, _ in LANGUAGES]
+# Each language's flag in the language menu (fonts/twemoji-flags.woff2 draws
+# them the same everywhere, Windows included): the country of the console's
+# language, Mexico for Latin America's Spanish, Taiwan for Traditional Chinese.
+FLAGS = {"en": "US", "fr": "FR", "fr-CA": "CA", "de": "DE", "es": "ES", "es-419": "MX", "it": "IT", "nl": "NL",
+         "pt": "PT", "pt-BR": "BR", "ru": "RU", "ja": "JP", "ko": "KR", "zh-Hans": "CN", "zh-Hant": "TW"}
+# Open Graph's name of each language.
+OG_LOCALES = {"en": "en_US", "fr": "fr_FR", "fr-CA": "fr_CA", "de": "de_DE", "es": "es_ES", "es-419": "es_LA",
+              "it": "it_IT", "nl": "nl_NL", "pt": "pt_PT", "pt-BR": "pt_BR", "ru": "ru_RU", "ja": "ja_JP",
+              "ko": "ko_KR", "zh-Hans": "zh_CN", "zh-Hant": "zh_TW"}
 OWNER = "JigSawFr"
 RELEASES_SHOWN = 5
 SUMMARY_LENGTH = 280  # a release's lede, at most (feed.atom, the home page)
 
-# Each project: its repository, and where its card leads per language: its
-# site at its sub-domain of boreale.dev, and its simulator or demo there.
+# Each project: its repository, its site at its sub-domain of boreale.dev
+# (the same language folders as this one's), and its simulator or demo there.
 PROJECTS = {
-    "playguard": {"name": "PlayGuard", "repo": "PlayGuard",
-                  "url": {"en": "https://guard.boreale.dev/", "fr": "https://guard.boreale.dev/fr/"},
-                  "try": {"en": "https://guard.boreale.dev/simulator/?lang=en-US",
-                          "fr": "https://guard.boreale.dev/simulator/?lang=fr"}},
-    "playshelf": {"name": "PlayShelf", "repo": "PlayShelf",
-                  "url": {"en": "https://shelf.boreale.dev/", "fr": "https://shelf.boreale.dev/fr/"},
-                  "try": {"en": "https://shelf.boreale.dev/simulator/?lang=en-US",
-                          "fr": "https://shelf.boreale.dev/simulator/?lang=fr"}},
-    "aurore": {"name": "Aurore", "repo": "Aurore",
-               "url": {"en": "https://aurore.boreale.dev/", "fr": "https://aurore.boreale.dev/fr/"},
-               "try": {"en": "https://aurore.boreale.dev/demo/", "fr": "https://aurore.boreale.dev/demo/?lang=fr"}},
+    "playguard": {"name": "PlayGuard", "repo": "PlayGuard", "site": "https://guard.boreale.dev/",
+                  "try": "https://guard.boreale.dev/simulator/"},
+    "playshelf": {"name": "PlayShelf", "repo": "PlayShelf", "site": "https://shelf.boreale.dev/",
+                  "try": "https://shelf.boreale.dev/simulator/"},
+    "aurore": {"name": "Aurore", "repo": "Aurore", "site": "https://aurore.boreale.dev/",
+               "try": "https://aurore.boreale.dev/demo/"},
 }
+# The languages of Aurore's demo menu (web/page/index.html): for another one,
+# the demo opens in the browser's language.
+DEMO_LANGUAGES = {"fr", "de", "es", "it", "nl", "pt-BR", "ru", "ja", "ko", "zh-Hans", "zh-Hant"}
+
+
+def project_url(key: str, language: str) -> str:
+    """A project's site in a language: the same folder as this site's."""
+    return PROJECTS[key]["site"] + folder(language)
+
+
+def try_url(key: str, language: str) -> str:
+    """A project's simulator (or Aurore's demo) in a language: the apps'
+    codes (en-US for English)."""
+    if key == "aurore":
+        return PROJECTS[key]["try"] + (f"?lang={language}" if language in DEMO_LANGUAGES else "")
+    return PROJECTS[key]["try"] + f"?lang={'en-US' if language == 'en' else language}"
+
+
+def flag(language: str) -> str:
+    """A language's flag, two regional indicator letters, for the eyes only."""
+    emoji = "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in FLAGS[language])
+    return f'<span class="flag" aria-hidden="true">{emoji}</span>'
+
+
+def languages(language: str, catalog: dict, root: str, path: str) -> str:
+    """The header's languages: a button with the page's, and under it their
+    menu (a popover, as the menu of Boréale's sites), this page in each, its
+    own marked. Choosing one keeps it (assets/lang.js)."""
+    name = next(n for c, _, n, _ in LANGUAGES if c == language)
+    options = "\n".join(
+        f'        <li><a href="{root}{folder(c)}{path}" data-lang="{d or c}" lang="{hl}" hreflang="{hl}"'
+        f'{' aria-current="true"' if c == language else ""}>{flag(c)}{html.escape(n)}</a></li>'
+        for c, d, n, hl in LANGUAGES)
+    label = catalog["language"]
+    return (f'<div class="settings">\n'
+            f'      <button class="lang-button" type="button" popovertarget="languages" aria-label="{label} · {html.escape(name)}">'
+            f'{flag(language)}<span class="lang-name">{html.escape(name)}</span>'
+            f'<span class="lang-code">{language.split("-")[0].upper()}</span>'
+            f'<svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
+            f'      <ul id="languages" class="langs" popover aria-label="{label}">\n{options}\n      </ul>\n    </div>')
 
 # Boréale's sites, in the header's menu (switcher()): the same in each site,
 # each in its catalog's language where it has it. boreale.dev first, then
@@ -75,7 +140,7 @@ def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
         items = []
         for key, name, url in sites:
             here = key == "boreale"
-            href = f"{root}{catalog['home']}" if here else url + ("fr/" if language == "fr" else "")
+            href = f"{root}{folder(language)}" if here else url + folder(language)
             soon = f'<em class="soon">{catalog["sites_soon"]}</em>' if key == "playshelf" else ""
             version = f' <span class="sites-version">{html.escape(latest[key])}</span>' if key in latest else ""
             current = ' aria-current="true"' if here else ""
@@ -95,12 +160,24 @@ def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
 # The pages other than 404.html, by their path under each language's folder.
 PAGES = {"": "home.html", "legal/": "legal.html"}
 
+# A release's date as each language writes it, short: its months, and where
+# the day, the month and the year go ({d} {m} {y}; by number in Chinese,
+# Japanese and Korean).
+_FR = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
+_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"]
+_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 MONTHS = {
     "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    "fr": ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."],
+    "fr": _FR, "fr-CA": _FR,
+    "de": ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sept.", "Okt.", "Nov.", "Dez."],
+    "es": _ES, "es-419": _ES,
+    "it": ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"],
+    "nl": ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"],
+    "pt": _PT, "pt-BR": _PT,
+    "ru": ["янв.", "февр.", "мар.", "апр.", "мая", "июн.", "июл.", "авг.", "сент.", "окт.", "нояб.", "дек."],
 }
-
-LOCALES = {}  # each language's og:locale (its catalog's og_locale), at main()
+DATES = {"de": "{d}. {m} {y}", "ja": "{y}年{n}月{d}日", "zh-Hans": "{y}年{n}月{d}日", "zh-Hant": "{y}年{n}月{d}日",
+         "ko": "{y}. {n}. {d}."}  # else "{d} {m} {y}"
 
 KEY = re.compile(r"\{\{([a-z0-9_]+)\}\}")
 
@@ -161,8 +238,8 @@ def summary(notes: str) -> str:
 
 
 def day(date: datetime, language: str) -> str:
-    month = MONTHS[language][date.month - 1]
-    return f"{date.day} {month} {date.year}"
+    month = MONTHS[language][date.month - 1] if language in MONTHS else ""
+    return DATES.get(language, "{d} {m} {y}").format(d=date.day, m=month, n=date.month, y=date.year)
 
 
 def news(found: list, language: str, catalog: dict, root: str) -> str:
@@ -196,13 +273,13 @@ def structured(language: str, catalog: dict, found: list) -> str:
         "@graph": [
             {"@type": "Organization", "@id": SITE_URL + "#boreale", "name": "Boréale", "url": SITE_URL,
              "logo": SITE_URL + "assets/icon-512.png", "sameAs": [f"https://github.com/{OWNER}"]},
-            {"@type": "WebSite", "name": "Boréale", "url": SITE_URL, "inLanguage": language,
+            {"@type": "WebSite", "name": "Boréale", "url": SITE_URL, "inLanguage": html_lang(language),
              "publisher": {"@id": SITE_URL + "#boreale"}},
         ],
     }
     for key, project in PROJECTS.items():
         item = {"@type": "SoftwareApplication" if key != "aurore" else "SoftwareSourceCode",
-                "name": project["name"], "url": project["url"][language],
+                "name": project["name"], "url": project_url(key, language),
                 "description": catalog[f"{key}_text"], "license": "https://www.gnu.org/licenses/gpl-3.0.html",
                 "codeRepository" if key == "aurore" else "sameAs": f"https://github.com/{OWNER}/{project['repo']}",
                 "publisher": {"@id": SITE_URL + "#boreale"}}
@@ -226,14 +303,20 @@ def indexing(url: str, path: str, lost: bool) -> str:
     if lost:
         return '<meta name="robots" content="noindex">'
     lines = [f'<link rel="canonical" href="{url}">']
-    lines += [f'<link rel="alternate" hreflang="{lang}" href="{address(lang, path)}">' for lang in LANGUAGES]
-    lines.append(f'<link rel="alternate" hreflang="x-default" href="{address(LANGUAGES[0], path)}">')
+    lines += [f'<link rel="alternate" hreflang="{hl}" href="{address(code, path)}">' for code, _, _, hl in LANGUAGES]
+    lines.append(f'<link rel="alternate" hreflang="x-default" href="{address(CODES[0], path)}">')
     return "\n".join(lines)
 
 
 def folder(language: str) -> str:
     """A language's folder: none for the first one, at the root."""
-    return "" if language == LANGUAGES[0] else f"{language}/"
+    d = next(d for c, d, _, _ in LANGUAGES if c == language)
+    return f"{d}/" if d else ""
+
+
+def html_lang(language: str) -> str:
+    """A language's code for html's lang and hreflang (pt-PT for pt)."""
+    return next(hl for c, _, _, hl in LANGUAGES if c == language)
 
 
 def address(language: str, path: str = "") -> str:
@@ -251,24 +334,28 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     latest = {}
     for r in found:
         latest.setdefault(r["project"], r["version"])
-    for key, project in PROJECTS.items():
-        values[f"{key}_url"] = project["url"][language]
-        values[f"{key}_try"] = project["try"][language]
+    for key in PROJECTS:
+        values[f"{key}_url"] = project_url(key, language)
+        values[f"{key}_try"] = try_url(key, language)
         values[f"{key}_version"] = (f' · <span class="version">{html.escape(latest[key])}</span>' if key in latest
                                     else f' · {catalog["no_release"]}' if found else "")
-    # The header's language link leads to the same page in the other language.
-    values["other_href"] = folder(catalog["other_lang"]) + path
+    values["lang"] = html_lang(language)
+    values["home"] = folder(language)
+    values["og_locale"] = OG_LOCALES[language]
+    # The header's languages: this page in each (none for 404.html, which
+    # is at any address).
+    values["languages"] = languages(language, catalog, root, path if not lost else "")
     # The root's home page sends a first visit to the browser's language (assets/lang.js).
     values["first_visit"] = " data-first-visit" if first_visit else ""
     # 404.html at the root sends a visitor reading another language to that
     # language's (assets/lang.js); the site's address path tells it where.
-    values["lost"] = f' data-lost="{root}"' if lost and language == LANGUAGES[0] else ""
+    values["lost"] = f' data-lost="{root}"' if lost and language == CODES[0] else ""
     values["indexing"] = indexing(url, path, lost)
     # The home page (the one with a hero): site.css's showcase, the night
     # going on down it.
     values["page_class"] = ' class="home"' if hero else ""
     values["og_alternates"] = "\n".join(
-        f'<meta property="og:locale:alternate" content="{LOCALES[lang]}">' for lang in LANGUAGES if lang != language)
+        f'<meta property="og:locale:alternate" content="{OG_LOCALES[code]}">' for code in CODES if code != language)
     values.update(root=root, site=SITE_URL, url=url, title=title)
     values["switcher"] = switcher(language, catalog, root, latest)
     values["news"] = news(found, language, catalog, root)
@@ -330,8 +417,7 @@ def main() -> None:
     bodies = {path: (SITE / name).read_text(encoding="utf-8") for path, name in PAGES.items()}
     lost = (SITE / "lost.html").read_text(encoding="utf-8")
     base = urlparse(SITE_URL).path  # 404.html is served at any depth
-    catalogs = {lang: json.loads((SITE / "i18n" / f"{lang}.json").read_text(encoding="utf-8")) for lang in LANGUAGES}
-    LOCALES.update({lang: catalog["og_locale"] for lang, catalog in catalogs.items()})
+    catalogs = {code: json.loads((SITE / "i18n" / f"{code}.json").read_text(encoding="utf-8")) for code in CODES}
     for lang, catalog in catalogs.items():
         for path, body in bodies.items():
             where = folder(lang) + path
@@ -341,14 +427,14 @@ def main() -> None:
             (out / where / "index.html").write_text(
                 page(lang, catalog, hero if home else "", body, root, SITE_URL + where,
                      catalog["title"] if home else catalog[f"{path.strip('/')}_page_title"], found, path=path,
-                     first_visit=home and lang == LANGUAGES[0]),
+                     first_visit=home and lang == CODES[0]),
                 encoding="utf-8")
         # 404.html for each language: GitHub Pages serves the root's at any
         # address, which sends a visitor reading another language to theirs.
         (out / folder(lang) / "404.html").write_text(
             page(lang, catalog, "", lost, base, SITE_URL, catalog["lost_page_title"], found, lost=True),
             encoding="utf-8")
-    first = catalogs[LANGUAGES[0]]
+    first = catalogs[CODES[0]]
 
     (out / "feed.atom").write_text(feed(found, first), encoding="utf-8")
     # The projects' latest releases, for the menu of Boréale's sites in the
@@ -366,8 +452,9 @@ def main() -> None:
     urls = ""
     for path in PAGES:
         alternates = "".join(
-            f'    <xhtml:link rel="alternate" hreflang="{lang}" href="{address(lang, path)}"/>\n' for lang in LANGUAGES)
-        urls += "".join(f"  <url>\n    <loc>{address(lang, path)}</loc>\n{alternates}  </url>\n" for lang in LANGUAGES)
+            f'    <xhtml:link rel="alternate" hreflang="{hl}" href="{address(code, path)}"/>\n' for code, _, _, hl in LANGUAGES)
+        alternates += f'    <xhtml:link rel="alternate" hreflang="x-default" href="{address(CODES[0], path)}"/>\n'
+        urls += "".join(f"  <url>\n    <loc>{address(code, path)}</loc>\n{alternates}  </url>\n" for code in CODES)
     (out / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
         f' xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{urls}</urlset>\n', encoding="utf-8")
@@ -378,7 +465,7 @@ def main() -> None:
     for path in sorted(p for p in out.rglob("*") if p.is_file()):
         digest.update(path.relative_to(out).as_posix().encode() + b"\0" + path.read_bytes())
     (out / "build.sha256").write_text(digest.hexdigest() + "\n", encoding="utf-8")
-    print(f"build_site: {', '.join(LANGUAGES)} in {out} for {SITE_URL}, {len(found)} release(s)")
+    print(f"build_site: {len(CODES)} languages in {out} for {SITE_URL}, {len(found)} release(s)")
 
 
 if __name__ == "__main__":
