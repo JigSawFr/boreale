@@ -172,7 +172,7 @@ main section.closing { padding-top: 0; }
   background: var(--night); border: 1px solid var(--night-line); border-radius: 20px;
 }
 .project .shot {
-  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 10px;
+  display: block; width: 100%; min-width: 0; height: auto; aspect-ratio: 16 / 9; border-radius: 10px;
   border: 1px solid var(--night-line); background: var(--abyss);
 }
 .project .head { display: flex; align-items: flex-start; gap: 14px; }
