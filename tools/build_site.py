@@ -166,7 +166,9 @@ def day(date: datetime, language: str) -> str:
 
 
 def news(found: list, language: str, catalog: dict, root: str) -> str:
-    """The home page's latest releases, or nothing without any."""
+    """The home page's latest releases, or nothing without any: a list,
+    drawn by site.css as a timeline (the dates beside a line of aurora, a
+    dot on it for each release)."""
     if not found:
         return ""
     items = "".join(
@@ -262,6 +264,9 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     # language's (assets/lang.js); the site's address path tells it where.
     values["lost"] = f' data-lost="{root}"' if lost and language == LANGUAGES[0] else ""
     values["indexing"] = indexing(url, path, lost)
+    # The home page (the one with a hero): site.css's showcase, the night
+    # going on down it.
+    values["page_class"] = ' class="home"' if hero else ""
     values["og_alternates"] = "\n".join(
         f'<meta property="og:locale:alternate" content="{LOCALES[lang]}">' for lang in LANGUAGES if lang != language)
     values.update(root=root, site=SITE_URL, url=url, title=title)
