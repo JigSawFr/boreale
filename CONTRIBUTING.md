@@ -14,11 +14,11 @@ Then a look at the pages (`python3 -m http.server -d build 8000`) on a phone and
 
 ## A text
 
-Every text is in `site/i18n/<language>.json`: a key added to `en.json` is added to every catalog (`check_site.py` fails otherwise). `title` and `description` are plain text (they are attributes too); the others may hold HTML.
+Every text is in `site/i18n/<language>.json`: a key added to `en.json` is added, translated, to all fifteen catalogs (`check_site.py` fails otherwise), with the apps' names for their screens and features and each language's typography (`site/README.md`). `title` and `description` are plain text (they are attributes too); the others may hold HTML.
 
 ## A language
 
-A new catalog in `site/i18n/`, its code in `LANGUAGES` (`tools/build_site.py`) and in `SITE` (`site/assets/lang.js`), and its `<link hreflang>` comes with it. The header's link goes to the other language: with a third, the header needs a choice of them.
+The site has the consoles' fifteen, as the apps and the projects' sites do. A new one: its catalog in `site/i18n/`, its entry in `LANGUAGES`, `FLAGS`, `OG_LOCALES` and the dates' `MONTHS` or `DATES` (`tools/build_site.py`), its folder in `SITE` and the browser's codes for it in `browser()` (`site/assets/lang.js`), and its flag cut into `site/assets/fonts/twemoji-flags.woff2`; the header's menu, its `<link hreflang>` and the sitemap come with it. The projects' sites have the same folders, which the menu of Boréale's sites and the cards lead to.
 
 ## A mark
 

@@ -1,9 +1,4 @@
 {
-  "lang": "en",
-  "og_locale": "en_US",
-  "home": "",
-  "other_lang": "fr",
-  "other_label": "FR",
   "title": "Boréale · Homebrew for the long nights",
   "description": "Open-source homebrew for the Nintendo Switch: PlayGuard, parental controls on the console; PlayShelf, your game library on the console; Aurore, the interface library behind both.",
   "skip": "Skip to the projects",
@@ -16,6 +11,7 @@
   "sites_playshelf": "Your game library, on the console",
   "sites_aurore": "The interface library behind them",
   "sites_soon": "Coming soon",
+  "language": "Language",
   "nav_projects": "Projects",
   "hero_title": "Homebrew for the <em>long nights</em>.",
   "hero_lede": "Open-source apps for the Nintendo Switch, made with care and one shared look. Parental controls on the console, your own game library, and the interface library behind both.",
