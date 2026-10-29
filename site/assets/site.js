@@ -116,3 +116,30 @@
     menu.style.left = `${Math.max(12, Math.min(box.left, screen - width - 12)) + window.scrollX}px`;
   });
 })();
+
+// The showcase (site.css's block of the same name, in boreale.dev's,
+// PlayGuard's, PlayShelf's and Aurore's site.js): the cards' edge lit where
+// the pointer is, and the home page's sections rising into view once (not
+// with less motion asked; those already in view at load shown at once).
+(function () {
+  for (const card of document.querySelectorAll(".project")) {
+    card.addEventListener("pointermove", (e) => {
+      const box = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - box.left}px`);
+      card.style.setProperty("--my", `${e.clientY - box.top}px`);
+    });
+  }
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  const seen = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add("in"); seen.unobserve(e.target); }
+    }
+  }, { rootMargin: "0px 0px -12% 0px" });
+  for (const part of document.querySelectorAll(".home main > section")) {
+    if (part.getBoundingClientRect().top < window.innerHeight * 0.88) continue;
+    part.classList.add("reveal");
+    [...part.querySelectorAll(".project")].forEach((card, i) => card.style.setProperty("--i", i));
+    seen.observe(part);
+  }
+})();
