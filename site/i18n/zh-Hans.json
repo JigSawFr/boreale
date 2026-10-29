@@ -65,6 +65,7 @@
   "legal_page_title": "隐私与法律声明 · Boréale",
   "legal_title": "隐私与法律声明",
   "legal_lede": "本网站会了解你的哪些信息，以及谁在运营它。",
+  "legal_translation": "本页为译文；如有出入，以<a href=\"{{root}}fr/legal/\" hreflang=\"fr\">法文版</a>为准。",
   "privacy_title": "隐私",
   "privacy_1": "本网站不设置任何 Cookie，只在你的浏览器中保存你在页眉选择的语言。它不从其他网站加载任何内容：字体、图片和脚本都随网站一起提供。",
   "privacy_2": "本网站使用位于欧盟（法兰克福）的 <a href=\"https://umami.is/\">Umami Cloud</a> 统计访问，不使用 Cookie。对于每个被浏览的页面，记录：页面、你来自的页面、你的浏览器、系统和设备类型、屏幕尺寸、语言和国家。你的 IP 地址用于判断国家和区分访问，不会与访问记录一起保存。统计数据保存六个月，仅用于了解哪些内容被阅读，绝不出售或分享。Umami 的隐私政策：<a href=\"https://umami.is/privacy\">umami.is/privacy</a>。",

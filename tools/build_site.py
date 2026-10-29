@@ -56,6 +56,9 @@ LANGUAGES = [
     ("zh-Hant", "zh-hant", "繁體中文", "zh-Hant"),
 ]
 CODES = [code for code, _, _, _ in LANGUAGES]
+# The language the legal texts are written in, the others translating it
+# (legal_translation, said on the other languages' legal page).
+ORIGINAL = "fr"
 # Each language's flag in the language menu (fonts/twemoji-flags.woff2 draws
 # them the same everywhere, Windows included): the country of the console's
 # language, Mexico for Latin America's Spanish, Taiwan for Traditional Chinese.
@@ -339,6 +342,10 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
         values[f"{key}_try"] = try_url(key, language)
         values[f"{key}_version"] = (f' · <span class="version">{html.escape(latest[key])}</span>' if key in latest
                                     else f' · {catalog["no_release"]}' if found else "")
+    # The legal page's texts are translations of the French one, which
+    # prevails: each other language says so under its lede, with a link to it.
+    values["legal_translation"] = ("" if language == ORIGINAL else
+                                   f'<p class="translation">{catalog["legal_translation"]}</p>')
     values["lang"] = html_lang(language)
     values["home"] = folder(language)
     values["og_locale"] = OG_LOCALES[language]
