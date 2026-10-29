@@ -64,11 +64,11 @@ SITES = [(None, [("boreale", "Boréale", "https://boreale.dev/")]),
          ("sites_libraries", [("aurore", "Aurore", "https://aurore.boreale.dev/")])]
 
 
-def switcher(language: str, catalog: dict, root: str) -> str:
+def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
     """The header's name, a button that opens the menu of Boréale's sites
     (the same in the four sites: site.css's and site.js's "site switcher"),
-    this one marked and leading home. A popover: the browser closes it on
-    Esc or a click elsewhere."""
+    this one marked and leading home, each with its latest release
+    (`latest`). A popover: the browser closes it on Esc or a click elsewhere."""
     label = catalog["sites_label"]
     groups = []
     for title, sites in SITES:
@@ -77,10 +77,11 @@ def switcher(language: str, catalog: dict, root: str) -> str:
             here = key == "boreale"
             href = f"{root}{catalog['home']}" if here else url + ("fr/" if language == "fr" else "")
             soon = f'<em class="soon">{catalog["sites_soon"]}</em>' if key == "playshelf" else ""
+            version = f' <span class="sites-version">{html.escape(latest[key])}</span>' if key in latest else ""
             current = ' aria-current="true"' if here else ""
             items.append(f'<li><a href="{href}"{current}>'
                          f'<img src="{root}assets/marks/{key}.svg" alt="" width="36" height="36">'
-                         f'<span><strong>{name}</strong><small>{catalog[f"sites_{key}"]}</small></span>{soon}</a></li>')
+                         f'<span><strong>{name}{version}</strong><small>{catalog[f"sites_{key}"]}</small></span>{soon}</a></li>')
         heading = f'<p class="sites-title">{catalog[title]}</p>' if title else ""
         groups.append(f'        {heading}<ul>\n          ' + "\n          ".join(items) + '\n        </ul>')
     return (f'<div class="switcher">\n'
@@ -264,7 +265,7 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     values["og_alternates"] = "\n".join(
         f'<meta property="og:locale:alternate" content="{LOCALES[lang]}">' for lang in LANGUAGES if lang != language)
     values.update(root=root, site=SITE_URL, url=url, title=title)
-    values["switcher"] = switcher(language, catalog, root)
+    values["switcher"] = switcher(language, catalog, root, latest)
     values["news"] = news(found, language, catalog, root)
     values["jsonld"] = structured(language, catalog, found)
     values["hero"] = fill(hero, values)
@@ -345,6 +346,12 @@ def main() -> None:
     first = catalogs[LANGUAGES[0]]
 
     (out / "feed.atom").write_text(feed(found, first), encoding="utf-8")
+    # The projects' latest releases, for the menu of Boréale's sites in the
+    # projects' own sites, read when they are built.
+    latest = {}
+    for r in found:
+        latest.setdefault(r["project"], r["version"])
+    (out / "versions.json").write_text(json.dumps(latest, indent=1) + "\n", encoding="utf-8")
     (out / "manifest.webmanifest").write_text(manifest(first), encoding="utf-8")
     shutil.copy(SITE / "assets" / "favicon.ico", out / "favicon.ico")  # asked for at the root by old browsers
     (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
