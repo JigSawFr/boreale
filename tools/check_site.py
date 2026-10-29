@@ -3,7 +3,8 @@
 
     python3 tools/check_site.py <site-dir>
 
-- every catalog of site/i18n/ has the same keys as en.json, none empty;
+- every catalog of site/i18n/ has the same keys as en.json, none empty (but
+  fr.json's legal_translation: the French legal page is the original);
 - no {{key}} left in a page;
 - every link and image to the site leads to a file, and every #anchor to an id;
 - nothing the Content-Security-Policy blocks: no inline script (but the
@@ -64,7 +65,8 @@ def main() -> None:
     catalogs = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "site/i18n").glob("*.json"))}
     reference = set(catalogs["en"])
     for lang, catalog in catalogs.items():
-        for key in sorted(reference - set(catalog)):
+        # fr.json has no legal_translation: its legal page is the original.
+        for key in sorted(reference - set(catalog) - ({"legal_translation"} if lang == "fr" else set())):
             errors.append(f"i18n/{lang}.json: no {key}")
         for key in sorted(set(catalog) - reference):
             errors.append(f"i18n/{lang}.json: {key} is not in en.json")

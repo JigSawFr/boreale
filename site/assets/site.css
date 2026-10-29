@@ -228,6 +228,7 @@ footer.site a { color: var(--mist); }
 .prose > * { max-width: 68ch; }
 .prose h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; letter-spacing: -0.03em; }
 .prose .lede { color: var(--mist); font-size: 1.125rem; margin-top: 14px; }
+.prose .translation { font-size: 0.9375rem; margin-top: 10px; }
 .prose section { padding-block: 40px 0; display: grid; gap: 14px; }
 .prose h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
 .prose p, .prose dd { color: var(--mist); }

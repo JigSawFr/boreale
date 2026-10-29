@@ -65,6 +65,7 @@
   "legal_page_title": "Privacy en juridische informatie · Boréale",
   "legal_title": "Privacy en juridische informatie",
   "legal_lede": "Wat deze site over je te weten komt, en wie erachter zit.",
+  "legal_translation": "Deze pagina is een vertaling; bij verschillen geldt de <a href=\"{{root}}fr/legal/\" hreflang=\"fr\">Franse versie</a>.",
   "privacy_title": "Privacy",
   "privacy_1": "Deze site plaatst geen cookies en bewaart in je browser alleen de taal die je bovenaan de pagina kiest. Hij laadt niets van een andere site: de lettertypen, afbeeldingen en scripts worden met de site meegeleverd.",
   "privacy_2": "De site telt bezoeken met <a href=\"https://umami.is/\">Umami Cloud</a>, in de Europese Unie (Frankfurt), zonder cookies. Voor elke bekeken pagina: de pagina, de pagina waar je vandaan komt, je browser, systeem en soort apparaat, je schermgrootte, je taal en je land. Je IP-adres wordt gebruikt om je land te bepalen en bezoeken van elkaar te onderscheiden, en wordt niet bij de bezoeken bewaard. De tellingen worden zes maanden bewaard, alleen gebruikt om te weten wat er gelezen wordt, en nooit verkocht of gedeeld. Het beleid van Umami: <a href=\"https://umami.is/privacy\">umami.is/privacy</a>.",

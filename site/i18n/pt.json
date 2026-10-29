@@ -65,6 +65,7 @@
   "legal_page_title": "Privacidade e aviso legal · Boréale",
   "legal_title": "Privacidade e aviso legal",
   "legal_lede": "O que este site fica a saber sobre ti, e quem está por trás dele.",
+  "legal_translation": "Esta página é uma tradução; em caso de divergência, prevalece a <a href=\"{{root}}fr/legal/\" hreflang=\"fr\">versão francesa</a>.",
   "privacy_title": "Privacidade",
   "privacy_1": "Este site não usa cookies e só guarda no teu navegador o idioma que escolhes no cabeçalho. Não carrega nada de outro site: os tipos de letra, as imagens e os scripts são servidos com ele.",
   "privacy_2": "Conta as visitas com <a href=\"https://umami.is/\">Umami Cloud</a>, na União Europeia (Frankfurt), sem cookies. Por cada página vista: a página, a página de onde vens, o teu navegador, sistema e tipo de dispositivo, o tamanho do ecrã, o teu idioma e o teu país. O teu endereço IP serve para saber o país e distinguir as visitas, e não é guardado com elas. As contagens são guardadas seis meses, usadas só para saber o que é lido, e nunca vendidas nem partilhadas. A política da Umami: <a href=\"https://umami.is/privacy\">umami.is/privacy</a>.",
