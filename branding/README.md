@@ -22,7 +22,7 @@ Every mark follows one rule, set by PlayGuard's and PlayShelf's: **a frame in th
 | `aurore-mark.svg` | Aurore's mark, drawn after its app icon: the frame, an aurora over the mountains | Aurore's card, its site |
 | `social-preview.svg` | The night, the aurora, the mark, the name, the tagline | Shared links, GitHub's social preview |
 
-`banners/` holds each project's README banner, all from one template (`python3 tools/make_banners.py`): the night, the aurora, the project's mark, its name, what it does, and "by Boréale" with the mark in a corner.
+`banners/` holds each project's README banner, all from one template (`python3 tools/make_banners.py`): the night, the aurora, the project's mark, its name, what it does, and "by Boréale" with the mark in a corner. PlayGuard and PlayShelf keep a copy of theirs in their own `branding/`, rendered for their README at twice the size; Aurore's README keeps a banner of its own.
 
 `png/` holds them rendered (`node tools/export-branding.mjs`, which also writes the site's icons and preview).
 
