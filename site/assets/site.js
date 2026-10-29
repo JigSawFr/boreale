@@ -160,3 +160,33 @@
     seen.observe(part);
   }
 })();
+
+// insights/ (tools/build_site.py's insights_page()): the data was read when
+// the page was built; here, each file's age as of now (a file grown late
+// since says so), the prices as the page's language writes them, and the
+// deals of the country picked.
+(function () {
+  const page = document.querySelector(".insights");
+  if (!page) return;
+  const today = Date.now();
+  for (const state of page.querySelectorAll("[data-age]")) {
+    const made = Date.parse(state.dataset.age + "T00:00:00Z");
+    if (Number.isNaN(made)) continue;
+    if ((today - made) / 86400000 > Number(state.dataset.days)) {
+      state.classList.add("late");
+      state.textContent = state.dataset.late;
+    }
+  }
+  const lang = document.documentElement.lang;
+  for (const price of page.querySelectorAll("data.money")) {
+    try {
+      price.textContent = new Intl.NumberFormat(lang, { style: "currency", currency: price.dataset.currency })
+        .format(Number(price.value));
+    } catch (e) { /* an unknown currency: as built */ }
+  }
+  const pick = document.getElementById("deals-country");
+  if (!pick) return;
+  pick.addEventListener("change", () => {
+    for (const table of page.querySelectorAll("#deals [data-country]")) table.hidden = table.dataset.country !== pick.value;
+  });
+})();
