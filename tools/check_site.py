@@ -7,6 +7,9 @@
   fr.json's legal_translation: the French legal page is the original);
 - no {{key}} left in a page;
 - every link and image to the site leads to a file, and every #anchor to an id;
+- links out by the rule "liens sortants anonymes": every page sends no
+  referrer, a link to a third party has rel="noreferrer", one to
+  *.boreale.dev or github.com/JigSawFr has referrerpolicy="strict-origin";
 - nothing the Content-Security-Policy blocks: no inline script (but the
   schema.org data, which runs nothing), no <style>, no style="" attribute,
   nothing loaded from another site;
@@ -22,14 +25,43 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent.parent
 
 
+
+def own_site(url: str) -> bool:
+    u = urlparse(url)
+    host = (u.hostname or "").lower()
+    return host == "boreale.dev" or host.endswith(".boreale.dev") or \
+        (host == "github.com" and u.path.lower().startswith("/jigsawfr"))
+
+
+def link_problem(attrs: dict) -> str:
+    """What a link out does wrong by the rule "liens sortants anonymes": a
+    third party gets rel="noreferrer"; *.boreale.dev and github.com/JigSawFr
+    keep the origin alone (referrerpolicy="strict-origin", no noreferrer)."""
+    href = attrs.get("href") or ""
+    if urlparse(href).scheme not in ("http", "https"):
+        return ""
+    rel = (attrs.get("rel") or "").split()
+    if own_site(href):
+        if "noreferrer" in rel or attrs.get("referrerpolicy") != "strict-origin":
+            return f'link to {href} needs referrerpolicy="strict-origin" and no noreferrer'
+    elif "noreferrer" not in rel:
+        return f'link to {href} without rel="noreferrer"'
+    return ""
+
+
 class Page(HTMLParser):
     def __init__(self):
         super().__init__()
         self.ids, self.links, self.problems, self.data = set(), [], [], []
         self.in_data = False
+        self.no_referrer = False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if tag == "meta" and a.get("name") == "referrer" and a.get("content") == "no-referrer":
+            self.no_referrer = True
+        if tag == "a" and link_problem(a):
+            self.problems.append(link_problem(a))
         if "id" in a:
             self.ids.add(a["id"])
         if "style" in a:
@@ -85,6 +117,8 @@ def main() -> None:
         parsed = Page()
         parsed.feed(html)
         errors += [f"{name}: {p}" for p in parsed.problems]
+        if not parsed.no_referrer:
+            errors.append(f"{name}: no <meta name=\"referrer\" content=\"no-referrer\">")
         try:
             json.loads("".join(parsed.data) or "{}")
         except ValueError as error:
