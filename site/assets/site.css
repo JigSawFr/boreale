@@ -418,6 +418,8 @@ footer.site > .wrap { position: relative; }
 .insights > * { max-width: none; }
 .insights > .lede, .insights > .note, .insights > .notice { max-width: 68ch; }
 .insights .note { color: var(--dusk); font-size: 0.9375rem; }
+.insights .platform > section { padding-block: 24px 0; }
+.insights h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
 .insights .notice { border: 1px solid var(--night-line); border-radius: var(--radius); background: var(--night); padding: 16px 20px; }
 .insights .table { overflow-x: auto; border: 1px solid var(--night-line); border-radius: var(--radius); background: var(--night); }
 .insights .table[hidden] { display: none; }
