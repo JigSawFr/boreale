@@ -19,6 +19,7 @@
 """
 import json
 import os
+import re
 import sys
 import xml.etree.ElementTree as ElementTree
 from html.parser import HTMLParser
@@ -26,6 +27,10 @@ from pathlib import Path
 from urllib.parse import parse_qsl, urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
+# No real e-mail address on the site, ours or anyone's: contact goes through
+# the repository's issues, a security flaw through a private advisory.
+EMAIL = re.compile(r"[\w.+-]+@([\w-]+\.)+[a-z]{2,}", re.IGNORECASE)
+RESERVED = re.compile(r"@(?:[\w-]+\.)*(?:example\.(?:org|com|net)|[\w-]+\.example)$", re.IGNORECASE)
 
 
 
@@ -149,6 +154,9 @@ def main() -> None:
         html = path.read_text(encoding="utf-8")
         if "{{" in html:
             errors.append(f"{name}: a {{{{key}}}} is left")
+        for match in EMAIL.finditer(html):
+            if not RESERVED.search(match.group(0)):
+                errors.append(f"{name}: an e-mail address ({match.group(0)}), contact goes through GitHub")
         parsed = Page()
         parsed.feed(html)
         errors += [f"{name}: {p}" for p in parsed.problems]
