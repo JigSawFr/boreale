@@ -74,6 +74,10 @@ OG_LOCALES = {"en": "en_US", "fr": "fr_FR", "fr-CA": "fr_CA", "de": "de_DE", "es
               "ko": "ko_KR", "zh-Hans": "zh_CN", "zh-Hant": "zh_TW"}
 OWNER = "JigSawFr"
 RELEASES_SHOWN = 5
+# versions.json's schema: {"schema": 1, "projects": {project: "vX"}}, read by
+# PlayGuard's, PlayShelf's and Aurore's builds (versions_of()), which also read
+# the flat {project: "vX"} of before.
+VERSIONS_SCHEMA = 1
 SUMMARY_LENGTH = 280  # a release's lede, at most (feed.atom, the home page)
 
 # Each project: its repository, its site at its sub-domain of boreale.dev
@@ -528,7 +532,8 @@ def main() -> None:
     latest = {}
     for r in found:
         latest.setdefault(r["project"], r["version"])
-    (out / "versions.json").write_text(json.dumps(latest, indent=1) + "\n", encoding="utf-8")
+    versions = {"schema": VERSIONS_SCHEMA, "projects": latest}
+    (out / "versions.json").write_text(json.dumps(versions, indent=1) + "\n", encoding="utf-8")
     (out / "manifest.webmanifest").write_text(manifest(first), encoding="utf-8")
     shutil.copy(SITE / "assets" / "favicon.ico", out / "favicon.ico")  # asked for at the root by old browsers
     (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
