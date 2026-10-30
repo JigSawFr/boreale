@@ -206,16 +206,19 @@ def languages(language: str, catalog: dict, root: str, path: str) -> str:
 
 # Boréale's sites, in the header's menu (switcher()): the same in each site,
 # each in its catalog's language where it has it. boreale.dev first, then
-# the homebrew, then the libraries, each group under its catalog's title.
+# the homebrew, then the libraries, then the open data and protocols (Atlas,
+# Lantern), each group under its catalog's title.
 SITES = [(None, [("boreale", "Boréale", "https://boreale.dev/")]),
          ("sites_homebrew", [("playguard", "PlayGuard", "https://guard.boreale.dev/"),
                              ("playshelf", "PlayShelf", "https://shelf.boreale.dev/")]),
-         ("sites_libraries", [("aurore", "Aurore", "https://aurore.boreale.dev/")])]
+         ("sites_libraries", [("aurore", "Aurore", "https://aurore.boreale.dev/")]),
+         ("sites_open", [("atlas", "Atlas", "https://atlas.boreale.dev/"),
+                         ("lantern", "Lantern", "https://lantern.boreale.dev/")])]
 
 
 def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
     """The header's name, a button that opens the menu of Boréale's sites
-    (the same in the four sites: site.css's and site.js's "site switcher"),
+    (the same in each site: site.css's and site.js's "site switcher"),
     this one marked and leading home, each with its latest release
     (`latest`). A popover: the browser closes it on Esc or a click elsewhere."""
     label = catalog["sites_label"]
@@ -244,9 +247,13 @@ def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
 # The pages other than 404.html, by their path under each language's folder.
 PAGES = {"": "home.html", "support/": "support.html", "legal/": "legal.html", "insights/": "insights.html"}
 
-# Atlas, the open data PlayShelf reads (https://github.com/JigSawFr/Atlas):
-# its own site, each language in the same folder as here.
+# Atlas, the open data PlayShelf reads (https://github.com/JigSawFr/Atlas),
+# and Lantern, the protocol between library servers and console homebrews
+# (https://github.com/JigSawFr/lantern): their own sites, each language in
+# the same folder as here, under the home page's projects ("open data and
+# protocols", lighter cards) with their explorer and specification.
 ATLAS = "https://atlas.boreale.dev/"
+LANTERN = "https://lantern.boreale.dev/"
 
 # A release's date as each language writes it, short: its months, and where
 # the day, the month and the year go ({d} {m} {y}; by number in Chinese,
@@ -452,6 +459,9 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     values["switcher"] = switcher(language, catalog, root, latest)
     values["news"] = news(found, language, catalog, root)
     values["atlas_url"] = ATLAS + folder(language)
+    values["atlas_try"] = ATLAS + folder(language) + "explore/"
+    values["lantern_url"] = LANTERN + folder(language)
+    values["lantern_try"] = LANTERN + folder(language) + "spec/"
     values["jsonld"] = structured(language, catalog, found)
     values["hero"] = fill(hero, values)
     values["body"] = fill(body, values)
