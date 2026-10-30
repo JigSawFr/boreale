@@ -67,7 +67,7 @@
   "atlas_try_label": "Explorer les données",
   "lantern_kind": "Protocole ouvert",
   "lantern_text": "Un protocole ouvert et versionné, en REST et JSON, entre les homebrews des consoles et les serveurs de ludothèque que chacun fait tourner chez soi pour ses propres jeux : parcourir, télécharger avec contrôle SHA-256, garder ses sauvegardes et ses codes de triche. Il vient avec des schémas JSON, une suite de conformité et un serveur de référence. La spécification sous CC BY 4.0, le reste sous MIT.",
-  "lantern_state": "Brouillon 0.1",
+  "lantern_state": "Brouillon",
   "lantern_try_label": "Lire la spécification",
   "no_release": "pas encore de version",
   "footer_label": "Ailleurs",

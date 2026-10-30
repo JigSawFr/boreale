@@ -67,7 +67,7 @@
   "atlas_try_label": "데이터 탐색하기",
   "lantern_kind": "개방형 프로토콜",
   "lantern_text": "콘솔 홈브류와, 자기 게임을 위해 집에서 돌리는 라이브러리 서버 사이의 REST·JSON 기반 개방형 버전 관리 프로토콜. 라이브러리를 둘러보고, SHA-256을 확인하며 내려받고, 세이브 백업과 치트를 보관합니다. JSON Schema, 적합성 테스트 모음, 참조 서버가 함께 있습니다. 명세는 CC BY 4.0, 나머지는 MIT.",
-  "lantern_state": "초안 0.1",
+  "lantern_state": "초안",
   "lantern_try_label": "명세 읽기",
   "no_release": "아직 릴리스 없음",
   "footer_label": "다른 곳",

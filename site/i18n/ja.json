@@ -67,7 +67,7 @@
   "atlas_try_label": "データを見る",
   "lantern_kind": "オープンプロトコル",
   "lantern_text": "ゲーム機の homebrew と、自分のゲームのために自宅で動かすライブラリサーバーをつなぐ、REST と JSON によるオープンでバージョン管理されたプロトコル。ライブラリを見る、SHA-256 を確認してダウンロードする、セーブとチートを保管する。JSON Schema、適合性テストスイート、リファレンスサーバー付き。仕様は CC BY 4.0、それ以外は MIT。",
-  "lantern_state": "ドラフト 0.1",
+  "lantern_state": "ドラフト",
   "lantern_try_label": "仕様を読む",
   "no_release": "リリースはまだありません",
   "footer_label": "関連リンク",

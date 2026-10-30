@@ -67,7 +67,7 @@
   "atlas_try_label": "瀏覽資料",
   "lantern_kind": "開放協定",
   "lantern_text": "主機自製軟體與人們在家中為自己的遊戲執行的遊戲庫伺服器之間一份開放、具版本的 REST 與 JSON 協定：瀏覽遊戲庫，帶 SHA-256 檢查地下載，保存存檔備份和金手指。附帶 JSON Schema、一致性測試套件和參考伺服器。規格採用 CC BY 4.0，其餘採用 MIT。",
-  "lantern_state": "草案 0.1",
+  "lantern_state": "草案",
   "lantern_try_label": "閱讀規格",
   "no_release": "尚無版本",
   "footer_label": "其他連結",

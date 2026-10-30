@@ -67,7 +67,7 @@
   "atlas_try_label": "Esplora i dati",
   "lantern_kind": "Protocollo aperto",
   "lantern_text": "Un protocollo aperto e versionato, REST e JSON, tra gli homebrew per console e i server di librerie che si tengono in casa per i propri giochi: sfogliare, scaricare con controllo SHA-256, conservare salvataggi e trucchi. Lo accompagnano schemi JSON, una suite di conformità e un server di riferimento. La specifica sotto CC BY 4.0, il resto sotto MIT.",
-  "lantern_state": "Bozza 0.1",
+  "lantern_state": "Bozza",
   "lantern_try_label": "Leggi la specifica",
   "no_release": "ancora nessuna versione",
   "footer_label": "Altrove",

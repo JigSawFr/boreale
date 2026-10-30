@@ -67,7 +67,7 @@
   "atlas_try_label": "Verken de data",
   "lantern_kind": "Open protocol",
   "lantern_text": "Een open REST- en JSON-protocol met versies tussen console-homebrews en de bibliotheekservers die mensen thuis draaien voor hun eigen games: bladeren, downloaden met SHA-256-controle, back-ups van saves en cheats bewaren. Met JSON Schema's, een conformiteitssuite en een referentieserver. De specificatie onder CC BY 4.0, de rest onder MIT.",
-  "lantern_state": "Concept 0.1",
+  "lantern_state": "Concept",
   "lantern_try_label": "Lees de specificatie",
   "no_release": "nog geen versie",
   "footer_label": "Elders",

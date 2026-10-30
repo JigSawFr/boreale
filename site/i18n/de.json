@@ -67,7 +67,7 @@
   "atlas_try_label": "Daten erkunden",
   "lantern_kind": "Offenes Protokoll",
   "lantern_text": "Ein offenes, versioniertes REST- und JSON-Protokoll zwischen Konsolen-Homebrews und den Bibliotheksservern, die man zu Hause für die eigenen Spiele betreibt: durchsuchen, mit SHA-256-Prüfung herunterladen, Spielstände und Cheats sichern. Dazu gibt es JSON-Schemas, eine Konformitätssuite und einen Referenzserver. Die Spezifikation unter CC BY 4.0, der Rest unter MIT.",
-  "lantern_state": "Entwurf 0.1",
+  "lantern_state": "Entwurf",
   "lantern_try_label": "Spezifikation lesen",
   "no_release": "noch keine Version",
   "footer_label": "Anderswo",

@@ -67,7 +67,7 @@
   "atlas_try_label": "浏览数据",
   "lantern_kind": "开放协议",
   "lantern_text": "主机自制软件与人们在家中为自己的游戏运行的游戏库服务器之间一份开放、带版本的 REST 与 JSON 协议：浏览游戏库，带 SHA-256 校验地下载，保存存档备份和金手指。附带 JSON Schema、一致性测试套件和参考服务器。规范采用 CC BY 4.0，其余采用 MIT。",
-  "lantern_state": "草案 0.1",
+  "lantern_state": "草案",
   "lantern_try_label": "阅读规范",
   "no_release": "尚无版本",
   "footer_label": "其他链接",
