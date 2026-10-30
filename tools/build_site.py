@@ -91,6 +91,44 @@ PROJECTS = {
 DEMO_LANGUAGES = {"fr", "de", "es", "it", "nl", "pt-BR", "ru", "ja", "ko", "zh-Hans", "zh-Hant"}
 
 
+
+# Links out say nothing of the visit (workbench rule "liens sortants
+# anonymes"): the page sends no referrer (template.html's meta), a link to a
+# third party carries rel="noreferrer"; a link to *.boreale.dev or to
+# github.com/JigSawFr keeps the origin alone (referrerpolicy="strict-origin"),
+# so GitHub's traffic insights still see our sites.
+LINK_OUT = re.compile(r'<a\b[^<>]*?\bhref="(https?://[^"]*)"[^<>]*>')
+
+
+def own_site(url: str) -> bool:
+    """boreale.dev, its subdomains, and the repositories of github.com/JigSawFr/
+    (that account's alone: another owner, a gist or GitHub's own pages are
+    third parties)."""
+    u = urlparse(url)
+    host = (u.hostname or "").lower()
+    return u.scheme == "https" and (host == "boreale.dev" or host.endswith(".boreale.dev") or
+                                    (host == "github.com" and u.path.lower().startswith("/jigsawfr/")))
+
+def link_out(tag: str, url: str) -> str:
+    tag = re.sub(r'\sreferrerpolicy="[^"]*"', "", tag)
+    rel = re.search(r'\srel="([^"]*)"', tag)
+    words = [w for w in (rel.group(1).split() if rel else []) if w != "noreferrer"]
+    if rel:
+        tag = tag[:rel.start()] + tag[rel.end():]
+    if own_site(url):
+        extra = ' referrerpolicy="strict-origin"'
+    else:
+        words.append("noreferrer")
+        extra = ""
+    if words:
+        extra = f' rel="{" ".join(words)}"' + extra
+    return tag[:-1] + extra + ">"
+
+
+def links_out(text: str) -> str:
+    return LINK_OUT.sub(lambda m: link_out(m.group(0), m.group(1)), text)
+
+
 def project_url(key: str, language: str) -> str:
     """A project's site in a language: the same folder as this site's."""
     return PROJECTS[key]["site"] + folder(language)
@@ -378,7 +416,7 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     values["jsonld"] = structured(language, catalog, found)
     values["hero"] = fill(hero, values)
     values["body"] = fill(body, values)
-    return fill((SITE / "template.html").read_text(encoding="utf-8"), values)
+    return links_out(fill((SITE / "template.html").read_text(encoding="utf-8"), values))
 
 
 def feed(found: list, catalog: dict) -> str:
