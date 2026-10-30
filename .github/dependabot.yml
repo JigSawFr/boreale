@@ -15,3 +15,11 @@ updates:
       pages:
         patterns:
           - actions/*-pages*
+  # library/boreale-site: what Boréale's sites share, followed on its main.
+  - package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
+      include: scope

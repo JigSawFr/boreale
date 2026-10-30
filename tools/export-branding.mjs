@@ -13,7 +13,7 @@ const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const fonts = join(root, "site/assets/fonts");
+const fonts = join(root, "library/boreale-site/assets/fonts");
 
 // [source svg, output png, width, height]
 const exports = [

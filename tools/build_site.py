@@ -27,7 +27,6 @@ SITE_URL is the site's address (https://boreale.dev/ by default).
 build.sha256 is a hash of everything built, for the workflow to tell whether
 a scheduled build has anything new to publish.
 """
-import hashlib
 import html
 import json
 import os
@@ -37,44 +36,22 @@ import sys
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
-SITE_URL = os.environ.get("SITE_URL", "https://boreale.dev/").rstrip("/") + "/"
-# The consoles' languages, as PlayGuard's, PlayShelf's and Aurore's sites
-# have them: the catalog's code (site/i18n/<code>.json), the site's folder
-# ('' for the root, the first one), the name in its own words, the html lang.
-LANGUAGES = [
-    ("en", "", "English", "en"),
-    ("fr", "fr", "Français", "fr"),
-    ("fr-CA", "fr-ca", "Français (Canada)", "fr-CA"),
-    ("de", "de", "Deutsch", "de"),
-    ("es", "es", "Español", "es"),
-    ("es-419", "es-419", "Español (Latinoamérica)", "es-419"),
-    ("it", "it", "Italiano", "it"),
-    ("nl", "nl", "Nederlands", "nl"),
-    ("pt", "pt", "Português", "pt-PT"),
-    ("pt-BR", "pt-br", "Português (Brasil)", "pt-BR"),
-    ("ru", "ru", "Русский", "ru"),
-    ("ja", "ja", "日本語", "ja"),
-    ("ko", "ko", "한국어", "ko"),
-    ("zh-Hans", "zh-hans", "简体中文", "zh-Hans"),
-    ("zh-Hant", "zh-hant", "繁體中文", "zh-Hant"),
-]
-CODES = [code for code, _, _, _ in LANGUAGES]
+# What Boréale's sites share (library/boreale-site, a submodule): the
+# languages, the header's menus, the links out and their UTM tags, the
+# common texts and assets.
+sys.path.insert(0, str(ROOT / "library" / "boreale-site"))
+import boreale_site as boreale  # noqa: E402
+from boreale_site import CODES, OG_LOCALES, attribute, fill, folder, html_lang  # noqa: E402
+
+BOREALE = boreale.Site("boreale", os.environ.get("SITE_URL"))
+SITE_URL = BOREALE.url
 # The language the legal texts are written in, the others translating it
 # (legal_translation, said on the other languages' legal page).
 ORIGINAL = "fr"
-# Each language's flag in the language menu (fonts/twemoji-flags.woff2 draws
-# them the same everywhere, Windows included): the country of the console's
-# language, Mexico for Latin America's Spanish, Taiwan for Traditional Chinese.
-FLAGS = {"en": "US", "fr": "FR", "fr-CA": "CA", "de": "DE", "es": "ES", "es-419": "MX", "it": "IT", "nl": "NL",
-         "pt": "PT", "pt-BR": "BR", "ru": "RU", "ja": "JP", "ko": "KR", "zh-Hans": "CN", "zh-Hant": "TW"}
-# Open Graph's name of each language.
-OG_LOCALES = {"en": "en_US", "fr": "fr_FR", "fr-CA": "fr_CA", "de": "de_DE", "es": "es_ES", "es-419": "es_LA",
-              "it": "it_IT", "nl": "nl_NL", "pt": "pt_PT", "pt-BR": "pt_BR", "ru": "ru_RU", "ja": "ja_JP",
-              "ko": "ko_KR", "zh-Hans": "zh_CN", "zh-Hant": "zh_TW"}
 OWNER = "JigSawFr"
 RELEASES_SHOWN = 5
 # versions.json's schema: {"schema": 1, "projects": {project: "vX"}}, read by
@@ -98,76 +75,6 @@ PROJECTS = {
 DEMO_LANGUAGES = {"fr", "de", "es", "it", "nl", "pt-BR", "ru", "ja", "ko", "zh-Hans", "zh-Hant"}
 
 
-
-# Links out say nothing of the visit (workbench rule "liens sortants
-# anonymes"): the page sends no referrer (template.html's meta), a link to a
-# third party carries rel="noreferrer"; a link to *.boreale.dev or to
-# github.com/JigSawFr keeps the origin alone (referrerpolicy="strict-origin"),
-# so GitHub's traffic insights still see our sites.
-LINK_OUT = re.compile(r'<a\b[^<>]*?\bhref="(https?://[^"]*)"[^<>]*>')
-
-
-def own_site(url: str) -> bool:
-    """boreale.dev, its subdomains, and the repositories of github.com/JigSawFr/
-    (that account's alone: another owner, a gist or GitHub's own pages are
-    third parties)."""
-    u = urlparse(url)
-    host = (u.hostname or "").lower()
-    return u.scheme == "https" and (host == "boreale.dev" or host.endswith(".boreale.dev") or
-                                    (host == "github.com" and u.path.lower().startswith("/jigsawfr/")))
-
-def link_out(tag: str, url: str) -> str:
-    tag = re.sub(r'\sreferrerpolicy="[^"]*"', "", tag)
-    rel = re.search(r'\srel="([^"]*)"', tag)
-    words = [w for w in (rel.group(1).split() if rel else []) if w != "noreferrer"]
-    if rel:
-        tag = tag[:rel.start()] + tag[rel.end():]
-    if own_site(url):
-        extra = ' referrerpolicy="strict-origin"'
-    else:
-        words.append("noreferrer")
-        extra = ""
-    if words:
-        extra = f' rel="{" ".join(words)}"' + extra
-    return tag[:-1] + extra + ">"
-
-
-# Where a visit to another of Boréale's sites came from, for Umami (workbench's
-# "Mesure d'audience"): a link from this site to another *.boreale.dev site
-# carries utm_source='boreale' and a utm_medium telling where on the page it
-# is: "nav" (the header, its sites menu), "footer", or "link" (the page's
-# text). A link to this site itself carries none: tags a page's text came with
-# (a documentation page written for GitHub, utm_source=github) are taken off.
-UTM_SOURCE = "boreale"
-
-
-def utm(url: str, medium: str) -> str:
-    """`url` (as written in the page's HTML) tagged for its medium, or as it is
-    when it leads out of Boréale's sites."""
-    u = urlsplit(html.unescape(url))
-    host = (u.hostname or "").lower()
-    if u.scheme != "https" or not (host == "boreale.dev" or host.endswith(".boreale.dev")):
-        return url
-    query = [(k, v) for k, v in parse_qsl(u.query, keep_blank_values=True) if not k.startswith("utm_")]
-    if host != (urlsplit(SITE_URL).hostname or ""):
-        query += [("utm_source", UTM_SOURCE), ("utm_medium", medium)]
-    tagged = urlunsplit(u._replace(query=urlencode(query)))
-    return url if tagged == html.unescape(url) else html.escape(tagged, quote=True)
-
-
-def links_out(text: str) -> str:
-    main, footer = text.find("<main"), text.find("<footer")
-
-    def one(m):
-        at = m.start()
-        medium = "footer" if 0 <= footer <= at else "nav" if main < 0 or at < main else "link"
-        url = utm(m.group(1), medium)
-        tag = m.group(0).replace(f'href="{m.group(1)}"', f'href="{url}"', 1)
-        return link_out(tag, url)
-
-    return LINK_OUT.sub(one, text)
-
-
 def project_url(key: str, language: str) -> str:
     """A project's site in a language: the same folder as this site's."""
     return PROJECTS[key]["site"] + folder(language)
@@ -181,69 +88,6 @@ def try_url(key: str, language: str) -> str:
     return PROJECTS[key]["try"] + f"?lang={'en-US' if language == 'en' else language}"
 
 
-def flag(language: str) -> str:
-    """A language's flag, two regional indicator letters, for the eyes only."""
-    emoji = "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in FLAGS[language])
-    return f'<span class="flag" aria-hidden="true">{emoji}</span>'
-
-
-def languages(language: str, catalog: dict, root: str, path: str) -> str:
-    """The header's languages: a button with the page's, and under it their
-    menu (a popover, as the menu of Boréale's sites), this page in each, its
-    own marked. Choosing one keeps it (assets/lang.js)."""
-    name = next(n for c, _, n, _ in LANGUAGES if c == language)
-    options = "\n".join(
-        f'        <li><a href="{root}{folder(c)}{path}" data-lang="{d or c}" lang="{hl}" hreflang="{hl}"'
-        f'{' aria-current="true"' if c == language else ""}>{flag(c)}{html.escape(n)}</a></li>'
-        for c, d, n, hl in LANGUAGES)
-    label = catalog["language"]
-    return (f'<div class="settings">\n'
-            f'      <button class="lang-button" type="button" popovertarget="languages" aria-label="{label} · {html.escape(name)}">'
-            f'{flag(language)}<span class="lang-name">{html.escape(name)}</span>'
-            f'<span class="lang-code">{language.split("-")[0].upper()}</span>'
-            f'<svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
-            f'      <ul id="languages" class="langs" popover aria-label="{label}">\n{options}\n      </ul>\n    </div>')
-
-# Boréale's sites, in the header's menu (switcher()): the same in each site,
-# each in its catalog's language where it has it. boreale.dev first, then
-# the homebrew, then the libraries, then the open data and protocols (Atlas,
-# Lantern), each group under its catalog's title.
-SITES = [(None, [("boreale", "Boréale", "https://boreale.dev/")]),
-         ("sites_homebrew", [("playguard", "PlayGuard", "https://guard.boreale.dev/"),
-                             ("playshelf", "PlayShelf", "https://shelf.boreale.dev/")]),
-         ("sites_libraries", [("aurore", "Aurore", "https://aurore.boreale.dev/")]),
-         ("sites_open", [("atlas", "Atlas", "https://atlas.boreale.dev/"),
-                         ("lantern", "Lantern", "https://lantern.boreale.dev/")])]
-
-
-def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
-    """The header's name, a button that opens the menu of Boréale's sites
-    (the same in each site: site.css's and site.js's "site switcher"),
-    this one marked and leading home, each with its latest release
-    (`latest`). A popover: the browser closes it on Esc or a click elsewhere."""
-    label = catalog["sites_label"]
-    groups = []
-    for title, sites in SITES:
-        items = []
-        for key, name, url in sites:
-            here = key == "boreale"
-            href = f"{root}{folder(language)}" if here else url + folder(language)
-            soon = f'<em class="soon">{catalog["sites_soon"]}</em>' if key == "playshelf" else ""
-            version = f' <span class="sites-version">{html.escape(latest[key])}</span>' if key in latest else ""
-            current = ' aria-current="true"' if here else ""
-            items.append(f'<li><a href="{href}"{current}>'
-                         f'<img src="{root}assets/marks/{key}.svg" alt="" width="36" height="36">'
-                         f'<span><strong>{name}{version}</strong><small>{catalog[f"sites_{key}"]}</small></span>{soon}</a></li>')
-        heading = f'<p class="sites-title">{catalog[title]}</p>' if title else ""
-        groups.append(f'        {heading}<ul>\n          ' + "\n          ".join(items) + '\n        </ul>')
-    return (f'<div class="switcher">\n'
-            f'      <button class="brand switch" type="button" popovertarget="sites" aria-label="Boréale · {label}">'
-            f'<img src="{root}assets/marks/boreale.svg" alt="" width="34" height="34">Boréale'
-            f'<svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
-            f'      <div id="sites" class="sites" popover aria-label="{label}">\n'
-            + "\n".join(groups) + '\n      </div>\n    </div>')
-
-
 # The pages other than 404.html, by their path under each language's folder.
 PAGES = {"": "home.html", "support/": "support.html", "legal/": "legal.html", "insights/": "insights.html"}
 
@@ -254,37 +98,6 @@ PAGES = {"": "home.html", "support/": "support.html", "legal/": "legal.html", "i
 # protocols", lighter cards) with their explorer and specification.
 ATLAS = "https://atlas.boreale.dev/"
 LANTERN = "https://lantern.boreale.dev/"
-
-# A release's date as each language writes it, short: its months, and where
-# the day, the month and the year go ({d} {m} {y}; by number in Chinese,
-# Japanese and Korean).
-_FR = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
-_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"]
-_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
-MONTHS = {
-    "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    "fr": _FR, "fr-CA": _FR,
-    "de": ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sept.", "Okt.", "Nov.", "Dez."],
-    "es": _ES, "es-419": _ES,
-    "it": ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"],
-    "nl": ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"],
-    "pt": _PT, "pt-BR": _PT,
-    "ru": ["янв.", "февр.", "мар.", "апр.", "мая", "июн.", "июл.", "авг.", "сент.", "окт.", "нояб.", "дек."],
-}
-DATES = {"de": "{d}. {m} {y}", "ja": "{y}年{n}月{d}日", "zh-Hans": "{y}年{n}月{d}日", "zh-Hant": "{y}年{n}月{d}日",
-         "ko": "{y}. {n}. {d}."}  # else "{d} {m} {y}"
-
-KEY = re.compile(r"\{\{([a-z0-9_]+)\}\}")
-
-
-def fill(text: str, values: dict) -> str:
-    def one(match):
-        key = match.group(1)
-        if key not in values:
-            sys.exit(f"build_site: no text for {{{{{key}}}}}")
-        return values[key]
-    # Twice: a text may hold a key ({{root}} in home.html's links).
-    return KEY.sub(one, KEY.sub(one, text))
 
 
 def releases() -> list:
@@ -332,11 +145,6 @@ def summary(notes: str) -> str:
     return text
 
 
-def day(date: datetime, language: str) -> str:
-    month = MONTHS[language][date.month - 1] if language in MONTHS else ""
-    return DATES.get(language, "{d} {m} {y}").format(d=date.day, m=month, n=date.month, y=date.year)
-
-
 def news(found: list, language: str, catalog: dict, root: str) -> str:
     """The home page's latest releases, or nothing without any: a list,
     drawn by site.css as a timeline (the dates beside a line of aurora, a
@@ -346,7 +154,7 @@ def news(found: list, language: str, catalog: dict, root: str) -> str:
     items = "".join(
         f'<li><img src="{root}assets/marks/{r["project"]}.svg" alt="" width="28" height="28">'
         f'<a href="{html.escape(r["url"])}">{r["name"]} {html.escape(r["version"])}</a>'
-        f'<time datetime="{r["date"].date().isoformat()}">{day(r["date"], language)}</time>'
+        f'<time datetime="{r["date"].date().isoformat()}">{boreale.day(r["date"], language)}</time>'
         # The notes are in English: their lede only on the English page.
         + (f'<p>{html.escape(r["summary"])}</p>' if r["summary"] and language == "en" else "") + "</li>"
         for r in found[:RELEASES_SHOWN])
@@ -387,38 +195,6 @@ def structured(language: str, catalog: dict, found: list) -> str:
     return f'<script type="application/ld+json">{text}</script>'
 
 
-def attribute(text: str) -> str:
-    """A text for a double-quoted attribute (the apostrophes left as they are)."""
-    return html.escape(text, quote=False).replace('"', "&quot;")
-
-
-def indexing(url: str, path: str, lost: bool) -> str:
-    """The canonical address and the other languages' for search engines; a
-    page that is not there (404.html) is kept out of their index instead."""
-    if lost:
-        return '<meta name="robots" content="noindex">'
-    lines = [f'<link rel="canonical" href="{url}">']
-    lines += [f'<link rel="alternate" hreflang="{hl}" href="{address(code, path)}">' for code, _, _, hl in LANGUAGES]
-    lines.append(f'<link rel="alternate" hreflang="x-default" href="{address(CODES[0], path)}">')
-    return "\n".join(lines)
-
-
-def folder(language: str) -> str:
-    """A language's folder: none for the first one, at the root."""
-    d = next(d for c, d, _, _ in LANGUAGES if c == language)
-    return f"{d}/" if d else ""
-
-
-def html_lang(language: str) -> str:
-    """A language's code for html's lang and hreflang (pt-PT for pt)."""
-    return next(hl for c, _, _, hl in LANGUAGES if c == language)
-
-
-def address(language: str, path: str = "") -> str:
-    """A page's address in a language (its home page without a path)."""
-    return SITE_URL + folder(language) + path
-
-
 def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str, title: str,
          found: list, path: str = "", first_visit: bool = False, lost: bool = False) -> str:
     values = dict(catalog)
@@ -443,20 +219,21 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     values["og_locale"] = OG_LOCALES[language]
     # The header's languages: this page in each (none for 404.html, which
     # is at any address).
-    values["languages"] = languages(language, catalog, root, path if not lost else "")
+    values["languages"] = BOREALE.languages(language, catalog, root, path if not lost else "")
     # The root's home page sends a first visit to the browser's language (assets/lang.js).
     values["first_visit"] = " data-first-visit" if first_visit else ""
     # 404.html at the root sends a visitor reading another language to that
     # language's (assets/lang.js); the site's address path tells it where.
     values["lost"] = f' data-lost="{root}"' if lost and language == CODES[0] else ""
-    values["indexing"] = indexing(url, path, lost)
+    values["indexing"] = BOREALE.indexing(language, path, lost)
     # The home page (the one with a hero): site.css's showcase, the night
     # going on down it.
     values["page_class"] = ' class="home"' if hero else ""
     values["og_alternates"] = "\n".join(
         f'<meta property="og:locale:alternate" content="{OG_LOCALES[code]}">' for code in CODES if code != language)
     values.update(root=root, site=SITE_URL, url=url, title=title)
-    values["switcher"] = switcher(language, catalog, root, latest)
+    values["switcher"] = BOREALE.switcher(language, catalog, root, latest)
+    values["audience"] = BOREALE.audience(root)
     values["news"] = news(found, language, catalog, root)
     values["atlas_url"] = ATLAS + folder(language)
     values["atlas_try"] = ATLAS + folder(language) + "explore/"
@@ -465,7 +242,7 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     values["jsonld"] = structured(language, catalog, found)
     values["hero"] = fill(hero, values)
     values["body"] = fill(body, values)
-    return links_out(fill((SITE / "template.html").read_text(encoding="utf-8"), values))
+    return BOREALE.links_out(fill((SITE / "template.html").read_text(encoding="utf-8"), values))
 
 
 def feed(found: list, catalog: dict) -> str:
@@ -515,12 +292,13 @@ def main() -> None:
     if out.exists():
         shutil.rmtree(out)
     shutil.copytree(SITE / "assets", out / "assets")
+    boreale.copy_assets(out)
 
     hero = (SITE / "hero.html").read_text(encoding="utf-8")
     bodies = {path: (SITE / name).read_text(encoding="utf-8") for path, name in PAGES.items()}
     lost = (SITE / "lost.html").read_text(encoding="utf-8")
     base = urlparse(SITE_URL).path  # 404.html is served at any depth
-    catalogs = {code: json.loads((SITE / "i18n" / f"{code}.json").read_text(encoding="utf-8")) for code in CODES}
+    catalogs = boreale.catalogs(SITE / "i18n")
     for lang, catalog in catalogs.items():
         for path, body in bodies.items():
             where = folder(lang) + path
@@ -553,22 +331,11 @@ def main() -> None:
     (out / ".well-known").mkdir()
     (out / ".well-known" / "security.txt").write_text(security(datetime.now(timezone.utc)), encoding="utf-8")
     # Each page in each language, with every language's (search engines read hreflang there too).
-    urls = ""
-    for path in PAGES:
-        alternates = "".join(
-            f'    <xhtml:link rel="alternate" hreflang="{hl}" href="{address(code, path)}"/>\n' for code, _, _, hl in LANGUAGES)
-        alternates += f'    <xhtml:link rel="alternate" hreflang="x-default" href="{address(CODES[0], path)}"/>\n'
-        urls += "".join(f"  <url>\n    <loc>{address(code, path)}</loc>\n{alternates}  </url>\n" for code in CODES)
-    (out / "sitemap.xml").write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
-        f' xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{urls}</urlset>\n', encoding="utf-8")
+    (out / "sitemap.xml").write_text(BOREALE.sitemap(PAGES), encoding="utf-8")
     (out / ".nojekyll").touch()
     # What was built, as one hash: the scheduled builds publish only when it
     # differs from the one served (.github/workflows/site.yml).
-    digest = hashlib.sha256()
-    for path in sorted(p for p in out.rglob("*") if p.is_file()):
-        digest.update(path.relative_to(out).as_posix().encode() + b"\0" + path.read_bytes())
-    (out / "build.sha256").write_text(digest.hexdigest() + "\n", encoding="utf-8")
+    (out / "build.sha256").write_text(boreale.digest(out) + "\n", encoding="utf-8")
     print(f"build_site: {len(CODES)} languages in {out} for {SITE_URL}, {len(found)} release(s)")
 
 
