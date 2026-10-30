@@ -20,9 +20,10 @@ This repository holds:
 ## Build the site
 
 ```sh
+git submodule update --init           # library/boreale-site, what Boréale's sites share
 python3 tools/build_site.py build     # the pages, in build/
 python3 tools/check_site.py build     # links, catalogs, Content-Security-Policy
-python3 tools/site_layout.py build    # phones to desktop, and axe (Playwright for Python)
+python3 library/boreale-site/tools/site_layout.py build    # phones to desktop, and axe (Playwright for Python)
 python3 -m http.server -d build 8000  # then http://localhost:8000/
 ```
 
@@ -30,6 +31,6 @@ Python 3 and nothing else. `node tools/export-branding.mjs` renders the PNGs aga
 
 ## License
 
-The code and the pages: **GPLv3**, as PlayGuard, PlayShelf and Aurore (see [`LICENSE`](LICENSE)). The fonts in `site/assets/fonts/` are under the **SIL Open Font License** (their `OFL-*.txt`), except the language menu's flags (`twemoji-flags.woff2`, cut out of Twemoji's): **CC-BY 4.0** (`LICENSE-twemoji-flags.txt`). The marks and the names Boréale, PlayGuard, PlayShelf and Aurore identify these projects: use them to point to the projects, not for your own.
+The code and the pages: **GPLv3**, as PlayGuard, PlayShelf and Aurore (see [`LICENSE`](LICENSE)). The fonts (`library/boreale-site/assets/fonts/`, served with the site) are under the **SIL Open Font License** (their `OFL-*.txt`), except the language menu's flags (`twemoji-flags.woff2`, cut out of Twemoji's): **CC-BY 4.0** (`LICENSE-twemoji-flags.txt`). The marks and the names Boréale, PlayGuard, PlayShelf and Aurore identify these projects: use them to point to the projects, not for your own.
 
 <sub>Not affiliated with or endorsed by Nintendo. Nintendo Switch is a trademark of Nintendo.</sub>

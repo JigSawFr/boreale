@@ -4,14 +4,14 @@
     python3 tools/make_banners.py
 
 One template for every project (branding/README.md): the night, the aurora,
-the project's mark (site/assets/marks/), its name, what it does, and Boréale's
-mark and name in a corner. node tools/export-branding.mjs renders the PNGs.
+the project's mark (library/boreale-site/assets/marks/), its name, what it
+does, and Boréale's mark and name in a corner. node tools/export-branding.mjs renders the PNGs.
 """
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MARKS = ROOT / "site/assets/marks"
+MARKS = ROOT / "library/boreale-site/assets/marks"
 OUT = ROOT / "branding/banners"
 
 PROJECTS = {

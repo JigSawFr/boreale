@@ -4,21 +4,23 @@ Boréale's site and brand: a change is a pull request against `main`, its title 
 
 ## Before a pull request
 
+What Boréale's sites share (the languages, the header's menus, the rules for links out, the fonts and marks) is [boreale-site](https://github.com/JigSawFr/boreale-site), the submodule `library/boreale-site`: clone with `--recurse-submodules`, or `git submodule update --init` after. A change to it goes there first.
+
 ```sh
 SITE_OFFLINE=1 python3 tools/build_site.py build   # without GitHub's API
 python3 tools/check_site.py build
-python3 tools/site_layout.py build                 # Playwright for Python; else CI runs it
+python3 library/boreale-site/tools/site_layout.py build   # Playwright for Python; else CI runs it
 ```
 
 Then a look at the pages (`python3 -m http.server -d build 8000`) on a phone and a desktop.
 
 ## A text
 
-Every text is in `site/i18n/<language>.json`: a key added to `en.json` is added, translated, to all fifteen catalogs (`check_site.py` fails otherwise), with the apps' names for their screens and features and each language's typography (`site/README.md`). `title` and `description` are plain text (they are attributes too); the others may hold HTML.
+Every text is in `site/i18n/<language>.json`: a key added to `en-US.json` is added, translated, to all fifteen catalogs (`check_site.py` fails otherwise), with the apps' names for their screens and features and each language's typography (`site/README.md`). `title` and `description` are plain text (they are attributes too); the others may hold HTML.
 
 ## A language
 
-The site has the consoles' fifteen, as the apps and the projects' sites do. A new one: its catalog in `site/i18n/`, its entry in `LANGUAGES`, `FLAGS`, `OG_LOCALES` and the dates' `MONTHS` or `DATES` (`tools/build_site.py`), its folder in `SITE` and the browser's codes for it in `browser()` (`site/assets/lang.js`), and its flag cut into `site/assets/fonts/twemoji-flags.woff2`; the header's menu, its `<link hreflang>` and the sitemap come with it. The projects' sites have the same folders, which the menu of Boréale's sites and the cards lead to.
+The site has the consoles' fifteen, as the apps and the projects' sites do. A new one is added to every site at once, in boreale-site (`LANGUAGES`, `FLAGS`, `OG_LOCALES`, `MONTHS`/`DATES`, `assets/lang.js`, the flags' font, its common catalog), then here: its catalog in `site/i18n/`; the header's menu, its `<link hreflang>` and the sitemap come with it. The projects' sites have the same folders, which the menu of Boréale's sites and the cards lead to.
 
 ## A mark
 
