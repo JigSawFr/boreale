@@ -34,7 +34,7 @@ import sys
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
@@ -125,8 +125,40 @@ def link_out(tag: str, url: str) -> str:
     return tag[:-1] + extra + ">"
 
 
+# Where a visit to another of Boréale's sites came from, for Umami (workbench's
+# "Mesure d'audience"): a link from this site to another *.boreale.dev site
+# carries utm_source='boreale' and a utm_medium telling where on the page it
+# is: "nav" (the header, its sites menu), "footer", or "link" (the page's
+# text). A link to this site itself carries none: tags a page's text came with
+# (a documentation page written for GitHub, utm_source=github) are taken off.
+UTM_SOURCE = "boreale"
+
+
+def utm(url: str, medium: str) -> str:
+    """`url` (as written in the page's HTML) tagged for its medium, or as it is
+    when it leads out of Boréale's sites."""
+    u = urlsplit(html.unescape(url))
+    host = (u.hostname or "").lower()
+    if u.scheme != "https" or not (host == "boreale.dev" or host.endswith(".boreale.dev")):
+        return url
+    query = [(k, v) for k, v in parse_qsl(u.query, keep_blank_values=True) if not k.startswith("utm_")]
+    if host != (urlsplit(SITE_URL).hostname or ""):
+        query += [("utm_source", UTM_SOURCE), ("utm_medium", medium)]
+    tagged = urlunsplit(u._replace(query=urlencode(query)))
+    return url if tagged == html.unescape(url) else html.escape(tagged, quote=True)
+
+
 def links_out(text: str) -> str:
-    return LINK_OUT.sub(lambda m: link_out(m.group(0), m.group(1)), text)
+    main, footer = text.find("<main"), text.find("<footer")
+
+    def one(m):
+        at = m.start()
+        medium = "footer" if 0 <= footer <= at else "nav" if main < 0 or at < main else "link"
+        url = utm(m.group(1), medium)
+        tag = m.group(0).replace(f'href="{m.group(1)}"', f'href="{url}"', 1)
+        return link_out(tag, url)
+
+    return LINK_OUT.sub(one, text)
 
 
 def project_url(key: str, language: str) -> str:

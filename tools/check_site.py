@@ -10,17 +10,20 @@
 - links out by the rule "liens sortants anonymes": every page sends no
   referrer, a link to a third party has rel="noreferrer", one to
   *.boreale.dev or github.com/JigSawFr has referrerpolicy="strict-origin";
+  one to another of our sites has utm_source=boreale and a utm_medium, no
+  other link has utm_ parameters;
 - nothing the Content-Security-Policy blocks: no inline script (but the
   schema.org data, which runs nothing), no <style>, no style="" attribute,
   nothing loaded from another site;
 - the schema.org data, feed.atom and manifest.webmanifest read as JSON or XML.
 """
 import json
+import os
 import sys
 import xml.etree.ElementTree as ElementTree
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -47,6 +50,12 @@ def check_own_site() -> None:
         assert not own_site(url), url
 
 
+# This site's address (build_site.py's SITE_URL) and its name in the UTM tags
+# of its links to our other sites.
+SITE_HOST = (urlparse(os.environ.get("SITE_URL", "https://boreale.dev/")).hostname or "").lower()
+UTM_SOURCE = "boreale"
+
+
 def link_problem(attrs: dict) -> str:
     """What a link out does wrong by the rule "liens sortants anonymes": a
     third party gets rel="noreferrer"; *.boreale.dev and github.com/JigSawFr
@@ -60,6 +69,17 @@ def link_problem(attrs: dict) -> str:
             return f'link to {href} needs referrerpolicy="strict-origin" and no noreferrer'
     elif "noreferrer" not in rel:
         return f'link to {href} without rel="noreferrer"'
+    # UTM tags (workbench's "Mesure d'audience"): a link to another of our
+    # sites (*.boreale.dev) says where it comes from, utm_source='boreale' and
+    # a utm_medium; one to this site itself or to anyone else carries none.
+    u = urlparse(href)
+    host = (u.hostname or "").lower()
+    query = dict(parse_qsl(u.query))
+    if u.scheme == "https" and (host == "boreale.dev" or host.endswith(".boreale.dev")) and host != SITE_HOST:
+        if query.get("utm_source") != UTM_SOURCE or not query.get("utm_medium"):
+            return f"link to {href} without utm_source={UTM_SOURCE} and a utm_medium"
+    elif any(k.startswith("utm_") for k in query):
+        return f"link to {href} with utm_ parameters: only a link to another of our sites has them"
     return ""
 
 
