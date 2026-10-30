@@ -41,7 +41,7 @@
   "ground_4_text": "GPLv3。変更のたびに GitHub でビルドとテストを行い、コード、Issue、ロードマップを公開しています。",
   "promise_title": "あなたの本体、あなたのゲーム",
   "promise_text": "これらのアプリはカスタムファームウェアを導入した本体で動作し、利用は自己責任です。あなたが所有するものと一緒に使うためのもので、権利なくゲームを配布するサービスには、今も今後も対応しません。",
-  "footer_made": "<a href=\"https://github.com/JigSawFr\" referrerpolicy=\"strict-origin\">JigSawFr</a> 制作 · GPLv3 のフリーソフトウェア。",
+  "footer_made": "<a href=\"https://github.com/JigSawFr\" rel=\"noreferrer\">JigSawFr</a> 制作 · GPLv3 のフリーソフトウェア。",
   "footer_nintendo": "Nintendo とは提携しておらず、承認も受けていません。Nintendo Switch は Nintendo の商標です。",
   "lost_title": "夜の中で迷子に",
   "lost_text": "このページは存在しないか、なくなりました。プロジェクトはホームページにあります。",

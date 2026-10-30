@@ -41,7 +41,7 @@
   "ground_4_text": "GPLv3. 변경할 때마다 GitHub에서 빌드하고 테스트하며, 코드와 이슈, 로드맵을 공개합니다.",
   "promise_title": "당신의 본체, 당신의 게임",
   "promise_text": "이 앱들은 커스텀 펌웨어가 설치된 본체에서 실행되며, 사용에 따른 책임은 본인에게 있습니다. 직접 소유한 것과 함께 쓰도록 만들어졌으며, 권리 없이 게임을 배포하는 서비스는 지원하지 않고 앞으로도 지원하지 않습니다.",
-  "footer_made": "<a href=\"https://github.com/JigSawFr\" referrerpolicy=\"strict-origin\">JigSawFr</a> 제작 · GPLv3 자유 소프트웨어.",
+  "footer_made": "<a href=\"https://github.com/JigSawFr\" rel=\"noreferrer\">JigSawFr</a> 제작 · GPLv3 자유 소프트웨어.",
   "footer_nintendo": "Nintendo와 제휴하거나 Nintendo의 승인을 받지 않았습니다. Nintendo Switch는 Nintendo의 상표입니다.",
   "lost_title": "밤 속에서 길을 잃었습니다",
   "lost_text": "이 페이지는 없거나 더 이상 없습니다. 프로젝트는 홈페이지에 있습니다.",

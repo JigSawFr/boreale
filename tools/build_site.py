@@ -101,11 +101,13 @@ LINK_OUT = re.compile(r'<a\b[^<>]*?\bhref="(https?://[^"]*)"[^<>]*>')
 
 
 def own_site(url: str) -> bool:
+    """boreale.dev, its subdomains, and the repositories of github.com/JigSawFr/
+    (that account's alone: another owner, a gist or GitHub's own pages are
+    third parties)."""
     u = urlparse(url)
     host = (u.hostname or "").lower()
-    return host == "boreale.dev" or host.endswith(".boreale.dev") or \
-        (host == "github.com" and u.path.lower().startswith("/jigsawfr"))
-
+    return u.scheme == "https" and (host == "boreale.dev" or host.endswith(".boreale.dev") or
+                                    (host == "github.com" and u.path.lower().startswith("/jigsawfr/")))
 
 def link_out(tag: str, url: str) -> str:
     tag = re.sub(r'\sreferrerpolicy="[^"]*"', "", tag)

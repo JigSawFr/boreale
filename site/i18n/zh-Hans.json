@@ -41,7 +41,7 @@
   "ground_4_text": "采用 GPLv3，每次修改都在 GitHub 上构建和测试，代码、问题和路线图全部公开。",
   "promise_title": "你的主机，你的游戏",
   "promise_text": "这些应用运行在安装了自定义固件的主机上，风险由你自行承担。它们配合你所拥有的东西使用：没有一个支持、将来也不会支持任何未经授权分发游戏的服务。",
-  "footer_made": "由 <a href=\"https://github.com/JigSawFr\" referrerpolicy=\"strict-origin\">JigSawFr</a> 制作 · 基于 GPLv3 的自由软件。",
+  "footer_made": "由 <a href=\"https://github.com/JigSawFr\" rel=\"noreferrer\">JigSawFr</a> 制作 · 基于 GPLv3 的自由软件。",
   "footer_nintendo": "与任天堂无关，也未获任天堂认可。Nintendo Switch 是任天堂的商标。",
   "lost_title": "迷失在夜色中",
   "lost_text": "此页面不存在，或已不存在。项目都在首页上。",

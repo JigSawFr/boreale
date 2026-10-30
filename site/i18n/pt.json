@@ -41,7 +41,7 @@
   "ground_4_text": "GPLv3, compilados e testados no GitHub a cada alteração, com o código, os problemas reportados e o roteiro em público.",
   "promise_title": "A tua consola, os teus jogos",
   "promise_text": "Estas aplicações funcionam numa consola com firmware personalizado, por tua conta e risco. Funcionam com aquilo que é teu: nenhuma suporta, nem suportará, um serviço que distribua jogos sem ter os direitos para isso.",
-  "footer_made": "Feito por <a href=\"https://github.com/JigSawFr\" referrerpolicy=\"strict-origin\">JigSawFr</a> · Software livre sob a GPLv3.",
+  "footer_made": "Feito por <a href=\"https://github.com/JigSawFr\" rel=\"noreferrer\">JigSawFr</a> · Software livre sob a GPLv3.",
   "footer_nintendo": "Sem afiliação nem aprovação da Nintendo. Nintendo Switch é uma marca da Nintendo.",
   "lost_title": "Perdido na noite",
   "lost_text": "Esta página não existe, ou já não existe. Os projetos estão na página inicial.",

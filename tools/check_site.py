@@ -27,10 +27,24 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def own_site(url: str) -> bool:
+    """boreale.dev, its subdomains, and the repositories of github.com/JigSawFr/
+    (that account's alone: another owner, a gist or GitHub's own pages are
+    third parties)."""
     u = urlparse(url)
     host = (u.hostname or "").lower()
-    return host == "boreale.dev" or host.endswith(".boreale.dev") or \
-        (host == "github.com" and u.path.lower().startswith("/jigsawfr"))
+    return u.scheme == "https" and (host == "boreale.dev" or host.endswith(".boreale.dev") or
+                                    (host == "github.com" and u.path.lower().startswith("/jigsawfr/")))
+
+
+def check_own_site() -> None:
+    """own_site() against look-alikes, at each run (the site has no unit tests)."""
+    for url in ("https://boreale.dev/", "https://shelf.boreale.dev/fr/", "https://github.com/JigSawFr/PlayShelf",
+                "https://github.com/jigsawfr/boreale/releases"):
+        assert own_site(url), url
+    for url in ("https://store.example.com/app/1", "https://github.com/JigSawFr", "https://github.com/jigsawfrx/x",
+                "https://github.com/someone/JigSawFr", "https://gist.github.com/JigSawFr/1",
+                "https://boreale.dev.example.com/", "https://notboreale.dev/", "http://boreale.dev/"):
+        assert not own_site(url), url
 
 
 def link_problem(attrs: dict) -> str:
@@ -89,6 +103,7 @@ class Page(HTMLParser):
 
 
 def main() -> None:
+    check_own_site()
     if len(sys.argv) != 2:
         sys.exit(__doc__)
     site = Path(sys.argv[1])
