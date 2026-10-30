@@ -10,6 +10,9 @@ key's text in the language's catalog, site/i18n/<language>.json. The
 consoles' fifteen languages (LANGUAGES): English at the root, each other one
 in its folder (fr/, fr-ca/, de/ ... zh-hant/).
 
+site/support.html is support/: how to donate (GitHub Sponsors, Ko-fi) and
+the hardware the donations buy to test on.
+
 site/insights.html is insights/: a pointer to Atlas's own site
 (https://atlas.boreale.dev/, ATLAS), where PlayInsights' data now lives,
 kept so that its old links still lead somewhere.
@@ -239,7 +242,7 @@ def switcher(language: str, catalog: dict, root: str, latest: dict) -> str:
 
 
 # The pages other than 404.html, by their path under each language's folder.
-PAGES = {"": "home.html", "legal/": "legal.html", "insights/": "insights.html"}
+PAGES = {"": "home.html", "support/": "support.html", "legal/": "legal.html", "insights/": "insights.html"}
 
 # Atlas, the open data PlayShelf reads (https://github.com/JigSawFr/Atlas):
 # its own site, each language in the same folder as here.
