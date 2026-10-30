@@ -16,7 +16,7 @@ Then a look at the pages (`python3 -m http.server -d build 8000`) on a phone and
 
 ## A text
 
-Every text is in `site/i18n/<language>.json`: a key added to `en.json` is added, translated, to all fifteen catalogs (`check_site.py` fails otherwise), with the apps' names for their screens and features and each language's typography (`site/README.md`). `title` and `description` are plain text (they are attributes too); the others may hold HTML.
+Every text is in `site/i18n/<language>.json`: a key added to `en-US.json` is added, translated, to all fifteen catalogs (`check_site.py` fails otherwise), with the apps' names for their screens and features and each language's typography (`site/README.md`). `title` and `description` are plain text (they are attributes too); the others may hold HTML.
 
 ## A language
 

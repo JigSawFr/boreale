@@ -85,7 +85,7 @@ def try_url(key: str, language: str) -> str:
     codes (en-US for English)."""
     if key == "aurore":
         return PROJECTS[key]["try"] + (f"?lang={language}" if language in DEMO_LANGUAGES else "")
-    return PROJECTS[key]["try"] + f"?lang={'en-US' if language == 'en' else language}"
+    return PROJECTS[key]["try"] + f"?lang={language}"
 
 
 # The pages other than 404.html, by their path under each language's folder.
@@ -156,7 +156,7 @@ def news(found: list, language: str, catalog: dict, root: str) -> str:
         f'<a href="{html.escape(r["url"])}">{r["name"]} {html.escape(r["version"])}</a>'
         f'<time datetime="{r["date"].date().isoformat()}">{boreale.day(r["date"], language)}</time>'
         # The notes are in English: their lede only on the English page.
-        + (f'<p>{html.escape(r["summary"])}</p>' if r["summary"] and language == "en" else "") + "</li>"
+        + (f'<p>{html.escape(r["summary"])}</p>' if r["summary"] and language == "en-US" else "") + "</li>"
         for r in found[:RELEASES_SHOWN])
     return (f'<section id="releases">\n      <div class="section-head">\n'
             f'        <span class="eyebrow">{catalog["news_eyebrow"]}</span>\n'

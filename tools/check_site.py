@@ -8,7 +8,7 @@
   somewhere, links out by the rule "liens sortants anonymes" and their UTM
   tags, nothing the Content-Security-Policy blocks, Umami's tracker, no
   e-mail address, the schema.org data read as JSON;
-- the catalogs of site/i18n/ and boreale-site's: the same keys as en.json,
+- the catalogs of site/i18n/ and boreale-site's: the same keys as en-US.json,
   none empty (but fr.json's legal_translation: the French legal page is the
   original), no common text repeated here;
 - feed.atom and sitemap.xml read as XML, manifest.webmanifest's icons are there.
