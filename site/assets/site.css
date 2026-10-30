@@ -412,40 +412,5 @@ footer.site > .wrap { position: relative; }
 }
 @media (prefers-reduced-motion: reduce) { .switch .chevron, .lang-button .chevron { transition: none; } }
 
-/* insights/: PlayInsights' files, their health, what they hold, today's
-   deals and trends (tools/build_site.py's insights_page()). Wide tables
-   scroll on their own on a phone, not the page. */
-.insights > * { max-width: none; }
-.insights > .lede, .insights > .note, .insights > .notice { max-width: 68ch; }
-.insights .note { color: var(--dusk); font-size: 0.9375rem; }
-.insights .platform > section { padding-block: 24px 0; }
-.insights h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
-.insights .notice { border: 1px solid var(--night-line); border-radius: var(--radius); background: var(--night); padding: 16px 20px; }
-.insights .table { overflow-x: auto; border: 1px solid var(--night-line); border-radius: var(--radius); background: var(--night); }
-.insights .table[hidden] { display: none; }
-.insights table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
-.insights th, .insights td { text-align: start; padding: 10px 16px; border-bottom: 1px solid var(--night-line); vertical-align: top; }
-.insights th { font: 600 0.8125rem var(--body); color: var(--mist); text-transform: uppercase; letter-spacing: 0.04em; }
-.insights tbody tr:last-child td { border-bottom: 0; }
-.insights td { color: var(--snow); }
-.insights code { font: 500 0.875rem var(--mono); color: var(--mist); }
-.insights s { color: var(--mist); }
-.insights .state { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.8125rem; font-weight: 600;
-  color: var(--abyss); background: var(--aurora); }
-.insights .state.late { background: #ffb36b; }
-.insights .mark { display: inline-block; margin-inline-start: 6px; padding: 1px 8px; border-radius: 999px; font-size: 0.75rem;
-  font-weight: 600; color: var(--abyss); background: var(--ice); }
-.insights .tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-.insights .tiles li { border: 1px solid var(--night-line); border-radius: var(--radius); background: var(--night); padding: 16px 18px; display: grid; gap: 4px; }
-.insights .tiles strong { font: 700 1.75rem var(--display); letter-spacing: -0.02em;
-  background: var(--aurora-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.insights .tiles span { color: var(--mist); font-size: 0.9375rem; }
-.insights label { color: var(--mist); margin-inline-end: 8px; }
-.insights select { font: inherit; color: var(--snow); background: var(--night); border: 1px solid var(--night-line);
-  border-radius: 10px; padding: 8px 12px; min-height: 40px; }
-.insights select:focus-visible { outline: 2px solid var(--aurora); outline-offset: 2px; }
-.insights td time, .insights .money, .insights .state, .insights code { white-space: nowrap; }
-@media (max-width: 560px) {
-  .insights th, .insights td { padding: 8px 10px; }
-}
-.insights .table:focus-visible { outline: 2px solid var(--aurora); outline-offset: 2px; }
+/* insights/: a pointer to Atlas's site, its button under the lede. */
+.insights .actions { margin-top: 24px; }
