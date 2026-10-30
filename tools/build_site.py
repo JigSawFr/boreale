@@ -12,7 +12,9 @@ in its folder (fr/, fr-ca/, de/ ... zh-hant/).
 
 site/insights.html is insights/: PlayInsights' open data (the files
 PlayShelf reads for its Home), read from jsDelivr at each build and shown as
-it is that day (insights()); SITE_OFFLINE=1 builds it without them.
+it is that day (insights()), each platform under its name (the Switch's
+files in PlayInsights' switch/); SITE_OFFLINE=1 builds it without them,
+SITE_INSIGHTS=<address> reads them from another copy.
 
 The projects' releases come from GitHub's API at each build: the latest
 version on each card, the latest releases on the home page and in feed.atom.
@@ -172,8 +174,11 @@ PAGES = {"": "home.html", "legal/": "legal.html", "insights/": "insights.html"}
 # at each build, not by the visitor's browser: the Content-Security-Policy
 # stays the site's own, and no visitor's browser asks anyone else for them.
 # The site is built every day; site.js tells, in the browser, a file that has
-# grown late since (data-age).
-INSIGHTS = "https://cdn.jsdelivr.net/gh/JigSawFr/PlayInsights@data/"
+# grown late since (data-age). Each platform's files are in a folder of its
+# own, the Switch's in switch/; index.json, at the root, lists them all.
+# SITE_INSIGHTS=<address> reads them elsewhere (a local copy, file://…/).
+INSIGHTS = os.environ.get("SITE_INSIGHTS") or "https://cdn.jsdelivr.net/gh/JigSawFr/PlayInsights@data/"
+SWITCH = "switch/"
 INSIGHTS_REPO = "https://github.com/JigSawFr/PlayInsights"
 COUNTRIES = ["US", "CA", "MX", "BR", "GB", "FR", "DE", "ES", "IT", "NL", "PT", "AU", "JP"]
 # Each language's country for the deals, as PlayShelf's own default; the
@@ -363,7 +368,8 @@ def insights() -> dict | None:
     when none can be read."""
     if os.environ.get("SITE_OFFLINE") == "1":
         return None
-    names = ["popular.json", "games.json", "similar.json", "upcoming.json"] + [f"prices/{c}.json" for c in COUNTRIES]
+    names = [SWITCH + n for n in ("popular.json", "games.json", "similar.json", "upcoming.json")] \
+        + [f"{SWITCH}prices/{c}.json" for c in COUNTRIES]
     files = {n: read_json(INSIGHTS + n) for n in names}
     if not any(files.values()):
         return None
@@ -380,16 +386,16 @@ def insights() -> dict | None:
         generated = entry.get("generated") or (body.get("generated") if isinstance(body, dict) else "") or ""
         size = entry.get("bytes") or (len(json.dumps(body, separators=(",", ":"))) if body else 0)
         health.append({"name": n, "generated": generated, "bytes": size,
-                       "days": DAILY if n == "popular.json" or n.startswith("prices/") else WEEKLY, "read": body is not None})
-    upcoming = games_of("upcoming.json")
+                       "days": DAILY if n == SWITCH + "popular.json" or n.startswith(SWITCH + "prices/") else WEEKLY, "read": body is not None})
+    upcoming = games_of(SWITCH + "upcoming.json")
     named = {tid: row[1] for tid, row in upcoming.items() if isinstance(row, list) and len(row) > 1}
     countries, deals = [], {}
     for c in COUNTRIES:
-        body = files.get(f"prices/{c}.json")
+        body = files.get(f"{SWITCH}prices/{c}.json")
         if not isinstance(body, dict):
             continue
         rows = []
-        for tid, row in games_of(f"prices/{c}.json").items():
+        for tid, row in games_of(f"{SWITCH}prices/{c}.json").items():
             if not (isinstance(row, list) and len(row) >= 3 and all(isinstance(x, (int, float)) for x in row[:3])):
                 continue
             regular, sale, until = row[:3]
@@ -399,16 +405,16 @@ def insights() -> dict | None:
                              "off": round((1 - sale / regular) * 100), "lowest": lowest})
         rows.sort(key=lambda r: (-r["off"], r["tid"]))
         currency = body.get("currency") or ""
-        countries.append({"country": c, "currency": currency, "priced": len(games_of(f"prices/{c}.json")), "on_sale": len(rows)})
+        countries.append({"country": c, "currency": currency, "priced": len(games_of(f"{SWITCH}prices/{c}.json")), "on_sale": len(rows)})
         deals[c] = {"currency": currency, "rows": rows[:SHOWN]}
-    popular = games_of("popular.json")
+    popular = games_of(SWITCH + "popular.json")
     trending = sorted(((row[1], tid, row[0]) for tid, row in popular.items()
                        if isinstance(row, list) and len(row) >= 2 and isinstance(row[1], int) and row[1] > 0),
                       key=lambda t: (-t[0], t[1]))[:SHOWN]
     return {
         "built": datetime.now(timezone.utc).date().isoformat(), "health": health, "named": named,
-        "counts": {"scored": len(popular), "described": len(games_of("games.json")),
-                   "similar": len(games_of("similar.json")), "upcoming": len(upcoming)},
+        "counts": {"scored": len(popular), "described": len(games_of(SWITCH + "games.json")),
+                   "similar": len(games_of(SWITCH + "similar.json")), "upcoming": len(upcoming)},
         "countries": countries, "deals": deals,
         "trending": [{"tid": tid, "trend": trend, "score": score} for trend, tid, score in trending],
     }
@@ -472,7 +478,7 @@ def insights_page(data: dict | None, language: str, catalog: dict) -> str:
     by_country = "".join(
         f'<tr><td>{t["insights_country_" + x["country"]]}</td><td>{html.escape(x["currency"])}</td>'
         f'<td>{number(x["priced"], language)}</td><td>{number(x["on_sale"], language)}</td></tr>' for x in data["countries"])
-    counts = (f'<section id="holds"><h2>{t["insights_counts_title"]}</h2><ul class="tiles">{tiles}</ul>'
+    counts = (f'<section id="holds"><h3>{t["insights_counts_title"]}</h3><ul class="tiles">{tiles}</ul>'
               f'<div class="table" tabindex="0" role="region" aria-label="{attribute(t["insights_counts_title"])}"><table><thead><tr><th>{t["insights_country"]}</th><th>{t["insights_currency"]}</th>'
               f'<th>{t["insights_priced"]}</th><th>{t["insights_on_sale"]}</th></tr></thead><tbody>{by_country}</tbody></table></div></section>')
     mine = PRICE_COUNTRY.get(language, "US")
@@ -492,18 +498,20 @@ def insights_page(data: dict | None, language: str, catalog: dict) -> str:
                       f'data-country="{country}"{"" if country == mine else " hidden"}><table>'
                       f'<thead><tr><th>{t["insights_game"]}</th><th>{t["insights_price"]}</th><th>{t["insights_discount"]}</th>'
                       f'<th>{t["insights_until"]}</th></tr></thead><tbody>{lines}</tbody></table></div>')
-    deals = (f'<section id="deals"><h2>{t["insights_deals_title"]}</h2>'
+    deals = (f'<section id="deals"><h3>{t["insights_deals_title"]}</h3>'
              + (f'<p><label for="deals-country">{t["insights_country"]}</label> '
                 f'<select id="deals-country">{options}</select></p>' if data["deals"] else "")
              + "".join(tables) + '</section>')
     trends = "".join(f'<tr><td>{game(x["tid"], data["named"])}</td><td>+{number(x["trend"], language)}&nbsp;%</td>'
                      f'<td>{x["score"]}</td></tr>' for x in data["trending"]) or f'<tr><td colspan="3">{t["insights_none"]}</td></tr>'
-    trending = (f'<section id="trending"><h2>{t["insights_trending_title"]}</h2>'
+    trending = (f'<section id="trending"><h3>{t["insights_trending_title"]}</h3>'
                 f'<div class="table" tabindex="0" role="region" aria-label="{attribute(t["insights_trending_title"])}"><table>'
                 f'<thead><tr><th>{t["insights_game"]}</th><th>{t["insights_trend"]}</th><th>{t["insights_score"]}</th></tr></thead>'
                 f'<tbody>{trends}</tbody></table></div><p class="note">{t["insights_names"]}</p></section>')
     built = f'<p class="note">{t["insights_built"].replace("{date}", iso_day(data["built"], language))}</p>'
-    return built + health + counts + deals + trending
+    # Each platform's part under its name: the Switch's, today the only one.
+    switch = f'<section id="switch" class="platform"><h2>{t["insights_platform_switch"]}</h2>{counts}{deals}{trending}</section>'
+    return built + health + switch
 
 
 def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str, title: str,
