@@ -42,7 +42,7 @@ body {
 }
 /* A long word (German's, Russian's) hyphenated where the browser can, else
    broken rather than wider than a phone. */
-h1, h2, h3 { font-family: var(--display); line-height: 1.12; margin: 0; text-wrap: balance; hyphens: auto; overflow-wrap: break-word; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.12; margin: 0; text-wrap: balance; hyphens: auto; overflow-wrap: break-word; }
 p { margin: 0; }
 a { color: var(--ice); text-underline-offset: 3px; }
 a:hover { color: var(--aurora); }
@@ -146,10 +146,10 @@ img { max-width: 100%; }
    whole between their spaces, punctuation and <wbr> (the catalogs'), broken
    elsewhere only when a run is wider than its line. */
 :lang(ja) .hero h1, :lang(ko) .hero h1, :lang(zh) .hero h1 { max-width: 11em; }
-:lang(ja) :is(h1, h2, h3, .eyebrow, .lede, .section-head p, .button, .kind, .state, .project p, .promise p, .hardware p, .links a, .releases a, .sites small, .soon, .lost p) { word-break: auto-phrase; }
+:lang(ja) :is(h1, h2, h3, h4, .eyebrow, .lede, .section-head p, .button, .kind, .state, .project p, .other p, .promise p, .hardware p, .links a, .releases a, .sites small, .soon, .lost p) { word-break: auto-phrase; }
 :lang(ko) body { word-break: keep-all; }
 :is(:lang(zh-Hans), :lang(zh-Hant)) body { line-break: strict; }
-:is(:lang(zh-Hans), :lang(zh-Hant)) :is(h1, h2, h3) { word-break: keep-all; overflow-wrap: anywhere; }
+:is(:lang(zh-Hans), :lang(zh-Hant)) :is(h1, h2, h3, h4) { word-break: keep-all; overflow-wrap: anywhere; }
 .hero .lede { color: var(--mist); font-size: clamp(1.0625rem, 2.2vw, 1.25rem); max-width: 52ch; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
 .button {
@@ -199,13 +199,34 @@ main section.closing { padding-top: 0; }
 /* Above the card's link (h3 a::after), which covers the whole card. */
 .project .links { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.9375rem; }
 .project .links a { display: inline-flex; align-items: center; min-height: 32px; }
-.project .state, .hardware .state {
+.project .state, .hardware .state, .other .state {
   justify-self: start; font-family: var(--mono); font-size: 0.75rem; border-radius: 99px; padding: 3px 10px;
   border: 1px solid var(--night-line); color: var(--mist);
 }
-.project .state.live, .hardware .state.live { background: var(--aurora); border-color: transparent; color: var(--abyss); font-weight: 500; }
+.project .state.live, .hardware .state.live, .other .state.live { background: var(--aurora); border-color: transparent; color: var(--abyss); font-weight: 500; }
 
 .project .version { color: var(--aurora); }
+
+/* Under the projects, lighter: the open data and protocols (Atlas,
+   Lantern), each a card without a capture, two in a row on a wide screen. */
+.open { margin-top: 40px; }
+.open-title { margin-bottom: 16px; font-family: var(--mono); font-size: 0.8125rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mist); }
+.others { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+@media (min-width: 800px) { .others { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.other {
+  display: grid; grid-template-rows: auto 1fr auto; gap: 12px; padding: 20px;
+  border: 1px solid var(--night-line); border-radius: 16px; background: rgb(14 26 51 / 0.45);
+}
+.other .head { display: flex; align-items: center; gap: 12px; }
+.other .head img { width: 44px; height: 44px; flex: none; }
+.other h4 { font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.015em; }
+.other h4 a { color: var(--snow); text-decoration: none; }
+.other h4 a:hover { color: var(--aurora); }
+.other .kind { display: block; font-family: var(--mono); font-size: 0.75rem; line-height: 1.5; color: var(--mist); }
+.other p { color: var(--mist); font-size: 0.9375rem; }
+.other .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.other .links { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.9375rem; }
+.other .links a { display: inline-flex; align-items: center; min-height: 32px; }
 
 .feed { margin-top: 16px; font-size: 0.9375rem; }
 
