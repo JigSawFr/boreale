@@ -4,7 +4,7 @@
 
 ### Homebrew for the long nights
 
-**[boreale.dev](https://boreale.dev/)** · **[PlayGuard](https://github.com/JigSawFr/PlayGuard)** · **[PlayShelf](https://github.com/JigSawFr/PlayShelf)** · **[Aurore](https://github.com/JigSawFr/Aurore)**
+**[boreale.dev](https://boreale.dev/?utm_source=github&utm_medium=readme)** · **[PlayGuard](https://github.com/JigSawFr/PlayGuard)** · **[PlayShelf](https://github.com/JigSawFr/PlayShelf)** · **[Aurore](https://github.com/JigSawFr/Aurore)**
 
 </div>
 
@@ -15,7 +15,7 @@ Boréale is the home of a few open-source projects for the Nintendo Switch: **Pl
 This repository holds:
 
 - **[`branding/`](branding/README.md)**: the marks, the wordmarks, the colours, the type and the tone shared by every project, as SVG and PNG.
-- **[`site/`](site/README.md)**: the website at <https://boreale.dev/>, in the consoles' fifteen languages. The projects' sites are its sub-domains: <https://guard.boreale.dev/> (PlayGuard), <https://shelf.boreale.dev/> (PlayShelf) and <https://aurore.boreale.dev/> (Aurore).
+- **[`site/`](site/README.md)**: the website at [boreale.dev](https://boreale.dev/?utm_source=github&utm_medium=readme), in the consoles' fifteen languages. The projects' sites are its sub-domains: [guard.boreale.dev](https://guard.boreale.dev/?utm_source=github&utm_medium=readme) (PlayGuard), [shelf.boreale.dev](https://shelf.boreale.dev/?utm_source=github&utm_medium=readme) (PlayShelf) and [aurore.boreale.dev](https://aurore.boreale.dev/?utm_source=github&utm_medium=readme) (Aurore).
 
 ## Build the site
 
