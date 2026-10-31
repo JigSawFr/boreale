@@ -18,6 +18,7 @@ PROJECTS = {
     "playguard": ("PlayGuard", "Nintendo Switch parental controls, right on the console"),
     "playshelf": ("PlayShelf", "Your game library, on the console"),
     "aurore": ("Aurore", "A Switch-like interface for your app, on every screen"),
+    "ha": ("Boréale for HA", "Your Switch homebrews, at home"),
 }
 
 
@@ -62,6 +63,8 @@ def main() -> None:
     boreale = inner((MARKS / "boreale.svg").read_text(encoding="utf-8"), "b")
     for key, (name, tagline) in PROJECTS.items():
         mark = inner((MARKS / f"{key}.svg").read_text(encoding="utf-8"), "m")
+        if key == "ha":  # its icon is full-bleed: the tile's corners are rounded here
+            mark = f'<clipPath id="m-round"><rect width="256" height="256" rx="56"/></clipPath><g clip-path="url(#m-round)">{mark}</g>'
         (OUT / f"{key}.svg").write_text(TEMPLATE.format(name=name, tagline=tagline, mark=mark, boreale=boreale), encoding="utf-8")
         print(f"branding/banners/{key}.svg")
 

@@ -32,6 +32,7 @@ const exports = [
   ["branding/banners/playguard.svg", "branding/png/banner-playguard.png", 1280, 320],
   ["branding/banners/playshelf.svg", "branding/png/banner-playshelf.png", 1280, 320],
   ["branding/banners/aurore.svg", "branding/png/banner-aurore.png", 1280, 320],
+  ["branding/banners/ha.svg", "branding/png/banner-ha.png", 1280, 320],
   ["branding/social-preview.svg", "branding/png/social-preview.png", 1280, 640],
   ["branding/social-preview.svg", "site/assets/social-preview.png", 1280, 640],
   // favicon.ico's sizes, from the small mark (below)
