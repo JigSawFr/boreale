@@ -158,7 +158,7 @@ def news(found: list, language: str, catalog: dict, root: str) -> str:
         # The notes are in English: their lede only on the English page.
         + (f'<p>{html.escape(r["summary"])}</p>' if r["summary"] and language == "en-US" else "") + "</li>"
         for r in found[:RELEASES_SHOWN])
-    return (f'<section id="releases">\n      <div class="section-head">\n'
+    return (f'<section class="section" id="releases">\n      <div class="section-head">\n'
             f'        <span class="eyebrow">{catalog["news_eyebrow"]}</span>\n'
             f'        <h2>{catalog["news_title"]}</h2>\n      </div>\n'
             f'      <ul class="releases">{items}</ul>\n'
@@ -217,22 +217,34 @@ def page(language: str, catalog: dict, hero: str, body: str, root: str, url: str
     values["lang"] = html_lang(language)
     values["home"] = folder(language)
     values["og_locale"] = OG_LOCALES[language]
-    # The header's languages: this page in each (none for 404.html, which
-    # is at any address).
-    values["languages"] = BOREALE.languages(language, catalog, root, path if not lost else "")
     # The root's home page sends a first visit to the browser's language (assets/lang.js).
     values["first_visit"] = " data-first-visit" if first_visit else ""
     # 404.html at the root sends a visitor reading another language to that
     # language's (assets/lang.js); the site's address path tells it where.
     values["lost"] = f' data-lost="{root}"' if lost and language == CODES[0] else ""
     values["indexing"] = BOREALE.indexing(language, path, lost)
-    # The home page (the one with a hero): site.css's showcase, the night
-    # going on down it.
-    values["page_class"] = ' class="home"' if hero else ""
     values["og_alternates"] = "\n".join(
         f'<meta property="og:locale:alternate" content="{OG_LOCALES[code]}">' for code in CODES if code != language)
     values.update(root=root, site=SITE_URL, url=url, title=title)
-    values["switcher"] = BOREALE.switcher(language, catalog, root, latest)
+    # The page's chrome is boreale-site's (README.md, "The page chrome"): the
+    # skip link, the sky (the aurora on the home page, the quieter one
+    # elsewhere), the header and the footer.
+    home = f"{root}{folder(language)}"
+    values["skip_link"] = BOREALE.skip(catalog)
+    values["sky"] = BOREALE.sky(home=bool(hero))
+    # No pill: the home page's hero already has the "Projects" button, one
+    # screen below; the header is the site's three links.
+    values["header"] = BOREALE.header(
+        language, catalog, root, "" if lost else path,
+        links=[("nav_projects", f"{home}#projects"), ("nav_support", f"{home}support/")],
+        github=f"https://github.com/{OWNER}", label=catalog["nav_label"], latest=latest)
+    values["footer"] = BOREALE.footer(
+        language, catalog, root,
+        columns=[(catalog["footer_label"],
+                  [(catalog["footer_feed"], f"{root}feed.atom", {"type": "application/atom+xml"}),
+                   (catalog["footer_issues"], f"https://github.com/{OWNER}/boreale/issues"),
+                   (catalog["nav_support"], f"{home}support/")])],
+        about=[catalog["footer_made"]], fine=catalog["footer_nintendo"])
     values["audience"] = BOREALE.audience(root)
     values["news"] = news(found, language, catalog, root)
     values["atlas_url"] = ATLAS + folder(language)

@@ -1,7 +1,6 @@
 {
   "title": "Boréale · 为漫漫长夜而作的自制软件",
   "description": "适用于 Nintendo Switch 的开源自制软件：PlayGuard，在主机上进行家长控制；PlayShelf，在主机上管理你的游戏库；Aurore，两者背后的界面库。",
-  "skip": "跳到项目",
   "nav_label": "主导航",
   "nav_projects": "项目",
   "hero_title": "为<em>漫漫长夜</em><wbr>而作的<wbr>自制软件。",
@@ -61,7 +60,6 @@
   "footer_label": "其他链接",
   "footer_feed": "版本（Atom）",
   "footer_issues": "Issues",
-  "footer_legal": "隐私与法律声明",
   "legal_page_title": "隐私与法律声明 · Boréale",
   "legal_title": "隐私与法律声明",
   "legal_lede": "本网站会了解你的哪些信息，以及谁在运营它。",
