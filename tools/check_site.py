@@ -6,7 +6,8 @@
 - what every one of Boréale's sites passes (library/boreale-site,
   boreale_site.check): no {{key}} left, links and #anchors that lead
   somewhere, links out by the rule "liens sortants anonymes" and their UTM
-  tags, nothing the Content-Security-Policy blocks, Umami's tracker, no
+  tags, the page chrome (one header with the menu of the sites, no pill, the
+  footer linking to every site), nothing the Content-Security-Policy blocks, Umami's tracker, no
   e-mail address, the schema.org data read as JSON;
 - the catalogs of site/i18n/ and boreale-site's: the same keys as en-US.json,
   none empty (but fr.json's legal_translation: the French legal page is the
@@ -30,7 +31,7 @@ def main() -> None:
         sys.exit(__doc__)
     site = Path(sys.argv[1])
     errors = boreale.check_catalogs(ROOT / "site" / "i18n", optional={"fr": {"legal_translation"}})
-    found, pages = check.pages(site, boreale.Site("boreale", os.environ.get("SITE_URL")))
+    found, pages = check.pages(site, boreale.Site("boreale", os.environ.get("SITE_URL")), chrome=True, cta=False)
     errors += found
 
     for name in ("feed.atom", "sitemap.xml"):

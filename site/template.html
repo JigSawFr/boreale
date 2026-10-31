@@ -17,6 +17,7 @@
 <link rel="preload" href="{{root}}assets/fonts/sora.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{root}}assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{root}}assets/boreale.css">
+<link rel="stylesheet" href="{{root}}assets/chrome.css">
 <link rel="stylesheet" href="{{root}}assets/site.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Boréale">
@@ -32,47 +33,16 @@
 {{jsonld}}
 <script src="{{root}}assets/lang.js"></script>
 <script src="{{root}}assets/boreale.js" defer></script>
-<script src="{{root}}assets/site.js" defer></script>
+<script src="{{root}}assets/chrome.js" defer></script>
 {{audience}}
 </head>
-<body{{page_class}}>
-<a class="skip" href="#main">{{skip}}</a>
-<div class="sky">
-  <canvas id="sky" aria-hidden="true"></canvas>
-  <header class="wrap top">
-    {{switcher}}
-    <nav aria-label="{{nav_label}}">
-      <ul>
-        <li><a href="{{root}}{{home}}#projects">{{nav_projects}}</a></li>
-        <li><a href="{{root}}{{home}}support/">{{nav_support}}</a></li>
-        <li><a href="https://github.com/JigSawFr">GitHub</a></li>
-      </ul>
-    </nav>
-    {{languages}}
-  </header>
+<body class="reset-margins">
+{{skip_link}}
+{{sky}}
+  {{header}}
   {{hero}}
 </div>
 {{body}}
-<footer class="site">
-  <div class="wrap">
-    <nav class="links" aria-label="{{footer_label}}">
-      <ul>
-        <li><a href="{{playguard_url}}">PlayGuard</a></li>
-        <li><a href="{{playshelf_url}}">PlayShelf</a></li>
-        <li><a href="{{aurore_url}}">Aurore</a></li>
-        <li><a href="{{atlas_url}}">Atlas</a></li>
-        <li><a href="{{lantern_url}}">Lantern</a></li>
-        <li><a href="{{root}}feed.atom" type="application/atom+xml">{{footer_feed}}</a></li>
-        <li><a href="https://github.com/JigSawFr/boreale/issues" referrerpolicy="strict-origin">{{footer_issues}}</a></li>
-        <li><a href="{{root}}{{home}}support/">{{nav_support}}</a></li>
-        <li><a href="{{root}}{{home}}legal/">{{footer_legal}}</a></li>
-      </ul>
-    </nav>
-    <div class="row">
-      <p>{{footer_made}}</p>
-      <p>{{footer_nintendo}}</p>
-    </div>
-  </div>
-</footer>
+{{footer}}
 </body>
 </html>

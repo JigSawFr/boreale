@@ -1,7 +1,6 @@
 {
   "title": "Boréale · 긴 밤을 위한 홈브루",
   "description": "Nintendo Switch용 오픈 소스 홈브루: 본체에서 쓰는 자녀 보호 PlayGuard, 본체에서 보는 게임 라이브러리 PlayShelf, 그리고 둘을 뒷받침하는 UI 라이브러리 Aurore.",
-  "skip": "프로젝트로 건너뛰기",
   "nav_label": "주 메뉴",
   "nav_projects": "프로젝트",
   "hero_title": "<em>긴 밤</em>을 위한 홈브루.",
@@ -61,7 +60,6 @@
   "footer_label": "다른 곳",
   "footer_feed": "릴리스 (Atom)",
   "footer_issues": "이슈",
-  "footer_legal": "개인정보 및 법적 고지",
   "legal_page_title": "개인정보 및 법적 고지 · Boréale",
   "legal_title": "개인정보 및 법적 고지",
   "legal_lede": "이 사이트가 당신에 대해 알게 되는 것, 그리고 누가 운영하는지.",

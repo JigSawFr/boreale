@@ -1,7 +1,6 @@
 {
   "title": "Boréale · Homebrew para las noches largas",
   "description": "Homebrew de código abierto para Nintendo Switch: PlayGuard, control parental en la consola; PlayShelf, tu biblioteca de juegos en la consola; Aurore, la biblioteca de interfaz que hay detrás de ambos.",
-  "skip": "Ir a los proyectos",
   "nav_label": "Principal",
   "nav_projects": "Proyectos",
   "hero_title": "Homebrew para las <em>noches largas</em>.",
@@ -61,7 +60,6 @@
   "footer_label": "En otros sitios",
   "footer_feed": "Versiones (Atom)",
   "footer_issues": "Issues",
-  "footer_legal": "Privacidad y aviso legal",
   "legal_page_title": "Privacidad y aviso legal · Boréale",
   "legal_title": "Privacidad y aviso legal",
   "legal_lede": "Lo que este sitio sabe de ti, y quién está detrás.",
