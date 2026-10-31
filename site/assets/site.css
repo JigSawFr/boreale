@@ -8,7 +8,7 @@
 /* Headings: a long word (German's, Russian's) hyphenated where the browser
    can, else broken rather than wider than a phone. The chrome has h1-h3. */
 h1, h2, h3, h4 { line-height: 1.12; hyphens: auto; overflow-wrap: break-word; }
-h4 { font-family: var(--display); margin: 0; }
+h4 { font-family: var(--display); }
 
 .hero { padding-block: clamp(56px, 11vw, 128px) clamp(40px, 7vw, 80px); display: grid; gap: 22px; }
 .hero h1 { font-weight: 600; font-size: clamp(2.5rem, 7.5vw, 5rem); letter-spacing: -0.035em; max-width: 13ch; }
