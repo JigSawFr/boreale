@@ -112,6 +112,18 @@ h4 { font-family: var(--display); }
 .prose dl { margin: 0; display: grid; gap: 4px; }
 .prose dt { font-weight: 600; margin-top: 10px; }
 .prose dd { margin: 0; }
+/* how/: who does what, side by side, then what it means. */
+.how .who-does { max-width: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 0; margin-top: 40px; border: 1px solid var(--night-line); border-radius: 16px; overflow: hidden; }
+.how .who-does section { padding: 24px; gap: 14px; align-content: start; min-width: 0; }
+.how .who-does section + section { background: rgba(14, 26, 51, 0.6); box-shadow: inset 1px 0 var(--night-line), inset 0 1px var(--night-line); }
+.how .who-does h2 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 1.125rem; }
+.how .who { font: 500 0.6875rem var(--mono); letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; }
+.how .who.me { background: var(--snow); color: var(--abyss); }
+.how .who.ai { border: 1px solid var(--ice); color: var(--ice); }
+.how ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.how li { position: relative; padding-left: 18px; color: var(--mist); }
+.how li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 7px; height: 7px; border-radius: 2px; background: var(--snow); }
+.how .who-does section + section li::before { background: transparent; border: 1.5px solid var(--ice); }
 /* support/: the hardware to fund, in order, each with its state. */
 .hardware { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .hardware li { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; border: 1px solid var(--night-line); border-radius: 12px; padding: 14px 18px; background: rgba(14, 26, 51, 0.5); }

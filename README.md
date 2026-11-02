@@ -29,6 +29,21 @@ python3 -m http.server -d build 8000  # then http://localhost:8000/
 
 Python 3 and nothing else. `node tools/export-branding.mjs` renders the PNGs again from the SVGs (Playwright).
 
+## How it's made
+
+[![Human-led, AI-assisted](https://raw.githubusercontent.com/JigSawFr/boreale/main/branding/badge-ai.svg)](https://boreale.dev/how/?utm_source=github&utm_medium=readme)
+
+Boréale is built by [JigSawFr](https://github.com/JigSawFr), a full-stack
+engineer who has shipped production software for years, with AI coding
+assistants as part of the toolbox.
+
+- **I decide**: architecture, scope, what ships and what doesn't.
+- **AI helps write**: first drafts of code and tests, docs, and the translations.
+- **I review everything**: every change is read, tested and signed before it reaches
+  `main`.
+
+Nothing on the site calls an AI service. More on [boreale.dev](https://boreale.dev/how/?utm_source=github&utm_medium=readme).
+
 ## License
 
 The code and the pages: **GPLv3**, as PlayGuard, PlayShelf and Aurore (see [`LICENSE`](LICENSE)). The fonts (`library/boreale-site/assets/fonts/`, served with the site) are under the **SIL Open Font License** (their `OFL-*.txt`), except the language menu's flags (`twemoji-flags.woff2`, cut out of Twemoji's): **CC-BY 4.0** (`LICENSE-twemoji-flags.txt`). The marks and the names Boréale, PlayGuard, PlayShelf and Aurore identify these projects: use them to point to the projects, not for your own.
