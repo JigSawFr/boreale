@@ -13,6 +13,10 @@ in its folder (fr/, fr-ca/, de/ ... zh-hant/).
 site/support.html is support/: how to donate (GitHub Sponsors, Ko-fi) and
 the hardware the donations buy to test on.
 
+site/how.html is how/: how the projects are made (who decides, reviews and
+signs, what AI coding assistants write), where every Boréale site's footer
+links (boreale-site's Site.footer()).
+
 site/insights.html is insights/: a pointer to Atlas's own site
 (https://atlas.boreale.dev/, ATLAS), where PlayInsights' data now lives,
 kept so that its old links still lead somewhere.
@@ -89,7 +93,8 @@ def try_url(key: str, language: str) -> str:
 
 
 # The pages other than 404.html, by their path under each language's folder.
-PAGES = {"": "home.html", "support/": "support.html", "legal/": "legal.html", "insights/": "insights.html"}
+PAGES = {"": "home.html", "support/": "support.html", "how/": "how.html", "legal/": "legal.html",
+         "insights/": "insights.html"}
 
 # Atlas, the open data PlayShelf reads (https://github.com/JigSawFr/Atlas),
 # and Lantern, the protocol between library servers and console homebrews
