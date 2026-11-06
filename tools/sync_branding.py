@@ -92,6 +92,9 @@ TARGETS: dict[str, dict[str, str]] = {
     "lantern-sdk": {
         ".github/readme/banner.png": "lantern/png/banner.png",
     },
+    "lantern-bridge": {
+        ".github/readme/banner.png": "bridge/png/banner.png",
+    },
     "boreale-kit": {
         ".github/readme/banner.png": "kit/png/banner.png",
     },
