@@ -66,6 +66,8 @@ TARGETS: dict[str, dict[str, str]] = {
     },
     "Aurore": {
         ".github/branding/icon.svg": "aurore/icon.svg",
+        ".github/branding/mark.svg": "aurore/mark.svg",
+        ".github/branding/mark-mono-white.svg": "aurore/mark-mono-white.svg",
         ".github/branding/icon.png": "aurore/png/icon-256.png",
         ".github/branding/favicon.ico": "aurore/png/favicon.ico",
         ".github/branding/social-preview.png": "aurore/png/social-preview.png",
