@@ -69,9 +69,9 @@ TARGETS: dict[str, dict[str, str]] = {
     "boreale-ha": {
         "branding/icon.svg": "ha/icon.svg",
         "branding/mark.svg": "ha/mark.svg",
-        "custom_components/boreale/brand/icon.png": "ha/png/icon-256.png",
-        "custom_components/boreale/brand/icon@2x.png": "ha/png/icon-512.png",
-        ".github/readme/icon.png": "ha/png/icon-512.png",
+        "custom_components/boreale/brand/icon.png": "ha/png/icon-tile-256.png",
+        "custom_components/boreale/brand/icon@2x.png": "ha/png/icon-tile-512.png",
+        ".github/readme/icon.png": "ha/png/icon-tile-512.png",
         ".github/readme/banner.png": "ha/png/banner.png",
         ".github/readme/social-preview.png": "ha/png/social-preview.png",
         "site/assets/social-preview.png": "ha/png/social-preview.png",

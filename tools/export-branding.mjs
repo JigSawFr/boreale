@@ -19,7 +19,9 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const fonts = join(root, "library/boreale-site/assets/fonts");
 const branding = join(root, "branding");
 
-// What every project gets: [source svg, output, width, height, scale].
+// What every project gets: [source svg, output, width, height, scale, tile].
+// A tile is the icon with its corners rounded on a transparent ground, for
+// where nothing rounds it (Home Assistant's integrations, a README).
 // The README banner at twice its size, for sharp screens; icon-256.jpg is the
 // Switch's homebrew icon (an NRO's: 256 × 256, JPEG).
 const SET = [
@@ -29,6 +31,8 @@ const SET = [
   ["icon.svg", "icon-256.jpg", 256, 256],
   ["icon.svg", "icon-192.png", 192, 192],
   ["icon.svg", "apple-touch-icon.png", 180, 180],
+  ["icon.svg", "icon-tile-512.png", 512, 512, 1, "tile"],
+  ["icon.svg", "icon-tile-256.png", 256, 256, 1, "tile"],
   ["mark.svg", "mark-512.png", 512, 512],
   ["mark.svg", "mark-256.png", 256, 256],
   ["wordmark.svg", "wordmark.png", 720, 176],
@@ -47,10 +51,11 @@ const css = face("Sora", "sora.woff2", "100 800") + face("JetBrains Mono", "jetb
 
 const browser = await chromium.launch();
 const pages = new Map();
-async function render(svgPath, width, height, scale = 1, type = "png") {
+async function render(svgPath, width, height, scale = 1, type = "png", tile = false) {
   if (!pages.has(scale)) pages.set(scale, await browser.newPage({ deviceScaleFactor: scale }));
   const page = pages.get(scale);
-  const svg = readFileSync(svgPath, "utf8").replace(/width="\d+" height="\d+"/, `width="${width}" height="${height}"`);
+  let svg = readFileSync(svgPath, "utf8").replace(/width="\d+" height="\d+"/, `width="${width}" height="${height}"`);
+  if (tile) svg = svg.replace(/(<svg[^>]*>)([\s\S]*)<\/svg>/, '$1<clipPath id="tile-round"><rect width="256" height="256" rx="56"/></clipPath><g clip-path="url(#tile-round)">$2</g></svg>');
   await page.setViewportSize({ width, height });
   await page.setContent(`<!doctype html><style>${css}</style>${svg}`);
   await page.evaluate(() => Promise.all(["300 20px Sora", "400 20px Sora", "700 20px Sora", "20px 'JetBrains Mono'"].map((f) => document.fonts.load(f))));
@@ -81,10 +86,10 @@ const projects = readdirSync(branding, { withFileTypes: true })
 for (const project of projects) {
   const dir = join(branding, project);
   mkdirSync(join(dir, "png"), { recursive: true });
-  for (const [src, out, width, height, scale = 1] of SET) {
+  for (const [src, out, width, height, scale = 1, tile] of SET) {
     if (!existsSync(join(dir, src))) continue;
     const type = out.endsWith(".jpg") ? "jpeg" : "png";
-    writeFileSync(join(dir, "png", out), await render(join(dir, src), width, height, scale, type));
+    writeFileSync(join(dir, "png", out), await render(join(dir, src), width, height, scale, type, tile === "tile"));
     console.log(`branding/${project}/png/${out}`);
   }
   // favicon.ico: the small mark where there is one (under 24 px), else the mark.
