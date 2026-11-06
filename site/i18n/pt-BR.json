@@ -130,5 +130,22 @@
   "how_noai": "A IA ajuda a escrever o código. Os homebrews não chamam nenhum serviço de IA nem enviam nada a ele. A integração com o Home Assistant pode oferecer suas ações ao assistente do Home Assistant, se você expuser um console a ele.",
   "how_lang_title": "Uma tradução esquisita?",
   "how_lang": "Basta abrir uma issue: ela é corrigida na próxima versão.",
-  "how_ai_tag": "IA"
+  "how_ai_tag": "IA",
+  "nav_brand": "Marca",
+  "brand_page_title": "Marca · Boréale",
+  "brand_title": "A marca",
+  "brand_lede": "A Boréale e seus projetos compartilham um só visual: uma moldura nas cores da aurora em volta da noite, um único desenho em branco neve no interior. Esta página o resume, com os arquivos para usá-lo.",
+  "brand_mark_title": "O sinal",
+  "brand_mark_text": "Ele fica sempre sobre o azul da noite, com uma margem ao redor de pelo menos um quarto da sua largura. Um só gradiente, do verde aurora no alto à esquerda ao violeta embaixo à direita, nunca invertido. Abaixo de 24 px, use o sinal pequeno; para imprimir ou gravar com uma só tinta, o branco ou o preto.",
+  "brand_colours_title": "Cores",
+  "brand_colours_text": "A noite ocupa o espaço e a aurora aparece em toques: cerca de 60 % de abismo, 20 % de noite, 12 % de neve e 6 % de aurora.",
+  "brand_contrast": "Neve, bruma, aurora e gelo passam todos no nível AAA das WCAG sobre a noite. O violeta não: reserve-o para textos grandes e gráficos, nunca para um parágrafo.",
+  "brand_type_title": "Tipografia",
+  "brand_type_text": "Sora para nomes e títulos, Figtree para o texto corrido, JetBrains Mono para endereços, comandos e versões. As três estão sob a licença SIL Open Font e são servidas com o site.",
+  "brand_files_title": "Arquivos",
+  "brand_files_text": "O sinal, o nome e os tokens (cores, gradiente, fontes) que os projetos leem. Os ícones e banners de cada projeto estão no kit completo.",
+  "brand_kit_cta": "O kit completo no GitHub",
+  "home_brand_title": "Um só visual para cada projeto",
+  "home_brand_text": "Os aplicativos, a integração e os sites compartilham um sinal, uma paleta e três fontes. Aqui estão.",
+  "home_brand_cta": "Ver a marca"
 }

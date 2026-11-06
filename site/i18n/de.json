@@ -130,5 +130,22 @@
   "how_noai": "Die KI hilft beim Schreiben des Codes. Die Homebrews rufen keinen KI-Dienst auf und senden ihm nichts. Die Home-Assistant-Integration kann ihre Aktionen dem Assistenten von Home Assistant anbieten, wenn du ihm eine Konsole freigibst.",
   "how_lang_title": "Eine holprige Übersetzung?",
   "how_lang": "Ein Issue genügt: Sie wird in der nächsten Version korrigiert.",
-  "how_ai_tag": "KI"
+  "how_ai_tag": "KI",
+  "nav_brand": "Marke",
+  "brand_page_title": "Marke · Boréale",
+  "brand_title": "Die Marke",
+  "brand_lede": "Boréale und seine Projekte teilen einen Look: ein Rahmen in den Farben der Aurora um die Nacht, innen eine einzige Zeichnung in Schneeweiß. Diese Seite fasst ihn zusammen, mit den Dateien zum Verwenden.",
+  "brand_mark_title": "Das Zeichen",
+  "brand_mark_text": "Es steht immer auf dem Blau der Nacht, mit mindestens einem Viertel seiner Breite Abstand ringsum. Ein Verlauf, von Aurora-Grün oben links zu Violett unten rechts, nie umgekehrt. Unter 24 px das kleine Zeichen verwenden; für Druck oder Gravur in einer Farbe das weiße oder schwarze.",
+  "brand_colours_title": "Farben",
+  "brand_colours_text": "Die Nacht nimmt den Platz ein, die Aurora kommt in Akzenten: etwa 60 % Abyss, 20 % Nacht, 12 % Schnee, 6 % Aurora.",
+  "brand_contrast": "Schnee, Dunst, Aurora und Eis bestehen auf der Nacht alle WCAG AAA. Violett nicht: nur für große Texte und Grafiken verwenden, nie für einen Absatz.",
+  "brand_type_title": "Schrift",
+  "brand_type_text": "Sora für Namen und Überschriften, Figtree für Fließtext, JetBrains Mono für Adressen, Befehle und Versionen. Alle drei stehen unter der SIL Open Font License und werden mit der Seite ausgeliefert.",
+  "brand_files_title": "Dateien",
+  "brand_files_text": "Das Zeichen, der Name und die Tokens (Farben, Verlauf, Schriften), die die Projekte lesen. Symbole und Banner jedes Projekts liegen im vollständigen Kit.",
+  "brand_kit_cta": "Das vollständige Kit auf GitHub",
+  "home_brand_title": "Ein Look für jedes Projekt",
+  "home_brand_text": "Die Apps, die Integration und die Websites teilen ein Zeichen, eine Palette und drei Schriften. Hier sind sie.",
+  "home_brand_cta": "Marke ansehen"
 }

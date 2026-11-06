@@ -130,5 +130,22 @@
   "how_noai": "AI 只幫忙寫程式碼。這些自製軟體不呼叫任何 AI 服務，也不向其傳送任何內容。Home Assistant 整合只有在你向其公開主機時，才能把操作提供給 Home Assistant 的助理。",
   "how_lang_title": "翻譯彆扭？",
   "how_lang": "開一個 issue 即可：下個版本就修正。",
-  "how_ai_tag": "AI"
+  "how_ai_tag": "AI",
+  "nav_brand": "品牌",
+  "brand_page_title": "品牌 · Boréale",
+  "brand_title": "品牌",
+  "brand_lede": "Boréale 與它的專案共用同一種外觀:夜色周圍一圈極光色的邊框,裡面是一幅雪白的圖案。本頁做個概述,並提供可用的檔案。",
+  "brand_mark_title": "標誌",
+  "brand_mark_text": "標誌始終放在夜色的藍上,四周至少留出其寬度四分之一的空白。只用一種漸層,從左上的極光綠到右下的紫色,不可反向。小於 24 px 時用小標誌;需要單色列印或雕刻時用白色或黑色版本。",
+  "brand_colours_title": "顏色",
+  "brand_colours_text": "夜色佔據大部分空間,極光只是點綴:大約 60 % 深淵、20 % 夜、12 % 雪、6 % 極光。",
+  "brand_contrast": "雪、霧、極光和冰在夜色上都達到 WCAG AAA。紫色沒有:只用於大字和圖形,不要用於段落。",
+  "brand_type_title": "字型",
+  "brand_type_text": "名稱和標題用 Sora,內文用 Figtree,位址、指令和版本用 JetBrains Mono。三者都採用 SIL Open Font License,並隨網站一同提供。",
+  "brand_files_title": "檔案",
+  "brand_files_text": "標誌、名稱,以及各專案讀取的權杖(顏色、漸層、字型)。每個專案的圖示和橫幅都在完整套件裡。",
+  "brand_kit_cta": "GitHub 上的完整套件",
+  "home_brand_title": "每個專案同一種外觀",
+  "home_brand_text": "應用程式、整合和網站共用一個標誌、一套配色和三種字型。就在這裡。",
+  "home_brand_cta": "查看品牌"
 }
