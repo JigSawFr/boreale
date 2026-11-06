@@ -54,7 +54,7 @@ async function render(svgPath, width, height, scale = 1, type = "png") {
   await page.setViewportSize({ width, height });
   await page.setContent(`<!doctype html><style>${css}</style>${svg}`);
   await page.evaluate(() => Promise.all(["300 20px Sora", "400 20px Sora", "700 20px Sora", "20px 'JetBrains Mono'"].map((f) => document.fonts.load(f))));
-  return page.locator("body > svg").first().screenshot(type === "jpeg" ? { type, quality: 92 } : { omitBackground: true });
+  return page.locator("body > svg").first().screenshot(type === "jpeg" ? { type, quality: 95 } : { omitBackground: true });
 }
 
 // An ICO holding PNGs as they are (a format every browser reads since 2006).
