@@ -130,5 +130,22 @@
   "how_noai": "AI helps write the code. The homebrews call no AI service and send it nothing. The Home Assistant integration can offer its actions to Home Assistant's own assistant, if you expose a console to it.",
   "how_lang_title": "A clumsy translation?",
   "how_lang": "Open an issue: it is fixed in the next version.",
-  "how_ai_tag": "AI"
+  "how_ai_tag": "AI",
+  "nav_brand": "Brand",
+  "brand_page_title": "Brand · Boréale",
+  "brand_title": "The brand",
+  "brand_lede": "Boréale and its projects share one look: a frame in the aurora's colours around the night, one drawing in snow inside. This page sums it up, with the files to use it.",
+  "brand_mark_title": "The mark",
+  "brand_mark_text": "It always stands on the night's blue, with room around it of at least a quarter of its width. One gradient, aurora green at the top left to violet at the bottom right, never reversed. Under 24 px, use the small mark; to print or engrave in one ink, the white or black one.",
+  "brand_colours_title": "Colours",
+  "brand_colours_text": "The night takes the room and the aurora comes in touches: about 60 % abyss, 20 % night, 12 % snow, 6 % aurora.",
+  "brand_contrast": "Snow, mist, aurora and ice all pass WCAG AAA on the night. Violet does not: keep it for large text and graphics, never a paragraph.",
+  "brand_type_title": "Type",
+  "brand_type_text": "Sora for names and headings, Figtree for running text, JetBrains Mono for addresses, commands and versions. All three are under the SIL Open Font License and served with the site.",
+  "brand_files_title": "Files",
+  "brand_files_text": "The mark, the name and the tokens (colours, gradient, fonts) the projects read. Every project's icons and banners are in the full kit.",
+  "brand_kit_cta": "The full kit on GitHub",
+  "home_brand_title": "One look for every project",
+  "home_brand_text": "The apps, the integration and the sites share a mark, a palette and three fonts. Here they are.",
+  "home_brand_cta": "See the brand"
 }

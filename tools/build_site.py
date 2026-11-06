@@ -17,6 +17,9 @@ site/how.html is how/: how the projects are made (who decides, reviews and
 signs, what AI coding assistants write), where every Boréale site's footer
 links (boreale-site's Site.footer()).
 
+site/brand.html is brand/: the shared look (the mark, the colours, the type) and the
+kit's marks and tokens to download (branding/ is their source).
+
 site/insights.html is insights/: a pointer to Atlas's own site
 (https://atlas.boreale.dev/, ATLAS), where PlayInsights' data now lives,
 kept so that its old links still lead somewhere.
@@ -94,7 +97,7 @@ def try_url(key: str, language: str) -> str:
 
 # The pages other than 404.html, by their path under each language's folder.
 PAGES = {"": "home.html", "support/": "support.html", "how/": "how.html", "legal/": "legal.html",
-         "insights/": "insights.html"}
+         "insights/": "insights.html", "brand/": "brand.html"}
 
 # Atlas, the open data PlayShelf reads (https://github.com/JigSawFr/Atlas),
 # and Lantern, the protocol between library servers and console homebrews
@@ -310,6 +313,14 @@ def main() -> None:
         shutil.rmtree(out)
     shutil.copytree(SITE / "assets", out / "assets")
     boreale.copy_assets(out)
+    # The brand kit's marks and tokens, offered on brand/ (branding/ is the source).
+    (out / "assets" / "brand").mkdir()
+    for name in ("mark", "mark-small", "mark-mono-white", "mark-mono-black", "wordmark", "wordmark-light"):
+        shutil.copy(ROOT / "branding" / "boreale" / f"{name}.svg", out / "assets" / "brand" / f"{name}.svg")
+    for name in ("wordmark", "wordmark-light"):  # an <img> loads no font: the pictures, not the SVGs, in the page
+        shutil.copy(ROOT / "branding" / "boreale" / "png" / f"{name}.png", out / "assets" / "brand" / f"{name}.png")
+    for name in ("tokens.css", "tokens.json"):
+        shutil.copy(ROOT / "branding" / name, out / "assets" / "brand" / name)
 
     hero = (SITE / "hero.html").read_text(encoding="utf-8")
     bodies = {path: (SITE / name).read_text(encoding="utf-8") for path, name in PAGES.items()}

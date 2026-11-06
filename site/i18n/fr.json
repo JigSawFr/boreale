@@ -129,5 +129,22 @@
   "how_noai": "L'IA sert à écrire le code. Les homebrews n'appellent aucun service d'IA et ne lui envoient rien. L'intégration Home Assistant peut proposer ses actions à l'assistant de Home Assistant, si vous lui exposez une console.",
   "how_lang_title": "Une traduction bancale ?",
   "how_lang": "Une issue suffit : c'est corrigé à la version suivante.",
-  "how_ai_tag": "IA"
+  "how_ai_tag": "IA",
+  "nav_brand": "Marque",
+  "brand_page_title": "Marque · Boréale",
+  "brand_title": "La marque",
+  "brand_lede": "Boréale et ses projets partagent un même style : un cadre aux couleurs de l'aurore autour de la nuit, un seul dessin en blanc neige à l'intérieur. Cette page le résume, avec les fichiers pour s'en servir.",
+  "brand_mark_title": "Le signe",
+  "brand_mark_text": "Il se pose toujours sur le bleu de la nuit, avec autour de lui une marge d'au moins un quart de sa largeur. Un seul dégradé, du vert aurore en haut à gauche au violet en bas à droite, jamais inversé. Sous 24 px, prendre le petit signe ; pour imprimer ou graver en une encre, le blanc ou le noir.",
+  "brand_colours_title": "Couleurs",
+  "brand_colours_text": "La nuit prend la place et l'aurore vient par touches : environ 60 % d'abîme, 20 % de nuit, 12 % de neige, 6 % d'aurore.",
+  "brand_contrast": "Neige, brume, aurore et glace passent toutes le niveau AAA des WCAG sur la nuit. Pas le violet : le garder pour les grands textes et les graphismes, jamais un paragraphe.",
+  "brand_type_title": "Typographie",
+  "brand_type_text": "Sora pour les noms et les titres, Figtree pour le texte courant, JetBrains Mono pour les adresses, les commandes et les versions. Les trois sont sous licence SIL Open Font et servies avec le site.",
+  "brand_files_title": "Fichiers",
+  "brand_files_text": "Le signe, le nom et les jetons (couleurs, dégradé, polices) que lisent les projets. Les icônes et bannières de chaque projet sont dans le kit complet.",
+  "brand_kit_cta": "Le kit complet sur GitHub",
+  "home_brand_title": "Un même style pour chaque projet",
+  "home_brand_text": "Les applications, l'intégration et les sites partagent un signe, une palette et trois polices. Les voici.",
+  "home_brand_cta": "Voir la marque"
 }

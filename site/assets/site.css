@@ -194,3 +194,22 @@ h4 { font-family: var(--display); }
 
 /* insights/: a pointer to Atlas's site, its button under the lede. */
 .insights .actions { margin-top: 24px; }
+
+/* brand/: the marks on the night and on light, the colours as swatches, the files. */
+.look .marks, .look .swatches, .look .files { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; max-width: none; }
+.look .marks li { display: grid; place-items: center; padding: 20px 28px; border-radius: 12px; background: var(--night); }
+.look .marks li.light { background: var(--snow); }
+.look .swatches li { display: grid; gap: 2px; min-width: 112px; padding: 8px 8px 12px; border-radius: 10px; background: var(--night); border: 1px solid rgb(169 182 204 / 0.25); }
+.look .swatches li::before { content: ""; height: 44px; border-radius: 6px; margin-bottom: 8px; border: 1px solid rgb(169 182 204 / 0.25); }
+.look .swatches b, .look .swatches code { padding-inline: 6px; color: var(--snow); }
+.look .swatches b { font-family: var(--display); font-weight: 600; }
+.look .swatches code { font-family: var(--mono); font-size: 0.8125rem; }
+.look .swatches .c-abyss::before { background: #0B1424; }
+.look .swatches .c-night::before { background: #0E1A33; }
+.look .swatches .c-snow::before { background: #E8EEF7; }
+.look .swatches .c-mist::before { background: #A9B6CC; }
+.look .swatches .c-aurora::before { background: #00FFCC; }
+.look .swatches .c-ice::before { background: #33BBFF; }
+.look .swatches .c-violet::before { background: #8A5CFF; }
+.look .files a { font-family: var(--mono); font-size: 0.875rem; }
+.look .actions { margin-top: 8px; }

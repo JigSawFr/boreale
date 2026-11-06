@@ -130,5 +130,22 @@
   "how_noai": "L'IA aiuta a scrivere il codice. Gli homebrew non chiamano alcun servizio di IA e non gli inviano nulla. L'integrazione Home Assistant può offrire le sue azioni all'assistente di Home Assistant, se gli esponi una console.",
   "how_lang_title": "Una traduzione zoppicante?",
   "how_lang": "Basta una issue: viene corretta nella versione successiva.",
-  "how_ai_tag": "IA"
+  "how_ai_tag": "IA",
+  "nav_brand": "Marchio",
+  "brand_page_title": "Marchio · Boréale",
+  "brand_title": "Il marchio",
+  "brand_lede": "Boréale e i suoi progetti condividono un unico stile: una cornice nei colori dell'aurora attorno alla notte, un solo disegno bianco neve all'interno. Questa pagina lo riassume, con i file per usarlo.",
+  "brand_mark_title": "Il segno",
+  "brand_mark_text": "Poggia sempre sul blu della notte, con intorno uno spazio di almeno un quarto della sua larghezza. Un solo gradiente, dal verde aurora in alto a sinistra al viola in basso a destra, mai invertito. Sotto i 24 px usa il segno piccolo; per stampare o incidere con un solo inchiostro, quello bianco o nero.",
+  "brand_colours_title": "Colori",
+  "brand_colours_text": "La notte occupa lo spazio e l'aurora arriva a tocchi: circa 60 % abisso, 20 % notte, 12 % neve, 6 % aurora.",
+  "brand_contrast": "Neve, foschia, aurora e ghiaccio superano tutti il livello AAA delle WCAG sulla notte. Il viola no: riservalo a testi grandi e grafiche, mai a un paragrafo.",
+  "brand_type_title": "Tipografia",
+  "brand_type_text": "Sora per nomi e titoli, Figtree per il testo corrente, JetBrains Mono per indirizzi, comandi e versioni. Tutti e tre sono sotto licenza SIL Open Font e serviti con il sito.",
+  "brand_files_title": "File",
+  "brand_files_text": "Il segno, il nome e i token (colori, gradiente, caratteri) letti dai progetti. Le icone e i banner di ogni progetto sono nel kit completo.",
+  "brand_kit_cta": "Il kit completo su GitHub",
+  "home_brand_title": "Uno stile per ogni progetto",
+  "home_brand_text": "Le app, l'integrazione e i siti condividono un segno, una tavolozza e tre caratteri. Eccoli.",
+  "home_brand_cta": "Vedi il marchio"
 }

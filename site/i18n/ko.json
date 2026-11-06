@@ -130,5 +130,22 @@
   "how_noai": "AI는 코드를 쓰는 데 도움을 줄 뿐입니다. homebrew는 어떤 AI 서비스도 호출하지 않고 아무것도 보내지 않습니다. Home Assistant 통합은 콘솔을 노출한 경우에만 Home Assistant의 어시스턴트에 동작을 제공할 수 있습니다.",
   "how_lang_title": "어색한 번역이 있나요?",
   "how_lang": "issue 하나면 됩니다. 다음 버전에서 고칩니다.",
-  "how_ai_tag": "AI"
+  "how_ai_tag": "AI",
+  "nav_brand": "브랜드",
+  "brand_page_title": "브랜드 · Boréale",
+  "brand_title": "브랜드",
+  "brand_lede": "Boréale와 그 프로젝트는 하나의 모습을 공유합니다. 밤을 둘러싼 오로라 색의 틀, 그 안의 눈처럼 흰 그림 하나입니다. 이 페이지는 그 요약과 쓸 수 있는 파일을 담고 있습니다.",
+  "brand_mark_title": "마크",
+  "brand_mark_text": "마크는 항상 밤의 파란색 위에 놓고, 너비의 4분의 1 이상을 주위에 비워 둡니다. 그라데이션은 하나, 왼쪽 위의 오로라 초록에서 오른쪽 아래의 보라로, 뒤집지 않습니다. 24px보다 작을 때는 작은 마크를, 한 가지 잉크로 인쇄하거나 새길 때는 흰색 또는 검은색 마크를 씁니다.",
+  "brand_colours_title": "색",
+  "brand_colours_text": "밤이 넓은 면을 차지하고 오로라는 포인트로 들어갑니다. 대략 어비스 60 %, 나이트 20 %, 스노 12 %, 오로라 6 %입니다.",
+  "brand_contrast": "스노, 미스트, 오로라, 아이스는 밤 위에서 모두 WCAG AAA를 통과합니다. 보라는 통과하지 못하므로 큰 글씨와 그래픽에만 쓰고 문단에는 쓰지 않습니다.",
+  "brand_type_title": "글꼴",
+  "brand_type_text": "이름과 제목에는 Sora, 본문에는 Figtree, 주소·명령어·버전에는 JetBrains Mono를 씁니다. 셋 모두 SIL Open Font License이며 사이트와 함께 제공됩니다.",
+  "brand_files_title": "파일",
+  "brand_files_text": "마크, 이름, 그리고 프로젝트가 읽는 토큰(색, 그라데이션, 글꼴)입니다. 각 프로젝트의 아이콘과 배너는 전체 키트에 있습니다.",
+  "brand_kit_cta": "GitHub의 전체 키트",
+  "home_brand_title": "모든 프로젝트에 하나의 모습",
+  "home_brand_text": "앱, 연동, 사이트는 같은 마크, 같은 팔레트, 세 가지 글꼴을 공유합니다. 여기 있습니다.",
+  "home_brand_cta": "브랜드 보기"
 }

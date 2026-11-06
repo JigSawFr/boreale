@@ -130,5 +130,22 @@
   "how_noai": "AI helpt de code te schrijven. De homebrews roepen geen AI-dienst aan en sturen er niets naartoe. De Home Assistant-integratie kan haar acties aanbieden aan de assistent van Home Assistant, als je er een console voor openstelt.",
   "how_lang_title": "Een kromme vertaling?",
   "how_lang": "Een issue volstaat: die wordt in de volgende versie verbeterd.",
-  "how_ai_tag": "AI"
+  "how_ai_tag": "AI",
+  "nav_brand": "Merk",
+  "brand_page_title": "Merk · Boréale",
+  "brand_title": "Het merk",
+  "brand_lede": "Boréale en zijn projecten delen één uiterlijk: een kader in de kleuren van het noorderlicht rond de nacht, met binnenin één tekening in sneeuwwit. Deze pagina vat het samen, met de bestanden om het te gebruiken.",
+  "brand_mark_title": "Het teken",
+  "brand_mark_text": "Het staat altijd op het blauw van de nacht, met er omheen ruimte van minstens een kwart van zijn breedte. Eén verloop, van noorderlichtgroen linksboven naar violet rechtsonder, nooit omgekeerd. Onder 24 px gebruik je het kleine teken; om in één inkt te drukken of te graveren het witte of zwarte.",
+  "brand_colours_title": "Kleuren",
+  "brand_colours_text": "De nacht neemt de ruimte en het noorderlicht komt in accenten: ongeveer 60 % afgrond, 20 % nacht, 12 % sneeuw, 6 % noorderlicht.",
+  "brand_contrast": "Sneeuw, nevel, noorderlicht en ijs halen op de nacht allemaal WCAG AAA. Violet niet: bewaar het voor grote tekst en afbeeldingen, nooit voor een alinea.",
+  "brand_type_title": "Lettertypen",
+  "brand_type_text": "Sora voor namen en koppen, Figtree voor lopende tekst, JetBrains Mono voor adressen, opdrachten en versies. Alle drie vallen onder de SIL Open Font License en worden met de site meegeleverd.",
+  "brand_files_title": "Bestanden",
+  "brand_files_text": "Het teken, de naam en de tokens (kleuren, verloop, lettertypen) die de projecten lezen. De iconen en banners van elk project staan in de volledige kit.",
+  "brand_kit_cta": "De volledige kit op GitHub",
+  "home_brand_title": "Eén uiterlijk voor elk project",
+  "home_brand_text": "De apps, de integratie en de sites delen een teken, een palet en drie lettertypen. Hier zijn ze.",
+  "home_brand_cta": "Bekijk het merk"
 }
