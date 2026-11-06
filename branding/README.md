@@ -6,16 +6,18 @@ The look shared by Boréale and its projects, kept here once: every project's ma
 
 Every mark follows one rule, set by PlayGuard's and PlayShelf's: **a frame in the aurora's colours around the night, one drawing in snow inside**.
 
-One folder per project: `boreale`, `playguard`, `playshelf`, `aurore`, `ha` (Boréale for Home Assistant), `atlas`, `lantern` (Lantern SDK). Each holds the same files:
+One folder per product: `boreale`, `playguard`, `playshelf`, `aurore`, `ha` (Boréale for Home Assistant), `atlas`. Each holds the same files:
 
 | File | What | Where |
 |---|---|---|
 | `mark.svg` | **Drawn by hand.** The frame and the drawing, flat | Headers, site menus, cards, favicons, the banner |
 | `icon.svg` | The mark's frame around a night sky: the aurora's curtain and line, the mountains for some, the drawing in snow with a soft glow. Full-bleed | App, store, console and touch icons, the social preview |
 | `wordmark.svg`, `wordmark-light.svg` | The name in Sora 700, underlined by the aurora, in snow or in night | Loading screens, on the night, on light grounds |
-| `banner.svg` | The night, the aurora, the mark, the name, what it does, "by Boréale" in a pill | The README's top |
+| `banner.svg` | The night, the aurora, the mark, the name, what it does, "by Boréale" in a pill ("part of Boréale" for a tool) | The README's top |
 | `social-preview.svg` | The aurora's curtain, the icon, the name, what it does, what it has, "by Boréale" | GitHub's social preview (Settings › General), the site's `og:image` |
 | `png/` | All of them rendered: `icon-{1024,512,256,192}.png`, `icon-256.jpg` (the Switch's homebrew icon), `apple-touch-icon.png`, `icon-tile-{512,256}.png` (rounded on a transparent ground, where nothing rounds it), `mark-{512,256}.png`, `wordmark{,-light}.png` (720 × 176), `banner.png` (2560 × 640), `social-preview.png` (1280 × 640), `favicon.ico` (16, 32, 48) | |
+
+The tools, `lantern` (Lantern SDK), `kit` (boreale-kit) and `link` (boreale-link), are parts of the products, not brands of their own: a mark, a banner and a social preview saying "part of Boréale", rendered to `mark-{512,256}.png`, `banner.png` and `social-preview.png`; no icon, wordmark nor favicon. The sites' menus show Lantern's mark, not the libraries'.
 
 Boréale's own folder adds `mark-small.svg` (the circle and the star, under 24 px: favicons) and `mark-mono-white.svg`, `mark-mono-black.svg` (one ink, the night left empty). At the root, `badge-ai.svg` ("human-led · AI-assisted", the projects' README badge linking to boreale.dev's `how/`).
 

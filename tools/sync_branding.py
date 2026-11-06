@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BRANDING = ROOT / "branding"
 
+# The sites' menus show the products and Lantern, not the tools inside them.
 PROJECTS = ("boreale", "playguard", "playshelf", "aurore", "ha", "atlas", "lantern")
 
 # The site icons every site serves from its assets.
@@ -84,6 +85,12 @@ TARGETS: dict[str, dict[str, str]] = {
     },
     "lantern-sdk": {
         ".github/readme/banner.png": "lantern/png/banner.png",
+    },
+    "boreale-kit": {
+        ".github/readme/banner.png": "kit/png/banner.png",
+    },
+    "boreale-link": {
+        ".github/readme/banner.png": "link/png/banner.png",
     },
 }
 

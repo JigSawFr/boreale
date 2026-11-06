@@ -92,7 +92,9 @@ for (const project of projects) {
     writeFileSync(join(dir, "png", out), await render(join(dir, src), width, height, scale, type, tile === "tile"));
     console.log(`branding/${project}/png/${out}`);
   }
-  // favicon.ico: the small mark where there is one (under 24 px), else the mark.
+  // favicon.ico, for a product (a tool has no icon): the small mark where there
+  // is one (under 24 px), else the mark.
+  if (!existsSync(join(dir, "icon.svg"))) continue;
   const small = join(dir, existsSync(join(dir, "mark-small.svg")) ? "mark-small.svg" : "mark.svg");
   const sizes = [16, 32, 48];
   const pngs = [];
