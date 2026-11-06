@@ -49,7 +49,9 @@ def snow(d: str, width: float = 0, fill: bool = True, extra: str = "") -> str:
 # Each project: its name, its wordmark, what it does (the banner's line, the
 # social preview's), what it has (the social preview's last line), and its
 # icon: the frame, the aurora's line, the mountains or not, the drawing in snow
-# (lit by a soft glow unless glow is False).
+# (lit by a soft glow unless glow is False). A tool (tool=True) is a part of
+# the products, not a brand of its own: a mark, a banner and a social preview
+# with "part of Boréale", no icon nor wordmark files.
 PROJECTS: dict[str, dict] = {
     "boreale": dict(
         name="Boréale",
@@ -106,7 +108,7 @@ PROJECTS: dict[str, dict] = {
         ),
     ),
     "lantern": dict(
-        name="Lantern SDK",
+        name="Lantern SDK", tool=True,
         tagline="One protocol between your homebrews and your own server",
         features="C++23 · C · Python · TypeScript",
         frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
@@ -116,6 +118,26 @@ PROJECTS: dict[str, dict] = {
             + f'<rect x="102" y="106" width="52" height="64" rx="8" fill="none" stroke="{SNOW}" stroke-width="12"/>'
             + snow("M128 118 C 137 128, 140 136, 140 144 A 12 12 0 0 1 116 144 C 116 136, 119 128, 128 118 Z")
             + f'<rect x="92" y="178" width="72" height="12" rx="6" fill="{SNOW}"/>'
+        ),
+    ),
+    "kit": dict(
+        name="boreale-kit", tool=True,
+        tagline="The C++23 library the Boréale apps share",
+        features="Inside PlayGuard and PlayShelf · Network · Updates · Logs · Diagnostics · Shared screens",
+        frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
+        glyph=(
+            snow("M128 76 L 184 104 L 128 132 L 72 104 Z", 10)
+            + snow("M72 134 L 128 162 L 184 134 M72 162 L 128 190 L 184 162", 12, fill=False)
+        ),
+    ),
+    "link": dict(
+        name="boreale-link", tool=True,
+        tagline="The remote link the Boréale homebrews share",
+        features="Inside PlayGuard and PlayShelf · MQTT 5.0 · TLS · JSON · C, no allocation",
+        frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
+        glyph=(
+            f'<g transform="rotate(-45 128 128)" fill="none" stroke="{SNOW}" stroke-width="12">'
+            '<rect x="60" y="106" width="80" height="44" rx="22"/><rect x="116" y="106" width="80" height="44" rx="22"/></g>'
         ),
     ),
 }
@@ -196,18 +218,19 @@ def mark(key: str) -> str:
     return (BRANDING / key / "mark.svg").read_text(encoding="utf-8")
 
 
-def by_boreale(x: int, y: int, scale: float = 1) -> str:
-    """Boréale's mark and name in a pill, at the top right."""
-    w, h = 192 * scale, 52 * scale
-    return (f'<g transform="translate({x} {y}) scale({scale})">'
-            f'<rect width="192" height="52" rx="26" fill="{NIGHT}" stroke="#22324F" stroke-width="2"/>'
+def by_boreale(right: int, y: int, tool: bool = False) -> str:
+    """Boréale's mark and name in a pill, its right edge at right: "by
+    Boréale" for a product, "part of Boréale" for a tool."""
+    words, w = ("part of", 236) if tool else ("by", 192)
+    return (f'<g transform="translate({right - w} {y})">'
+            f'<rect width="{w}" height="52" rx="26" fill="{NIGHT}" stroke="#22324F" stroke-width="2"/>'
             f'<svg x="12" y="8" width="36" height="36" viewBox="0 0 256 256">{inner(mark("boreale"), "b")}</svg>'
-            f'<text x="58" y="34" font-family="Sora" font-weight="400" font-size="20" fill="{MIST}">by <tspan font-weight="700" fill="{SNOW}">Boréale</tspan></text></g>')
+            f'<text x="58" y="34" font-family="Sora" font-weight="400" font-size="20" fill="{MIST}">{words} <tspan font-weight="700" fill="{SNOW}">Boréale</tspan></text></g>')
 
 
 def banner(key: str) -> str:
     p = PROJECTS[key]
-    pill = "" if key == "boreale" else by_boreale(1060, 28)
+    pill = "" if key == "boreale" else by_boreale(1252, 28, p.get("tool", False))
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320">
   <!-- {p["name"]}'s README banner, written by tools/brand.py: the night, the aurora, its mark, its name, what it does, and Boréale's mark and name in a pill. Sora. -->
   <defs>
@@ -236,7 +259,7 @@ def banner(key: str) -> str:
 def social(key: str) -> str:
     p = PROJECTS[key]
     wave = "M0 330 C 220 220, 440 360, 700 270 S 1100 180, 1280 230"
-    pill = "" if key == "boreale" else by_boreale(1048, 572)
+    pill = "" if key == "boreale" else by_boreale(1240, 572, p.get("tool", False))
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
   <!-- {p["name"]}'s social preview (1280 × 640: GitHub's Settings › General, the site's og:image), written by tools/brand.py: the aurora's curtain over the night, the icon, the name, what it does, what it has, and Boréale's pill. Sora. -->
   <defs>
@@ -276,9 +299,10 @@ def outputs() -> dict[Path, str]:
     files: dict[Path, str] = {}
     for key in PROJECTS:
         d = BRANDING / key
-        files[d / "icon.svg"] = icon(key)
-        files[d / "wordmark.svg"] = wordmark(key, light=False)
-        files[d / "wordmark-light.svg"] = wordmark(key, light=True)
+        if not PROJECTS[key].get("tool"):
+            files[d / "icon.svg"] = icon(key)
+            files[d / "wordmark.svg"] = wordmark(key, light=False)
+            files[d / "wordmark-light.svg"] = wordmark(key, light=True)
         files[d / "banner.svg"] = banner(key)
         files[d / "social-preview.svg"] = social(key)
     return files
