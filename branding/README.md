@@ -1,31 +1,31 @@
 # Boréale's brand
 
-The look shared by Boréale and its projects. PlayGuard's and PlayShelf's own marks live in their repositories (`branding/`); they follow the same rules.
+The look shared by Boréale and its projects, kept here once: every project's mark, icon, wordmarks, README banner and social preview, from one set of templates, copied into the projects' repositories from here.
 
-## The name
-
-**Boréale** (with its accent; `boreale` in addresses and code). It closes a line already in the code: [borealis](https://github.com/natinusala/borealis), the UI library, then **Aurore**, its fork, the light rising on it, then **Boréale**, the whole sky the projects live in. The projects keep their names: Boréale is the house, not a new name for them.
-
-The tagline is **Homebrew for the long nights** (*Du homebrew pour les longues nuits*): boreal nights last for months, and so do evenings of play.
-
-## The marks
+## The kit
 
 Every mark follows one rule, set by PlayGuard's and PlayShelf's: **a frame in the aurora's colours around the night, one drawing in snow inside**.
 
+One folder per project: `boreale`, `playguard`, `playshelf`, `aurore`, `ha` (Boréale for Home Assistant), `atlas`, `lantern` (Lantern SDK). Each holds the same files:
+
 | File | What | Where |
 |---|---|---|
-| `mark.svg` | The sky's circle, an aurora crossing it, the pole star | Headers, the site, avatars |
-| `mark-small.svg` | The circle and the star, without the aurora | Under 24 px: favicons |
-| `icon.svg` | The mark on the abyss, in a rounded tile | App and touch icons |
-| `mark-mono-white.svg`, `mark-mono-black.svg` | The mark in one colour, the night left empty | What prints or engraves one ink, services that want a one-colour icon |
-| `wordmark.svg`, `wordmark-light.svg` | "Boréale" in Sora 700, underlined by the aurora | On the night, on light grounds |
-| `aurore-mark.svg` | Aurore's mark, drawn after its app icon: the frame, an aurora over the mountains | Aurore's card, its site |
-| `badge-ai.svg` | "human-led · AI-assisted" on the night, the aurora on its edge | The projects' README badges, linking to boreale.dev's `how/` |
-| `social-preview.svg` | The night, the aurora, the mark, the name, the tagline | Shared links, GitHub's social preview |
+| `mark.svg` | **Drawn by hand.** The frame and the drawing, flat | Headers, site menus, cards, favicons, the banner |
+| `icon.svg` | The mark's frame around a night sky: the aurora's curtain and line, the mountains for some, the drawing in snow with a soft glow. Full-bleed | App, store, console and touch icons, the social preview |
+| `wordmark.svg`, `wordmark-light.svg` | The name in Sora 700, underlined by the aurora, in snow or in night | Loading screens, on the night, on light grounds |
+| `banner.svg` | The night, the aurora, the mark, the name, what it does, "by Boréale" in a pill | The README's top |
+| `social-preview.svg` | The aurora's curtain, the icon, the name, what it does, what it has, "by Boréale" | GitHub's social preview (Settings › General), the site's `og:image` |
+| `png/` | All of them rendered: `icon-{1024,512,256,192}.png`, `icon-256.jpg` (the Switch's homebrew icon), `apple-touch-icon.png`, `icon-tile-{512,256}.png` (rounded on a transparent ground, where nothing rounds it), `mark-{512,256}.png`, `wordmark{,-light}.png` (720 × 176), `banner.png` (2560 × 640), `social-preview.png` (1280 × 640), `favicon.ico` (16, 32, 48) | |
 
-`banners/` holds each project's README banner, all from one template (`python3 tools/make_banners.py`): the night, the aurora, the project's mark, its name, what it does, and "by Boréale" with the mark in a corner. PlayGuard and PlayShelf keep a copy of theirs in their own `branding/`, rendered for their README at twice the size; Aurore's README keeps a banner of its own, and boreale-ha's a two-line one ("Boréale / for Home Assistant").
+Boréale's own folder adds `mark-small.svg` (the circle and the star, under 24 px: favicons) and `mark-mono-white.svg`, `mark-mono-black.svg` (one ink, the night left empty). At the root, `badge-ai.svg` ("human-led · AI-assisted", the projects' README badge linking to boreale.dev's `how/`).
 
-`png/` holds them rendered (`node tools/export-branding.mjs`, which also writes the site's icons and preview).
+Only the marks and the icons' drawings are drawn by hand; the rest is written by `tools/brand.py`, whose table holds each project's name, line and features. To change or add a project:
+
+1. Its mark in `branding/<project>/mark.svg`, its icon's frame and drawing and its texts in `tools/brand.py`.
+2. `python3 tools/brand.py` writes the SVGs (`--check` says if one is out of date), `node tools/export-branding.mjs [project]` the PNGs.
+3. `python3 tools/sync_branding.py ../<repository>` copies them into a project's checkout, at the paths it reads them from (its table, `TARGETS`); `boreale-site` takes every mark for the sites' menus. A pull request in each repository then carries them.
+
+What a repository draws only for itself stays its own: PlayGuard's store pictures and splash screens, the Home Assistant logos, Aurore's platform icons, the themes' pictures.
 
 - **Always on the night.** The mark stands on the night's blue; on a light ground it keeps its dark tile.
 - **One gradient, one direction.** Aurora green top left, violet bottom right. Never reversed, no colour added.

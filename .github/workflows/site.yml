@@ -41,7 +41,7 @@ jobs:
       # served keeps its versions rather than lose them.
       env: ${{ github.ref == 'refs/heads/main' && '{"SITE_STRICT":"1"}' || '{}' }}
       build: python3 tools/build_site.py build
-      check: python3 tools/check_site.py build
+      check: python3 tools/brand.py --check && python3 tools/check_site.py build
       # main's site is published, unless a scheduled or dispatched build made
       # exactly the one served (its build.sha256, tools/build_site.py).
       pages_artifact: ${{ github.ref == 'refs/heads/main' }}
