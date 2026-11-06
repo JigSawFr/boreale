@@ -24,7 +24,7 @@ The site has the consoles' fifteen, as the apps and the projects' sites do. A ne
 
 ## A mark
 
-The SVGs in `branding/` are the sources: `python3 tools/make_banners.py` writes the projects' banners from them, then `node tools/export-branding.mjs` renders the PNGs and the site's icons again (Playwright). The PNGs go in the same pull request as their SVG.
+The marks (`branding/<project>/mark.svg`) and the table of `tools/brand.py` are the sources: `python3 tools/brand.py` writes every project's icon, wordmarks, banner and social preview from them (`--check` in CI), then `node tools/export-branding.mjs` renders the PNGs and the site's icons again (Playwright). The PNGs go in the same pull request as their SVG; `python3 tools/sync_branding.py ../<repository>` then copies them into a project (`branding/README.md`).
 
 ## What the site does not do
 

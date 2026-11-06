@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="branding/png/social-preview.png" alt="Boréale" width="100%">
+<img src="branding/boreale/png/social-preview.png" alt="Boréale" width="100%">
 
 ### Homebrew for the long nights
 
@@ -14,7 +14,7 @@ Boréale is the home of a few open-source projects for the Nintendo Switch: **Pl
 
 This repository holds:
 
-- **[`branding/`](branding/README.md)**: the marks, the wordmarks, the colours, the type and the tone shared by every project, as SVG and PNG.
+- **[`branding/`](branding/README.md)**: every project's mark, icon, wordmarks, README banner and social preview from one set of templates, the colours, the type and the tone, as SVG and PNG.
 - **[`site/`](site/README.md)**: the website at [boreale.dev](https://boreale.dev/?utm_source=github&utm_medium=readme), in the consoles' fifteen languages. The projects' sites are its sub-domains: [guard.boreale.dev](https://guard.boreale.dev/?utm_source=github&utm_medium=readme) (PlayGuard), [shelf.boreale.dev](https://shelf.boreale.dev/?utm_source=github&utm_medium=readme) (PlayShelf) and [aurore.boreale.dev](https://aurore.boreale.dev/?utm_source=github&utm_medium=readme) (Aurore).
 
 ## Build the site
