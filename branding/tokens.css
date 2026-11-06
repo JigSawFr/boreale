@@ -1,0 +1,14 @@
+/* Boréale's colours and fonts, written by tools/brand.py (branding/tokens.json holds the same). */
+:root {
+  --abyss: #0B1424;
+  --night: #0E1A33;
+  --snow: #E8EEF7;
+  --mist: #A9B6CC;
+  --aurora: #00FFCC;
+  --ice: #33BBFF;
+  --violet: #8A5CFF;
+  --gradient: linear-gradient(135deg, #00FFCC 0%, #33BBFF 65%, #8A5CFF 100%);
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-text: "Figtree", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}

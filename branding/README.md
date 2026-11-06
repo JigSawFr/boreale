@@ -11,15 +11,17 @@ One folder per product: `boreale`, `playguard`, `playshelf`, `aurore`, `ha` (Bor
 | File | What | Where |
 |---|---|---|
 | `mark.svg` | **Drawn by hand.** The frame and the drawing, flat | Headers, site menus, cards, favicons, the banner |
+| `mark-small.svg` | The mark under 24 px: a heavier frame and drawing, no aurora | Favicons (`favicon.ico` is drawn from it) |
+| `mark-mono-white.svg`, `mark-mono-black.svg` | The mark in one ink, the night left empty | What prints or engraves one colour; Android's themed icon; Home Assistant's monochrome icons |
 | `icon.svg` | The mark's frame around a night sky: the aurora's curtain and line, the mountains for some, the drawing in snow with a soft glow. Full-bleed | App, store, console and touch icons, the social preview |
 | `wordmark.svg`, `wordmark-light.svg` | The name in Sora 700, underlined by the aurora, in snow or in night | Loading screens, on the night, on light grounds |
 | `banner.svg` | The night, the aurora, the mark, the name, what it does, "by Boréale" in a pill ("part of Boréale" for a tool) | The README's top |
 | `social-preview.svg` | The aurora's curtain, the icon, the name, what it does, what it has, "by Boréale" | GitHub's social preview (Settings › General), the site's `og:image` |
-| `png/` | All of them rendered: `icon-{1024,512,256,192}.png`, `icon-256.jpg` (the Switch's homebrew icon), `apple-touch-icon.png`, `icon-tile-{512,256}.png` (rounded on a transparent ground, where nothing rounds it), `mark-{512,256}.png`, `wordmark{,-light}.png` (720 × 176), `banner.png` (2560 × 640), `social-preview.png` (1280 × 640), `favicon.ico` (16, 32, 48) | |
+| `png/` | All of them rendered: `icon-{1024,512,256,192}.png`, `icon-256.jpg` (the Switch's homebrew icon), `apple-touch-icon.png`, `icon-tile-{512,256}.png` (rounded on a transparent ground, where nothing rounds it), `mark-{512,256}.png`, `mark-mono-{white,black}-512.png`, `wordmark{,-light}.png` (720 × 176), `banner.png` (2560 × 640), `social-preview.png` (1280 × 640), `favicon.ico` (16, 32, 48) | |
 
 The tools, `lantern` (Lantern SDK), `kit` (boreale-kit) and `link` (boreale-link), are parts of the products, not brands of their own: a mark, a banner and a social preview saying "part of Boréale", rendered to `mark-{512,256}.png`, `banner.png` and `social-preview.png`; no icon, wordmark nor favicon. The sites' menus show Lantern's mark, not the libraries'.
 
-Boréale's own folder adds `mark-small.svg` (the circle and the star, under 24 px: favicons) and `mark-mono-white.svg`, `mark-mono-black.svg` (one ink, the night left empty). At the root, `badge-ai.svg` ("human-led · AI-assisted", the projects' README badge linking to boreale.dev's `how/`).
+Boréale's own `mark-small.svg` (the circle and the star) and `mark-mono-*.svg` are drawn by hand; the other products' are written by `tools/brand.py`. At the root, `tokens.json` (`schema` 1) and `tokens.css` hold the colours, the gradient, the fonts and the contrasts below, for the sites and the themes to read instead of copying them; and `badge-ai.svg` ("human-led · AI-assisted", the projects' README badge linking to boreale.dev's `how/`).
 
 Only the marks and the icons' drawings are drawn by hand; the rest is written by `tools/brand.py`, whose table holds each project's name, line and features. To change or add a project:
 
@@ -44,6 +46,18 @@ What a repository draws only for itself stays its own: PlayGuard's store picture
 | Aurora | `#00FFCC` | Accent, active state |
 | Ice | `#33BBFF` | Links, the gradient's middle |
 | Violet | `#8A5CFF` | The gradient's end |
+
+What may sit on what (WCAG contrast; `tokens.json` has the ratios):
+
+| Ink | On abyss | On night | Use |
+|---|---|---|---|
+| Snow | 15.8 | 14.8 | Any text |
+| Mist | 9.0 | 8.4 | Secondary text |
+| Aurora | 14.2 | 13.3 | Accent, active state, short text |
+| Ice | 8.5 | 8.0 | Links |
+| Violet | 4.4 | 4.2 | **Large text and graphics only**, never a paragraph |
+
+Abyss on snow (15.8) and on aurora (14.2) read too: the ink of a light ground or of a button.
 
 The gradient: aurora at 0 %, ice at 55–65 %, violet at 100 %. On a page, about 60 % abyss, 20 % night, 12 % snow, 6 % aurora: the night takes the room, the aurora comes in touches.
 

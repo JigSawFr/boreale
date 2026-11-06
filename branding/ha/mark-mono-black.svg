@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Boréale for HA's mark in one colour (black), written by tools/brand.py, for what prints or engraves one ink and for Android's themed icon: the frame and the drawing, the night left empty. -->
+  
+  <g >
+  <path d="M128 42 L 212 110 L 212 198 Q 212 214 196 214 L 60 214 Q 44 214 44 198 L 44 110 Z" fill="none" stroke="#000000" stroke-width="16" stroke-linejoin="round"/>
+  <rect x="74" y="120" width="108" height="62" rx="14" fill="none" stroke="#000000" stroke-width="10"/><path d="M98 122 L 98 180 M158 122 L 158 180" stroke="#000000" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>
