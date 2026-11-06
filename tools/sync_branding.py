@@ -21,8 +21,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BRANDING = ROOT / "branding"
 
-# The sites' menus show the products and Lantern, not the tools inside them.
-PROJECTS = ("boreale", "playguard", "playshelf", "aurore", "ha", "atlas", "lantern")
+# The sites' menus show the products, Lantern, its SDK and its Bridge, not the
+# tools inside them (kit, link).
+PROJECTS = ("boreale", "playguard", "playshelf", "aurore", "ha", "atlas", "lantern", "sdk", "bridge")
 
 # The site icons every site serves from its assets.
 def site_icons(project: str, assets: str) -> dict[str, str]:
@@ -90,7 +91,7 @@ TARGETS: dict[str, dict[str, str]] = {
         **site_icons("atlas", "site/assets"),
     },
     "lantern-sdk": {
-        ".github/readme/banner.png": "lantern/png/banner.png",
+        ".github/readme/banner.png": "sdk/png/banner.png",
     },
     "lantern-bridge": {
         ".github/readme/banner.png": "bridge/png/banner.png",

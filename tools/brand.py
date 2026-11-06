@@ -108,9 +108,9 @@ PROJECTS: dict[str, dict] = {
         ),
     ),
     "lantern": dict(
-        name="Lantern SDK", tool=True,
+        name="Lantern",
         tagline="One protocol between your homebrews and your own server",
-        features="C++23 · C · Python · TypeScript",
+        features="Open protocol · Specification · SDK · Bridge · Any server",
         frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
         glyph=(
             snow("M114 78 A 14 14 0 0 1 142 78", 10, fill=False)
@@ -120,8 +120,22 @@ PROJECTS: dict[str, dict] = {
             + f'<rect x="92" y="178" width="72" height="12" rx="6" fill="{SNOW}"/>'
         ),
     ),
+    "sdk": dict(
+        name="Lantern SDK",
+        tagline="Speak Lantern from your homebrew, in four languages",
+        features="C++23 · C · Python · TypeScript · Conformance tests",
+        frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
+        glyph=(
+            '<g transform="translate(-10 0)">' + snow("M104 84 A 12 12 0 0 1 128 84", 9, fill=False)
+            + snow("M98 90 L 134 90 L 144 102 L 88 102 Z", 5)
+            + f'<rect x="96" y="108" width="44" height="54" rx="7" fill="none" stroke="{SNOW}" stroke-width="10"/>'
+            + snow("M118 118 C 126 127, 128 133, 128 139 A 10 10 0 0 1 108 139 C 108 133, 110 127, 118 118 Z")
+            + f'<rect x="88" y="168" width="60" height="10" rx="5" fill="{SNOW}"/>' + '</g>'
+            + snow("M164 116 L 152 134 L 164 152 M190 116 L 202 134 L 190 152", 9, fill=False)
+        ),
+    ),
     "bridge": dict(
-        name="Lantern Bridge", tool=True,
+        name="Lantern Bridge",
         tagline="Your Ownfoil, AeroFoil or Tinfoil library, spoken in Lantern",
         features="Ownfoil · AeroFoil · Tinfoil shops · Plain folders · Read-only",
         frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
