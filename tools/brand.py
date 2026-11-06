@@ -172,7 +172,7 @@ def wordmark(key: str, light: bool) -> str:
     """The name in Sora 700, underlined by the aurora: snow for the night, the
     night for light grounds. 360 × 88 units, a transparent ground."""
     p = PROJECTS[key]
-    ink, ground = (NIGHT, "light grounds") if light else (SNOW, "the night")
+    ink, ground = (ABYSS, "light grounds") if light else (SNOW, "the night")
     size = 60 if len(p["name"]) <= 10 else 40
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="720" height="176" viewBox="0 0 360 88">
   <!-- {p["name"]}'s wordmark for {ground}, written by tools/brand.py: the name in Sora 700, underlined by the aurora's colours. -->
