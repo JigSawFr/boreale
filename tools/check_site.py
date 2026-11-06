@@ -12,10 +12,12 @@
 - the catalogs of site/i18n/ and boreale-site's: the same keys as en-US.json,
   none empty (but fr.json's legal_translation: the French legal page is the
   original), no common text repeated here;
+- boreale-site's colours (the :root of boreale.css, every site's) equal branding/tokens.json's;
 - feed.atom and sitemap.xml read as XML, manifest.webmanifest's icons are there.
 """
 import json
 import os
+import re
 import sys
 import xml.etree.ElementTree as ElementTree
 from pathlib import Path
@@ -26,6 +28,17 @@ import boreale_site as boreale  # noqa: E402
 from boreale_site import check  # noqa: E402
 
 
+def token_errors() -> list[str]:
+    """The colours of boreale-site's boreale.css (every site's :root) against
+    branding/tokens.json, the brand's one source: a site's colour that drifts."""
+    tokens = json.loads((ROOT / "branding" / "tokens.json").read_text(encoding="utf-8"))["colours"]
+    css = (ROOT / "library" / "boreale-site" / "assets" / "boreale.css").read_text(encoding="utf-8")
+    root = css[css.index(":root {"):].split("}", 1)[0]
+    found = dict(re.findall(r"--(abyss|night|snow|mist|aurora|ice|violet):\s*(#[0-9a-fA-F]{6})", root))
+    return [f"boreale.css: --{name} is {found.get(name)}, branding/tokens.json says {value}"
+            for name, value in tokens.items() if found.get(name, "").lower() != value.lower()]
+
+
 def main() -> None:
     if len(sys.argv) != 2:
         sys.exit(__doc__)
@@ -33,6 +46,7 @@ def main() -> None:
     errors = boreale.check_catalogs(ROOT / "site" / "i18n", optional={"fr": {"legal_translation"}})
     found, pages = check.pages(site, boreale.Site("boreale", os.environ.get("SITE_URL")), chrome=True, cta=False)
     errors += found
+    errors += token_errors()
 
     for name in ("feed.atom", "sitemap.xml"):
         try:
