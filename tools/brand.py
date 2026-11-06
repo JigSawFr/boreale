@@ -120,6 +120,17 @@ PROJECTS: dict[str, dict] = {
             + f'<rect x="92" y="178" width="72" height="12" rx="6" fill="{SNOW}"/>'
         ),
     ),
+    "bridge": dict(
+        name="Lantern Bridge", tool=True,
+        tagline="Your Ownfoil, AeroFoil or Tinfoil library, spoken in Lantern",
+        features="Ownfoil · AeroFoil · Tinfoil shops · Plain folders · Read-only",
+        frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
+        glyph=(
+            snow("M80 150 Q 128 84 176 150", 12, fill=False)
+            + f'<rect x="66" y="150" width="124" height="12" rx="6" fill="{SNOW}"/>'
+            + snow("M104 125 L 104 150 M128 112 L 128 150 M152 125 L 152 150", 8, fill=False)
+        ),
+    ),
     "kit": dict(
         name="boreale-kit", tool=True,
         tagline="The C++23 library the Boréale apps share",
