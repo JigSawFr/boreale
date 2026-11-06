@@ -23,12 +23,13 @@ const branding = join(root, "branding");
 // A tile is the icon with its corners rounded on a transparent ground, for
 // where nothing rounds it (Home Assistant's integrations, a README).
 // The README banner at twice its size, for sharp screens; icon-256.jpg is the
-// Switch's homebrew icon (an NRO's: 256 × 256, JPEG).
+// Switch's homebrew icon (an NRO's: 256 × 256, JPEG), from icon-console.svg
+// where the project has one (its name beneath the mark), else icon.svg.
 const SET = [
   ["icon.svg", "icon-1024.png", 1024, 1024],
   ["icon.svg", "icon-512.png", 512, 512],
   ["icon.svg", "icon-256.png", 256, 256],
-  ["icon.svg", "icon-256.jpg", 256, 256],
+  ["icon-console.svg", "icon-256.jpg", 256, 256],
   ["icon.svg", "icon-192.png", 192, 192],
   ["icon.svg", "apple-touch-icon.png", 180, 180],
   ["icon.svg", "icon-tile-512.png", 512, 512, 1, "tile"],
@@ -87,9 +88,10 @@ for (const project of projects) {
   const dir = join(branding, project);
   mkdirSync(join(dir, "png"), { recursive: true });
   for (const [src, out, width, height, scale = 1, tile] of SET) {
-    if (!existsSync(join(dir, src))) continue;
+    const from = src === "icon-console.svg" && !existsSync(join(dir, src)) ? "icon.svg" : src;
+    if (!existsSync(join(dir, from))) continue;
     const type = out.endsWith(".jpg") ? "jpeg" : "png";
-    writeFileSync(join(dir, "png", out), await render(join(dir, src), width, height, scale, type, tile === "tile"));
+    writeFileSync(join(dir, "png", out), await render(join(dir, from), width, height, scale, type, tile === "tile"));
     console.log(`branding/${project}/png/${out}`);
   }
   // favicon.ico, for a product (a tool has no icon): the small mark where there

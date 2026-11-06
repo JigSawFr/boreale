@@ -51,7 +51,8 @@ def snow(d: str, width: float = 0, fill: bool = True, extra: str = "") -> str:
 # icon: the frame, the aurora's line, the mountains or not, the drawing in snow
 # (lit by a soft glow unless glow is False). A tool (tool=True) is a part of
 # the products, not a brand of its own: a mark, a banner and a social preview
-# with "part of Boréale", no icon nor wordmark files.
+# with "part of Boréale", no icon nor wordmark files. A Switch homebrew
+# (console=True) also gets icon-console.svg, its HOME menu icon with its name.
 PROJECTS: dict[str, dict] = {
     "boreale": dict(
         name="Boréale",
@@ -61,14 +62,14 @@ PROJECTS: dict[str, dict] = {
         glyph=snow("M128 64 C 132 90, 138 96, 160 100 C 138 104, 132 110, 128 136 C 124 110, 118 104, 96 100 C 118 96, 124 90, 128 64 Z"),
     ),
     "playguard": dict(
-        name="PlayGuard",
+        name="PlayGuard", console=True,
         tagline="Nintendo Switch parental controls, right on the console",
         features="Play-time limits · PIN · Restrictions · Activity · Network clock",
         frame=SHIELD, line=LOW, mountains=True,
         glyph=snow("M107.84 102 L 154.88 130 L 107.84 158 Z", 8),
     ),
     "playshelf": dict(
-        name="PlayShelf",
+        name="PlayShelf", console=True,
         tagline="Your game library, on the console",
         features="Browse · Install · Pause and resume · Your own server",
         frame=SQUARE, line=HIGH, mountains=False, glow=False,
@@ -214,6 +215,35 @@ def icon(key: str) -> str:
 </svg>
 """
 
+
+
+def console_icon(key: str) -> str:
+    """The HOME menu icon of a Switch homebrew: the night sky and the aurora
+    over the whole square, the mark lifted by its shadow, the name in Sora
+    700 beneath, as the console's other homebrews show theirs."""
+    p = PROJECTS[key]
+    line = p["line"]
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- {p["name"]}'s HOME menu icon (icon.jpg), written by tools/brand.py: the night sky and the aurora's curtain over the whole square, its mark lifted by a shadow, its name in Sora 700. Everywhere else, icon.svg. -->
+  <defs>
+    <linearGradient id="c-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1430"/><stop offset="0.7" stop-color="#1A3557"/><stop offset="1" stop-color="#0A1020"/></linearGradient>
+    <linearGradient id="c-colour" x1="0" y1="0" x2="1" y2="0">{GRADIENT}</linearGradient>
+    <linearGradient id="c-rise" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0.9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <pattern id="c-rays" width="9" height="256" patternUnits="userSpaceOnUse"><rect width="9" height="256" fill="#fff" opacity="0.55"/><rect x="2" width="4" height="256" fill="#fff"/></pattern>
+    <filter id="c-ray-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.6 0"/></filter>
+    <mask id="c-curtain" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256"><g filter="url(#c-ray-blur)"><rect width="256" height="256" fill="url(#c-rays)"/></g></mask>
+    <mask id="c-fade" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256"><path d="M0 128 C 60 88, 110 138, 170 98 S 240 68, 256 78 L 256 0 L 0 0 Z" fill="url(#c-rise)"/></mask>
+    <filter id="c-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="c-shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.55"/></filter>
+  </defs>
+  <rect width="256" height="256" fill="url(#c-sky)"/>
+  <g mask="url(#c-fade)"><rect width="256" height="256" fill="url(#c-colour)" opacity="0.8" mask="url(#c-curtain)"/></g>
+  <g mask="url(#c-fade)" filter="url(#c-blur)"><rect width="256" height="256" fill="url(#c-colour)" opacity="0.35"/></g>
+  <circle cx="40" cy="30" r="1.5" fill="{SNOW}"/><circle cx="214" cy="146" r="1.2" fill="{SNOW}" opacity="0.7"/><circle cx="30" cy="160" r="1" fill="{SNOW}" opacity="0.5"/>
+  <g filter="url(#c-shadow)" transform="translate(128 102) scale(0.62) translate(-128 -130)">{inner(mark(key), "c")}</g>
+  <text x="128" y="224" text-anchor="middle" font-family="Sora" font-weight="700" font-size="34" letter-spacing="-0.8" fill="{SNOW}">{p["name"]}</text>
+</svg>
+"""
 
 # The marks under 24 px and in one ink, for each product (Boréale's are drawn
 # by hand): the mark's frame and drawing, bolder and without the aurora for the
@@ -489,6 +519,8 @@ def outputs() -> dict[Path, str]:
             files[d / "icon.svg"] = icon(key)
             files[d / "wordmark.svg"] = wordmark(key, light=False)
             files[d / "wordmark-light.svg"] = wordmark(key, light=True)
+        if PROJECTS[key].get("console"):
+            files[d / "icon-console.svg"] = console_icon(key)
         if key in SMALL:
             files[d / "mark-small.svg"] = mark_small(key)
             files[d / "mark-mono-white.svg"] = mark_mono(key, "#FFFFFF", "white")
