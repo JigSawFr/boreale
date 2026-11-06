@@ -436,8 +436,28 @@ def tokens_css() -> str:
             ":root {\n" + "\n".join(lines) + "\n}\n")
 
 
+def loader() -> str:
+    """The aurora's loading animation (branding/aurora-loader.svg): three
+    curtains of the gradient swaying over a line, 3 s loop, no script, on a
+    transparent ground. Under prefers-reduced-motion it stands still."""
+    def band(y: int, op: float, dur: str, delay: str) -> str:
+        a = f"M0 {y} C 50 {y - 40}, 90 {y + 40}, 128 {y} S 206 {y - 40}, 256 {y}"
+        b = f"M0 {y} C 50 {y + 40}, 90 {y - 40}, 128 {y} S 206 {y + 40}, 256 {y}"
+        return (f'<path d="{a}" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round" opacity="{op}">'
+                f'<animate attributeName="d" dur="{dur}" begin="{delay}" repeatCount="indefinite" calcMode="spline" '
+                f'keyTimes="0;0.5;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" values="{a};{b};{a}"/></path>')
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Loading">\n'
+        "<!-- SPDX-License-Identifier: GPL-3.0-or-later. Written by tools/brand.py. -->\n"
+        f'<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{AURORA}"/>'
+        f'<stop offset="0.65" stop-color="{ICE}"/><stop offset="1" stop-color="{VIOLET}"/></linearGradient></defs>\n'
+        + band(104, 0.45, "3s", "0s") + "\n" + band(128, 0.8, "3s", "-1s") + "\n" + band(152, 0.45, "3s", "-2s") + "\n"
+        "<style>@media (prefers-reduced-motion: reduce) { animate { display: none } }</style>\n</svg>\n")
+
+
 def outputs() -> dict[Path, str]:
-    files: dict[Path, str] = {BRANDING / "tokens.json": tokens_json(), BRANDING / "tokens.css": tokens_css()}
+    files: dict[Path, str] = {BRANDING / "tokens.json": tokens_json(), BRANDING / "tokens.css": tokens_css(),
+                                  BRANDING / "aurora-loader.svg": loader()}
     for key in PROJECTS:
         d = BRANDING / key
         if not PROJECTS[key].get("tool"):

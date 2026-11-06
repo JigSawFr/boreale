@@ -21,7 +21,7 @@ One folder per product: `boreale`, `playguard`, `playshelf`, `aurore`, `ha` (Bor
 
 The tools, `lantern` (Lantern SDK), `kit` (boreale-kit) and `link` (boreale-link), are parts of the products, not brands of their own: a mark, a banner and a social preview saying "part of Boréale", rendered to `mark-{512,256}.png`, `banner.png` and `social-preview.png`; no icon, wordmark nor favicon. The sites' menus show Lantern's mark, not the libraries'.
 
-Boréale's own `mark-small.svg` (the circle and the star) and `mark-mono-*.svg` are drawn by hand; the other products' are written by `tools/brand.py`. At the root, `tokens.json` (`schema` 1) and `tokens.css` hold the colours, the gradient, the fonts and the contrasts below, for the sites and the themes to read instead of copying them; and `badge-ai.svg` ("human-led · AI-assisted", the projects' README badge linking to boreale.dev's `how/`).
+Boréale's own `mark-small.svg` (the circle and the star) and `mark-mono-*.svg` are drawn by hand; the other products' are written by `tools/brand.py`. At the root, `tokens.json` (`schema` 1) and `tokens.css` hold the colours, the gradient, the fonts and the contrasts below, for the sites and the themes to read instead of copying them; `aurora-loader.svg` (the loading animation: three curtains of the gradient swaying, 3 s loop, still under `prefers-reduced-motion`, for the apps' loading and splash screens and the sites' waits); and `badge-ai.svg` ("human-led · AI-assisted", the projects' README badge linking to boreale.dev's `how/`).
 
 Only the marks and the icons' drawings are drawn by hand; the rest is written by `tools/brand.py`, whose table holds each project's name, line and features. To change or add a project:
 
