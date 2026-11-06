@@ -8,7 +8,8 @@ repositories, at the paths each one reads them from.
 <repository> is a checkout whose folder is named as below (../PlayGuard,
 ~/src/boreale-ha…). Run python3 tools/brand.py and node tools/export-branding.mjs
 first. What a repository draws only for itself (PlayGuard's store pictures,
-the Home Assistant logos, Aurore's platform icons) stays its own.
+the Home Assistant logos, Aurore's platform icons, drawn from its icon by its
+tools/render_icons.mjs) stays its own.
 """
 from __future__ import annotations
 
@@ -44,6 +45,7 @@ TARGETS: dict[str, dict[str, str]] = {
         "resources/img/wordmark.png": "playguard/png/wordmark.png",
         "resources/img/wordmark-light.png": "playguard/png/wordmark-light.png",
         "images/apple-touch-icon.png": "playguard/png/apple-touch-icon.png",
+        "images/favicon.ico": "playguard/png/favicon.ico",
         "images/icon-192.png": "playguard/png/icon-192.png",
         "images/icon-512.png": "playguard/png/icon-512.png",
         "images/social-preview.png": "playguard/png/social-preview.png",
@@ -56,6 +58,7 @@ TARGETS: dict[str, dict[str, str]] = {
         "resources/img/wordmark.png": "playshelf/png/wordmark.png",
         "resources/img/wordmark-light.png": "playshelf/png/wordmark-light.png",
         "images/apple-touch-icon.png": "playshelf/png/apple-touch-icon.png",
+        "images/favicon.ico": "playshelf/png/favicon.ico",
         "images/icon-192.png": "playshelf/png/icon-192.png",
         "images/icon-512.png": "playshelf/png/icon-512.png",
         ".github/readme/social-preview.png": "playshelf/png/social-preview.png",
@@ -64,6 +67,7 @@ TARGETS: dict[str, dict[str, str]] = {
     "Aurore": {
         ".github/branding/icon.svg": "aurore/icon.svg",
         ".github/branding/icon.png": "aurore/png/icon-256.png",
+        ".github/branding/favicon.ico": "aurore/png/favicon.ico",
         ".github/branding/social-preview.png": "aurore/png/social-preview.png",
         ".github/readme/banner.png": "aurore/png/banner.png",
     },

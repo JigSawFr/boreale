@@ -27,7 +27,7 @@ Only the marks and the icons' drawings are drawn by hand; the rest is written by
 2. `python3 tools/brand.py` writes the SVGs (`--check` says if one is out of date), `node tools/export-branding.mjs [project]` the PNGs.
 3. `python3 tools/sync_branding.py ../<repository>` copies them into a project's checkout, at the paths it reads them from (its table, `TARGETS`); `boreale-site` takes every mark for the sites' menus. A pull request in each repository then carries them.
 
-What a repository draws only for itself stays its own: PlayGuard's store pictures and splash screens, the Home Assistant logos, Aurore's platform icons, the themes' pictures.
+What a repository draws only for itself stays its own: PlayGuard's store pictures and splash screens, the Home Assistant logos, Aurore's platform icons (rendered from its kit icon by its `tools/render_icons.mjs`), the themes' pictures.
 
 - **Always on the night.** The mark stands on the night's blue; on a light ground it keeps its dark tile.
 - **One gradient, one direction.** Aurora green top left, violet bottom right. Never reversed, no colour added.
