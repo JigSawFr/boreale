@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- PlayGuard's mark in one colour (white), written by tools/brand.py, for what prints or engraves one ink and for Android's themed icon: the frame and the drawing, the night left empty. -->
+  
+  <g transform="translate(128 130) scale(1.3) translate(-128 -130)">
+  <path d="M128 42 C 154 54, 180 60, 204 60 L 204 126 C 204 172, 174 200, 128 218 C 82 200, 52 172, 52 126 L 52 60 C 76 60, 102 54, 128 42 Z" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M108 98 L 156 130 L 108 162 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="10" stroke-linejoin="round"/>
+  </g>
+</svg>

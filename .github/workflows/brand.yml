@@ -1,0 +1,24 @@
+name: brand
+
+# The kit's SVGs and tokens are written by tools/brand.py: a pull request that
+# changes a mark or a rule without rewriting them fails here. A project's copy
+# of the kit is compared with it by hand: tools/sync_branding.py --check
+# <checkout>.
+on:
+  pull_request:
+    paths: [ "branding/**", "tools/**", ".github/workflows/brand.yml" ]
+  push:
+    branches: [ main ]
+    paths: [ "branding/**", "tools/**" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  written:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: python3 tools/brand.py --check

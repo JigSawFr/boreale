@@ -190,6 +190,91 @@ def icon(key: str) -> str:
 """
 
 
+# The marks under 24 px and in one ink, for each product (Boréale's are drawn
+# by hand): the mark's frame and drawing, bolder and without the aurora for the
+# small one, in one ink with the night left empty for the other (what prints,
+# engraves, or Android's themed icon takes). `draw(ink, t)` is the drawing in
+# one ink, t the weight added.
+def _playguard(ink: str, t: int) -> str:
+    return f'<path d="M108 98 L 156 130 L 108 162 Z" fill="{ink}" stroke="{ink}" stroke-width="{10 + t}" stroke-linejoin="round"/>'
+
+
+def _playshelf(ink: str, t: int) -> str:
+    return (f'<path d="M68 112 L 188 112 M68 176 L 188 176" stroke="{ink}" stroke-width="{14 + t}" stroke-linecap="round"/>'
+            f'<path d="M76 98 L 76 72 M100 98 L 100 82 M150 98 L 150 68 M86 162 L 86 132 M134 162 L 134 140 M160 162 L 160 130" stroke="{ink}" stroke-width="{16 + t}" stroke-linecap="round"/>')
+
+
+def _aurore(ink: str, t: int) -> str:
+    return (f'<path d="M40 150 C 80 132, 120 150, 150 128 S 196 100, 216 104" fill="none" stroke="{ink}" stroke-width="{10 + t}" stroke-linecap="round"/>'
+            f'<path d="M40 216 L 40 200 L 84 164 L 106 184 L 140 146 L 186 192 L 216 172 L 216 216 Z" fill="{ink}"/>')
+
+
+def _ha(ink: str, t: int) -> str:
+    return (f'<rect x="74" y="120" width="108" height="62" rx="14" fill="none" stroke="{ink}" stroke-width="{10 + t}"/>'
+            f'<path d="M98 122 L 98 180 M158 122 L 158 180" stroke="{ink}" stroke-width="{8 + t}" stroke-linecap="round"/>')
+
+
+def _atlas(ink: str, t: int) -> str:
+    return (f'<path d="M70 88 L 104 76 L 152 92 L 186 80 L 186 172 L 152 184 L 104 168 L 70 180 Z M104 76 L 104 168 M152 92 L 152 184" fill="none" stroke="{ink}" stroke-width="{12 + t}" stroke-linejoin="round" stroke-linecap="round"/>'
+            f'<path d="M128 106 L 132 118 L 144 119 L 135 127 L 138 139 L 128 132 L 118 139 L 121 127 L 112 119 L 124 118 Z" fill="{ink}"/>')
+
+
+# frame, how it is drawn (a path, or Aurore's rounded square), the drawing,
+# a transform for the drawing and the frame together.
+SMALL = {
+    "playguard": (SHIELD, _playguard, 'transform="translate(128 130) scale(1.3) translate(-128 -130)"'),
+    "playshelf": (SQUARE, _playshelf, ""),
+    "aurore": (None, _aurore, ""),
+    "ha": (HOUSE, _ha, ""),
+    "atlas": (SQUARE, _atlas, ""),
+}
+AURORE_FRAME = 'x="42" y="42" width="172" height="172" rx="34"'
+
+
+def _frame(key: str, fill: str, stroke: str, width: int) -> str:
+    frame = SMALL[key][0]
+    attrs = f'fill="{fill}" stroke="{stroke}" stroke-width="{width}" stroke-linejoin="round"'
+    return f"<rect {AURORE_FRAME} {attrs}/>" if frame is None else f'<path d="{frame}" {attrs}/>'
+
+
+def _clip(key: str, body: str) -> str:
+    """Aurore's mountains stay inside its pane."""
+    return f'<g clip-path="url(#pane)">{body}</g>' if key == "aurore" else body
+
+
+def mark_small(key: str) -> str:
+    """The mark under 24 px (favicons): a heavier frame, a heavier drawing, no aurora."""
+    _, draw, _ = SMALL[key]
+    transform = 'transform="translate(128 130) scale(1.15) translate(-128 -130)"' if key == "playguard" else ""
+    name = PROJECTS[key]["name"]
+    pane = '<clipPath id="pane"><rect x="50" y="50" width="156" height="156" rx="26"/></clipPath>' if key == "aurore" else ""
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- {name}'s mark under 24 px (favicons), written by tools/brand.py: a heavier frame and drawing than the mark's, no aurora. -->
+  <defs><linearGradient id="colour" x1="0" y1="0" x2="1" y2="1">{DIAGONAL}</linearGradient>{pane}</defs>
+  <g {transform}>
+  {_frame(key, NIGHT, "url(#colour)", 26)}
+  {_clip(key, draw(SNOW, 0 if key == "playshelf" else 5))}
+  </g>
+</svg>
+"""
+
+
+def mark_mono(key: str, ink: str, label: str) -> str:
+    """The mark in one ink, the night left empty."""
+    _, draw, transform = SMALL[key]
+    name = PROJECTS[key]["name"]
+    pane = '<defs><clipPath id="pane"><rect x="50" y="50" width="156" height="156" rx="26"/></clipPath></defs>' if key == "aurore" else ""
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- {name}'s mark in one colour ({label}), written by tools/brand.py, for what prints or engraves one ink and for Android's themed icon: the frame and the drawing, the night left empty. -->
+  {pane}
+  <g {transform}>
+  {_frame(key, "none", ink, 16)}
+  {_clip(key, draw(ink, 0))}
+  </g>
+</svg>
+"""
+
+
 def wordmark(key: str, light: bool) -> str:
     """The name in Sora 700, underlined by the aurora: snow for the night, the
     night for light grounds. 360 × 88 units, a transparent ground."""
@@ -295,14 +380,74 @@ def social(key: str) -> str:
 """
 
 
+# The colours and fonts as data (branding/tokens.json, `schema` 1) and as CSS
+# variables (branding/tokens.css), for the sites and themes that read them
+# instead of copying the codes. Grounds and inks, with their contrast.
+COLOURS = {
+    "abyss": ABYSS, "night": NIGHT, "snow": SNOW, "mist": MIST,
+    "aurora": AURORA, "ice": ICE, "violet": VIOLET,
+}
+FONTS = {
+    "display": "Sora", "text": "Figtree", "mono": "JetBrains Mono",
+}
+PAIRS = [  # (ink, ground): what is allowed to sit on what
+    ("snow", "abyss"), ("snow", "night"), ("mist", "abyss"), ("mist", "night"),
+    ("aurora", "abyss"), ("aurora", "night"), ("ice", "abyss"), ("ice", "night"),
+    ("violet", "abyss"), ("violet", "night"), ("abyss", "snow"), ("abyss", "aurora"),
+]
+
+
+def luminance(hex_colour: str) -> float:
+    def channel(v: int) -> float:
+        c = v / 255
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = (int(hex_colour[i:i + 2], 16) for i in (1, 3, 5))
+    return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+
+
+def contrast(ink: str, ground: str) -> float:
+    a, b = sorted((luminance(COLOURS[ink]), luminance(COLOURS[ground])), reverse=True)
+    return (a + 0.05) / (b + 0.05)
+
+
+def tokens_json() -> str:
+    import json
+    data = {
+        "schema": 1,
+        "colours": COLOURS,
+        "gradient": {"direction": "135deg", "stops": [[AURORA, 0], [ICE, 0.65], [VIOLET, 1]]},
+        "fonts": FONTS,
+        "contrast": [
+            {"ink": i, "ground": g, "ratio": round(contrast(i, g), 2),
+             "text": "AAA" if contrast(i, g) >= 7 else "AA" if contrast(i, g) >= 4.5 else "large only" if contrast(i, g) >= 3 else "no"}
+            for i, g in PAIRS
+        ],
+        "projects": [k for k, p in PROJECTS.items() if not p.get("tool")],
+    }
+    return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+
+
+def tokens_css() -> str:
+    lines = [f"  --{name}: {value};" for name, value in COLOURS.items()]
+    lines.append(f"  --gradient: linear-gradient(135deg, {AURORA} 0%, {ICE} 65%, {VIOLET} 100%);")
+    lines += [f'  --font-{role}: "{name}", system-ui, sans-serif;' if role != "mono" else f'  --font-{role}: "{name}", ui-monospace, monospace;'
+              for role, name in FONTS.items()]
+    return ("/* Boréale's colours and fonts, written by tools/brand.py (branding/tokens.json holds the same). */\n"
+            ":root {\n" + "\n".join(lines) + "\n}\n")
+
+
 def outputs() -> dict[Path, str]:
-    files: dict[Path, str] = {}
+    files: dict[Path, str] = {BRANDING / "tokens.json": tokens_json(), BRANDING / "tokens.css": tokens_css()}
     for key in PROJECTS:
         d = BRANDING / key
         if not PROJECTS[key].get("tool"):
             files[d / "icon.svg"] = icon(key)
             files[d / "wordmark.svg"] = wordmark(key, light=False)
             files[d / "wordmark-light.svg"] = wordmark(key, light=True)
+        if key in SMALL:
+            files[d / "mark-small.svg"] = mark_small(key)
+            files[d / "mark-mono-white.svg"] = mark_mono(key, "#FFFFFF", "white")
+            files[d / "mark-mono-black.svg"] = mark_mono(key, "#000000", "black")
         files[d / "banner.svg"] = banner(key)
         files[d / "social-preview.svg"] = social(key)
     return files

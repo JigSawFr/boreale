@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Aurore's mark under 24 px (favicons), written by tools/brand.py: a heavier frame and drawing than the mark's, no aurora. -->
+  <defs><linearGradient id="colour" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00FFCC"/><stop offset="0.65" stop-color="#33BBFF"/><stop offset="1" stop-color="#8A5CFF"/></linearGradient><clipPath id="pane"><rect x="50" y="50" width="156" height="156" rx="26"/></clipPath></defs>
+  <g >
+  <rect x="42" y="42" width="172" height="172" rx="34" fill="#0E1A33" stroke="url(#colour)" stroke-width="26" stroke-linejoin="round"/>
+  <g clip-path="url(#pane)"><path d="M40 150 C 80 132, 120 150, 150 128 S 196 100, 216 104" fill="none" stroke="#E8EEF7" stroke-width="15" stroke-linecap="round"/><path d="M40 216 L 40 200 L 84 164 L 106 184 L 140 146 L 186 192 L 216 172 L 216 216 Z" fill="#E8EEF7"/></g>
+  </g>
+</svg>
