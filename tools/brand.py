@@ -52,7 +52,9 @@ def snow(d: str, width: float = 0, fill: bool = True, extra: str = "") -> str:
 # (lit by a soft glow unless glow is False). A tool (tool=True) is a part of
 # the products, not a brand of its own: a mark, a banner and a social preview
 # with "part of Boréale", no icon nor wordmark files. A Switch homebrew
-# (console=True) also gets icon-console.svg, its HOME menu icon with its name.
+# (console=True) also gets icon-console.svg, its HOME menu icon with its name,
+# its mark scaled by console (as wide and tall as the others' to the eye: a
+# mark drawn larger in its file, PlayGuard's at 1.3, takes less).
 PROJECTS: dict[str, dict] = {
     "boreale": dict(
         name="Boréale",
@@ -62,14 +64,14 @@ PROJECTS: dict[str, dict] = {
         glyph=snow("M128 64 C 132 90, 138 96, 160 100 C 138 104, 132 110, 128 136 C 124 110, 118 104, 96 100 C 118 96, 124 90, 128 64 Z"),
     ),
     "playguard": dict(
-        name="PlayGuard", console=True,
+        name="PlayGuard", console=0.5,
         tagline="Nintendo Switch parental controls, right on the console",
         features="Play-time limits · PIN · Restrictions · Activity · Network clock",
         frame=SHIELD, line=LOW, mountains=True,
         glyph=snow("M107.84 102 L 154.88 130 L 107.84 158 Z", 8),
     ),
     "playshelf": dict(
-        name="PlayShelf", console=True,
+        name="PlayShelf", console=0.62,
         tagline="Your game library, on the console",
         features="Browse · Install · Pause and resume · Your own server",
         frame=SQUARE, line=HIGH, mountains=False, glow=False,
@@ -240,7 +242,7 @@ def console_icon(key: str) -> str:
   <g mask="url(#c-fade)"><rect width="256" height="256" fill="url(#c-colour)" opacity="0.8" mask="url(#c-curtain)"/></g>
   <g mask="url(#c-fade)" filter="url(#c-blur)"><rect width="256" height="256" fill="url(#c-colour)" opacity="0.35"/></g>
   <circle cx="40" cy="30" r="1.5" fill="{SNOW}"/><circle cx="214" cy="146" r="1.2" fill="{SNOW}" opacity="0.7"/><circle cx="30" cy="160" r="1" fill="{SNOW}" opacity="0.5"/>
-  <g filter="url(#c-shadow)" transform="translate(128 102) scale(0.62) translate(-128 -130)">{inner(mark(key), "c")}</g>
+  <g filter="url(#c-shadow)" transform="translate(128 102) scale({p["console"]}) translate(-128 -130)">{inner(mark(key), "c")}</g>
   <text x="128" y="224" text-anchor="middle" font-family="Sora" font-weight="700" font-size="34" letter-spacing="-0.8" fill="{SNOW}">{p["name"]}</text>
 </svg>
 """
