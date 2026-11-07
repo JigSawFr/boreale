@@ -14,6 +14,7 @@ tools/render_icons.mjs) stays its own.
 from __future__ import annotations
 
 import filecmp
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -37,6 +38,12 @@ def site_icons(project: str, assets: str) -> dict[str, str]:
 
 
 # Each repository: {its path: the kit's path, under branding/}.
+# The social previews in the sites' languages (tools/social_taglines.json): the site's og:image by language.
+def social_by_language(project: str) -> dict[str, str]:
+    languages = json.loads((ROOT / "tools" / "social_taglines.json").read_text(encoding="utf-8"))[project]
+    return {f"site/assets/social/{code}.jpg": f"{project}/png/social/{code}.jpg" for code in languages}
+
+
 TARGETS: dict[str, dict[str, str]] = {
     "boreale-site": {f"assets/marks/{p}.svg": f"{p}/mark.svg" for p in PROJECTS},
     "PlayGuard": {
@@ -93,10 +100,12 @@ TARGETS: dict[str, dict[str, str]] = {
     "lantern-sdk": {
         ".github/readme/banner.png": "sdk/png/banner.png",
         "site/assets/social-preview.png": "sdk/png/social-preview.png",
+        **social_by_language("sdk"),
     },
     "lantern-bridge": {
         ".github/readme/banner.png": "bridge/png/banner.png",
         "site/assets/social-preview.png": "bridge/png/social-preview.png",
+        **social_by_language("bridge"),
     },
     "boreale-kit": {
         ".github/readme/banner.png": "kit/png/banner.png",

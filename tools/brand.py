@@ -12,12 +12,18 @@ renders the PNGs, python3 tools/sync_branding.py copies them into the projects.
 """
 from __future__ import annotations
 
+import html
+import json
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BRANDING = ROOT / "branding"
+# What the sites say under their name, by language (`schema` 1): the texts of the social previews in each language.
+TAGLINES: dict[str, dict[str, str]] = {
+    k: v for k, v in json.loads((ROOT / "tools" / "social_taglines.json").read_text(encoding="utf-8")).items() if isinstance(v, dict)
+}
 
 # The colours (branding/README.md, "The colours").
 ABYSS, NIGHT, SNOW, MIST = "#0B1424", "#0E1A33", "#E8EEF7", "#A9B6CC"
@@ -398,8 +404,17 @@ def banner(key: str) -> str:
 """
 
 
-def social(key: str) -> str:
+# The social previews in the sites' languages (tools/social_taglines.json): the line under the name is the site's own,
+# set in Sora where Sora has the letters and in Noto Sans (CJK for Japanese, Korean and Chinese) where it has not.
+SOCIAL_FONTS = {
+    "ja": "'Noto Sans CJK JP'", "ko": "'Noto Sans CJK KR'", "zh-Hans": "'Noto Sans CJK SC'", "zh-Hant": "'Noto Sans CJK TC'",
+}
+
+
+def social(key: str, tagline: str | None = None, language: str | None = None) -> str:
     p = PROJECTS[key]
+    line = html.escape(tagline if tagline is not None else p["tagline"], quote=False)
+    face = "Sora" if language is None else f"Sora, {SOCIAL_FONTS.get(language, chr(39) + 'Noto Sans' + chr(39))}"
     wave = "M0 330 C 220 220, 440 360, 700 270 S 1100 180, 1280 230"
     pill = "" if key == "boreale" else by_boreale(1240, 572, p.get("tool", False))
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
@@ -430,7 +445,7 @@ def social(key: str) -> str:
   <g clip-path="url(#s-tile)"><svg x="560" y="110" width="160" height="160" viewBox="0 0 256 256">{inner(icon(key), "i")}</svg></g>
   <text x="640" y="400" text-anchor="middle" font-family="Sora" font-weight="700" font-size="104" letter-spacing="-2.5" fill="{SNOW}">{p["name"]}</text>
   <rect x="580" y="424" width="120" height="5" rx="2.5" fill="url(#s-word)"/>
-  <text x="640" y="484" text-anchor="middle" font-family="Sora" font-size="30" fill="{MIST}">{p["tagline"]}</text>
+  <text x="640" y="484" text-anchor="middle" font-family="{face}" font-size="30" fill="{MIST}">{line}</text>
   <text x="640" y="548" text-anchor="middle" font-family="Sora" font-size="22" fill="#6F7E99">{p["features"]}</text>
   {pill}
 </svg>
@@ -529,6 +544,8 @@ def outputs() -> dict[Path, str]:
             files[d / "mark-mono-black.svg"] = mark_mono(key, "#000000", "black")
         files[d / "banner.svg"] = banner(key)
         files[d / "social-preview.svg"] = social(key)
+        for language, tagline in TAGLINES.get(key, {}).items():
+            files[d / "social" / f"{language}.svg"] = social(key, tagline, language)
     return files
 
 

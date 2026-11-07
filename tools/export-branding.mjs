@@ -94,6 +94,16 @@ for (const project of projects) {
     writeFileSync(join(dir, "png", out), await render(join(dir, from), width, height, scale, type, tile === "tile"));
     console.log(`branding/${project}/png/${out}`);
   }
+  // The social previews in the sites' languages (social/<language>.svg, written by tools/brand.py), as JPEGs: the
+  // site's og:image by language.
+  if (existsSync(join(dir, "social"))) {
+    mkdirSync(join(dir, "png", "social"), { recursive: true });
+    for (const file of readdirSync(join(dir, "social")).filter((f) => f.endsWith(".svg")).sort()) {
+      const out = file.replace(/\.svg$/, ".jpg");
+      writeFileSync(join(dir, "png", "social", out), await render(join(dir, "social", file), 1280, 640, 1, "jpeg"));
+      console.log(`branding/${project}/png/social/${out}`);
+    }
+  }
   // favicon.ico, for a product (a tool has no icon): the small mark where there
   // is one (under 24 px), else the mark.
   if (!existsSync(join(dir, "icon.svg"))) continue;

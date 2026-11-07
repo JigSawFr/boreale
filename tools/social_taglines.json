@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "source": "boreale-site's i18n, keys sites_sdk and sites_bridge (the sites' selector texts), one social preview a language for the two projects that have their own site's languages: tools/brand.py writes them, tools/export-branding.mjs renders them",
+  "sdk": {
+    "de": "Lantern in deinen Homebrews, in sechs Sprachen",
+    "en-US": "Lantern in your homebrews, in six languages",
+    "es-419": "Lantern en tus homebrews, en seis lenguajes",
+    "es": "Lantern en tus homebrews, en seis lenguajes",
+    "fr-CA": "Lantern dans vos homebrews, en six langages",
+    "fr": "Lantern dans vos homebrews, en six langages",
+    "it": "Lantern nei tuoi homebrew, in sei linguaggi",
+    "ja": "あなたのホームブリューで話す Lantern、6つの言語で",
+    "ko": "홈브류에서 쓰는 Lantern, 여섯 가지 언어로",
+    "nl": "Lantern in je homebrews, in zes talen",
+    "pt-BR": "Lantern nos seus homebrews, em seis linguagens",
+    "pt": "Lantern nos teus homebrews, em seis linguagens",
+    "ru": "Lantern в ваших homebrew, на шести языках",
+    "zh-Hans": "在你的自制软件中使用 Lantern，支持六种语言",
+    "zh-Hant": "在你的自製軟體中使用 Lantern，支援六種語言"
+  },
+  "bridge": {
+    "de": "Deine Ownfoil- oder Tinfoil-Bibliothek, in Lantern gesprochen",
+    "en-US": "Your Ownfoil or Tinfoil library, spoken in Lantern",
+    "es-419": "Tu biblioteca de Ownfoil o Tinfoil, hablada en Lantern",
+    "es": "Tu biblioteca de Ownfoil o Tinfoil, hablada en Lantern",
+    "fr-CA": "Votre bibliothèque Ownfoil ou Tinfoil, parlée en Lantern",
+    "fr": "Votre bibliothèque Ownfoil ou Tinfoil, parlée en Lantern",
+    "it": "La tua libreria Ownfoil o Tinfoil, parlata in Lantern",
+    "ja": "Ownfoil や Tinfoil のライブラリを Lantern で話す",
+    "ko": "Ownfoil 또는 Tinfoil 라이브러리를 Lantern으로",
+    "nl": "Je Ownfoil- of Tinfoil-bibliotheek, gesproken in Lantern",
+    "pt-BR": "Sua biblioteca Ownfoil ou Tinfoil, falada em Lantern",
+    "pt": "A tua biblioteca Ownfoil ou Tinfoil, falada em Lantern",
+    "ru": "Ваша библиотека Ownfoil или Tinfoil на языке Lantern",
+    "zh-Hans": "把你的 Ownfoil 或 Tinfoil 库转换成 Lantern",
+    "zh-Hant": "把你的 Ownfoil 或 Tinfoil 庫轉換成 Lantern"
+  }
+}
