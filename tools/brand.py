@@ -125,8 +125,8 @@ PROJECTS: dict[str, dict] = {
     ),
     "sdk": dict(
         name="Lantern SDK",
-        tagline="Speak Lantern from your homebrew, in four languages",
-        features="C++23 · C · Python · TypeScript · Conformance tests",
+        tagline="Speak Lantern from your homebrew, in six languages",
+        features="C++23 · C · Python · TypeScript · Rust · Go · Conformance tests",
         frame=SQUARE, line=HIGH, mountains=False, scale=0.8,
         glyph=(
             '<g transform="translate(-10 0)">' + snow("M104 84 A 12 12 0 0 1 128 84", 9, fill=False)
